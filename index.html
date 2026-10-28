@@ -997,19 +997,49 @@ var _ex9=expl;expl=function(){var a=AULA[cur.id],r=_ex9();return a?"<div class='
 (function(){
  const oldRender=render;
  const subjects=['Matemática','Português','Ciências'];
+ // Versão do diagnóstico: garante que usuários com a avaliação antiga recebam as 60 questões.
+ if(ld('sn_diag_version')!=='2'){
+  ['sn_diag_done','sn_diag_started','sn_schedule_done','sn_diagnostic','sn_diag_answers'].forEach(k=>sv(k,''));
+  sv('sn_diag_version','2');
+ }
  let dq=[],di=0,answers=[];
  function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
  function buildDiagnostic(){
   dq=[];
+  function normalize(q){
+   let text=String(q[0]||'');
+   if(typeof q[1]==='number'){
+    let ans=Number(q[1]),step=Number.isInteger(ans)?Math.max(1,Math.round(Math.abs(ans)*.1)||1):0.5;
+    let vals=[ans,ans+step,ans-step,ans+2*step].map(v=>Math.round(v*100)/100),uniq=[];
+    vals.forEach(v=>{if(!uniq.includes(v))uniq.push(v)});
+    for(let k=1;uniq.length<4;k++){let v=Math.round((ans+step*(k+2))*100)/100;if(!uniq.includes(v))uniq.push(v)}
+    let opts=shuffle(uniq).map(v=>String(v).replace('.',','));
+    return [text,opts,opts.indexOf(String(ans).replace('.',',')),'O resultado correto é '+String(ans).replace('.',',')+'. Refaça a operação indicada no enunciado e confira o cálculo.'];
+   }
+   let opts=Array.isArray(q[1])?q[1].slice():[],answer=Number(q[2]);
+   if(!opts.length||!Number.isInteger(answer)||answer<0||answer>=opts.length)return [text,['Alternativa A','Alternativa B','Alternativa C','Alternativa D'],0,'Confira o conceito apresentado no enunciado.'];
+   return [text,opts,answer,String(q[3]||('A alternativa correta é “'+opts[answer]+'”, conforme o conceito cobrado.'))];
+  }
   subjects.forEach(g=>{
    let pool=[];
-   T.filter(t=>t.g===g).forEach(t=>(t.q||[]).forEach(q=>pool.push({g,topic:t.n,id:t.id,q:q.slice()})));
-   pool=shuffle(pool);
-   if(!pool.length)return;
-   for(let i=0;i<10;i++)dq.push({...pool[i%pool.length],q:pool[i%pool.length].q.slice()});
+   T.filter(t=>t.g===g).forEach(t=>(t.q||[]).forEach((q,qi)=>pool.push({g,topic:t.n,id:t.id,q:normalize(q),raw:q,qi})));
+   function difficulty(x){
+    let text=String(x.raw[0]||''),score=Math.min(text.length/85,3);
+    if(/[²³√%]/.test(text))score+=1;
+    if(/quantos|quanto custa|novo preço|desconto|aumento|probabilidade|velocidade|densidade|área|perímetro|volume|hipotenusa|inferir|consequência|por que|porque|conclui|compar|proporção|escala/i.test(text))score+=1;
+    if(/[÷×=]|\\d+\\s*[+*/−-]\\s*\\d+/.test(text))score+=.7;
+    score+=Math.min(x.qi*.12,.8);return score;
+   }
+   pool.sort((a,b)=>difficulty(a)-difficulty(b));
+   let unique=[],seen=new Set();
+   pool.forEach(x=>{let key=x.q[0].replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim().toLowerCase();if(!seen.has(key)){seen.add(key);unique.push(x)}});
+   let extra=(g==='Matemática'?M:g==='Português'?[].concat.apply([],PN).concat(XP):[].concat.apply([],CN).concat(XC));
+   extra.forEach((raw,i)=>{if(unique.length>=20)return;try{let q=typeof raw==='function'?raw():raw;if(q&&q.length>=3){let nq=normalize(q),key=nq[0].replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim().toLowerCase();if(!seen.has(key)){seen.add(key);unique.push({g,topic:'Prática geral',id:'extra_'+g,q:nq,raw:q,qi:i})}}}catch(e){}});
+   let chosen=[];
+   if(unique.length<=20)chosen=unique.slice();
+   else for(let i=0;i<20;i++){let at=Math.round(i*(unique.length-1)/19);chosen.push(unique[at])}
+   chosen.forEach((x,i)=>{x.level=i<6?'Fácil':i<14?'Intermediária':'Difícil';x.subjectIndex=i+1;dq.push(x)});
   });
-  // randomize the 30 questions while preserving 10 per subject
-  dq=subjects.flatMap(g=>shuffle(dq.filter(x=>x.g===g)));
   di=0;answers=Array(dq.length).fill(null);
  }
  function hideShell(hide){
@@ -1018,36 +1048,35 @@ var _ex9=expl;expl=function(){var a=AULA[cur.id],r=_ex9();return a?"<div class='
   document.body.classList.toggle('onboarding',hide);
  }
  function frame(content){hideShell(true);main.innerHTML='<div class="onb"><div class="onb-brand">ESTUDO <span>SENAI</span></div>'+content+'</div>';window.scrollTo(0,0)}
- function optionMarkup(item,i){let q=item.q; if(typeof q[1]==='number')return '<input class="onb-input" id="diag-answer" type="text" inputmode="decimal" placeholder="Digite sua resposta" value="'+(answers[i]&&answers[i].value!=null?String(answers[i].value).replace(/"/g,'&quot;'):'')+'">';
-  return '<div class="onb-options">'+q[1].map((o,j)=>'<label class="onb-option"><input type="radio" name="diag-answer" value="'+j+'" '+(answers[i]&&answers[i].value===j?'checked':'')+'><span>'+o+'</span></label>').join('')+'</div>';
+ function optionMarkup(item,i){let q=item.q; return '<div class="onb-options">'+q[1].map((o,j)=>'<label class="onb-option"><input type="radio" name="diag-answer" value="'+j+'" '+(answers[i]&&answers[i].value===j?'checked':'')+'><span>'+o+'</span></label>').join('')+'</div>';
  }
  function showDiagnostic(){
   let item=dq[di],subCount=dq.slice(0,di).filter(x=>x.g===item.g).length+1,subjectTotal=dq.filter(x=>x.g===item.g).length;
-  frame('<div class="onb-kicker">AVALIAÇÃO INICIAL · '+(di+1)+' DE '+dq.length+'</div><div class="onb-progress"><i style="width:'+((di+1)/dq.length*100)+'%"></i></div><div class="onb-meta">'+item.g+' <span>Questão '+subCount+' de '+subjectTotal+'</span></div><h1>Vamos descobrir seu ponto de partida.</h1><p class="onb-muted">Responda sem consultar material. Isso ajuda a montar um plano que faça sentido para você.</p><div class="onb-question"><div class="onb-qnum">QUESTÃO '+(di+1)+'</div><h2>'+item.q[0]+'</h2>'+optionMarkup(item,di)+'<div class="onb-error" id="diag-error"></div></div><div class="onb-actions">'+(di?'<button class="btn g" id="diag-back">← Voltar</button>':'<span></span>')+'<button class="btn" id="diag-next">'+(di===dq.length-1?'Ver resultado':'Próxima questão →')+'</button></div><p class="onb-foot">A avaliação tem 30 questões curtas: 10 por matéria.</p>');
+  frame('<div class="onb-kicker">AVALIAÇÃO INICIAL · '+(di+1)+' DE '+dq.length+'</div><div class="onb-progress"><i style="width:'+((di+1)/dq.length*100)+'%"></i></div><div class="onb-meta">'+item.g+' <span>Questão '+subCount+' de '+subjectTotal+'</span></div><h1>Vamos descobrir seu ponto de partida.</h1><p class="onb-muted">Responda sem consultar material. Isso ajuda a montar um plano que faça sentido para você.</p><div class="onb-question"><div class="onb-qnum">QUESTÃO '+(di+1)+'</div><h2>'+item.q[0]+'</h2>'+optionMarkup(item,di)+'<div class="onb-error" id="diag-error"></div></div><div class="onb-actions">'+(di?'<button class="btn g" id="diag-back">← Voltar</button>':'<span></span>')+'<button class="btn" id="diag-next">'+(di===dq.length-1?'Ver resultado':'Próxima questão →')+'</button></div><p class="onb-foot">A avaliação tem 60 questões: 20 por matéria, com dificuldade crescente.</p>');
   let next=document.getElementById('diag-next');next.onclick=()=>{
    let value;
-   if(typeof item.q[1]==='number'){let el=document.getElementById('diag-answer');value=el.value.trim();if(!value){document.getElementById('diag-error').textContent='Preencha sua resposta para continuar.';return}}
-   else {let el=document.querySelector('input[name="diag-answer"]:checked');if(!el){document.getElementById('diag-error').textContent='Escolha uma alternativa para continuar.';return}value=Number(el.value)}
+   {let el=document.querySelector('input[name="diag-answer"]:checked');if(!el){document.getElementById('diag-error').textContent='Escolha uma alternativa para continuar.';return}value=Number(el.value)}
    answers[di]={value};
    if(di<dq.length-1){di++;showDiagnostic()}else finishDiagnostic();
   };
   let back=document.getElementById('diag-back');if(back)back.onclick=()=>{di--;showDiagnostic()};
  }
- function correct(item,a){if(!a)return false;let q=item.q;if(typeof q[1]==='number'){let n=parseFloat(String(a.value).replace(',','.'));return Number.isFinite(n)&&Math.abs(n-q[1])<.01}return a.value===q[2]}
+ function correct(item,a){if(!a)return false;return a.value===item.q[2]}
  function finishDiagnostic(){
-  let result={date:new Date().toISOString(),subjects:{},topics:{},misses:[]};
+  let result={date:new Date().toISOString(),total:dq.length,subjects:{},topics:{},misses:[]};
   subjects.forEach(g=>{let list=dq.map((x,i)=>({...x,answer:answers[i]})).filter(x=>x.g===g);let ok=list.filter(x=>correct(x,x.answer)).length;result.subjects[g]={ok,total:list.length,pct:Math.round(ok/list.length*100)}});
-  dq.forEach((x,i)=>{let ok=correct(x,answers[i]);if(!result.topics[x.id])result.topics[x.id]={name:x.topic,g:x.g,ok:0,total:0};result.topics[x.id].total++;if(ok)result.topics[x.id].ok++;else result.misses.push({g:x.g,topic:x.topic,q:x.q[0]})});
+  dq.forEach((x,i)=>{let ok=correct(x,answers[i]);if(!result.topics[x.id])result.topics[x.id]={name:x.topic,g:x.g,ok:0,total:0};result.topics[x.id].total++;if(ok)result.topics[x.id].ok++;else result.misses.push({g:x.g,topic:x.topic,q:x.q[0],explanation:x.q[3]})});
   Object.keys(result.topics).forEach(k=>{let t=result.topics[k];t.pct=Math.round(t.ok/t.total*100)});
   sv('sn_diagnostic',JSON.stringify(result));sv('sn_diag_answers',JSON.stringify(dq.map((x,i)=>({g:x.g,topic:x.topic,q:x.q[0],correct:correct(x,answers[i])}))));
   showResults(result);
  }
  function showResults(r){
-  let cards=subjects.map(g=>{let x=r.subjects[g],level=x.pct>=80?'Você foi melhor':x.pct>=50?'Vale revisar':'Prioridade de estudo';return '<div class="onb-result"><div class="onb-result-top"><b>'+g+'</b><strong>'+x.pct+'%</strong></div><div class="onb-progress"><i style="width:'+x.pct+'%"></i></div><p>'+x.ok+' de '+x.total+' acertos · '+level+'</p></div>'}).join('');
-  let topics=Object.keys(r.topics).map(k=>r.topics[k]).sort((a,b)=>a.pct-b.pct);
+  let cards=subjects.map(g=>{let x=r.subjects[g]||{ok:0,total:20,pct:0},level=x.pct>=80?'Ponto forte':x.pct>=50?'Vale revisar':'Prioridade de estudo';return '<div class="onb-result"><div class="onb-result-top"><b>'+g+'</b><strong>'+x.pct+'%</strong></div><div class="onb-progress"><i style="width:'+x.pct+'%"></i></div><p>'+x.ok+' de '+x.total+' acertos · '+level+'</p></div>'}).join('');
+  let topics=Object.keys(r.topics||{}).map(k=>r.topics[k]).sort((a,b)=>a.pct-b.pct);
   let weakest=topics.filter(x=>x.pct<50).slice(0,5),middle=topics.filter(x=>x.pct>=50&&x.pct<80).slice(0,5),best=topics.filter(x=>x.pct>=80).slice(0,5);
   function topicList(title,list,empty){return '<div class="onb-topic-group"><b>'+title+'</b>'+(list.length?list.map(x=>'<div class="onb-topic"><span>'+x.name+' <small>· '+x.g+'</small></span><strong>'+x.pct+'%</strong></div>').join(''):'<p class="onb-muted">'+empty+'</p>')+'</div>'}
-  frame('<div class="onb-kicker">AVALIAÇÃO CONCLUÍDA</div><h1>Seu ponto de partida.</h1><p class="onb-muted">Isso não é uma nota definitiva. É um mapa para decidir onde seu tempo de estudo pode render mais.</p><div class="onb-results">'+cards+'</div><div class="onb-topic-box">'+topicList('Precisa de mais atenção',weakest,'Nenhum tópico ficou abaixo de 50%.')+topicList('Para revisar',middle,'Nenhum tópico ficou nesta faixa.')+topicList('Você já demonstra domínio',best,'Vamos descobrir seus pontos fortes ao longo dos estudos.')+'</div><button class="btn onb-full" id="to-schedule">Montar meu plano de estudo →</button><p class="onb-foot">O plano será calculado com seus resultados, a data da prova e sua disponibilidade.</p>');
+  let review=(r.misses||[]).slice(0,12).map(x=>'<div class="onb-topic"><span><b>'+x.g+' · '+x.topic+'</b><br>'+x.q+'<small style="display:block">'+(x.explanation||'Revise o conceito deste tópico e tente novamente.')+'</small></span></div>').join('');
+  frame('<div class="onb-kicker">AVALIAÇÃO CONCLUÍDA</div><h1>Seu ponto de partida.</h1><p class="onb-muted">Você respondeu '+(r.total||60)+' questões — 20 de cada matéria. O resultado identifica pontos fortes e dificuldades para orientar seu plano.</p><div class="onb-results">'+cards+'</div><div class="onb-topic-box">'+topicList('Precisa de mais atenção',weakest,'Nenhum tópico ficou abaixo de 50%.')+topicList('Para revisar',middle,'Nenhum tópico ficou nesta faixa.')+topicList('Você já demonstra domínio',best,'Vamos descobrir seus pontos fortes ao longo dos estudos.')+'</div><div class="onb-topic-box"><b>Questões para revisar</b>'+(review||'<p class="onb-muted">Nenhum erro registrado. Excelente!</p>')+'</div><button class="btn onb-full" id="to-schedule">Montar meu plano de estudo →</button><p class="onb-foot">O plano será calculado com seus resultados, a data da prova e sua disponibilidade.</p>');
   document.getElementById('to-schedule').onclick=showSchedule;
  }
  function showSchedule(){
