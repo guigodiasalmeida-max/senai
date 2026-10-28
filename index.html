@@ -80,6 +80,10 @@ main{max-width:900px}
 .tag{background:#fff;color:#000;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;padding:6px 10px;border-radius:99px}
 .question h2{font-size:21px;line-height:1.45;margin:14px 0 20px}
 .options{display:grid;gap:10px}.option{display:flex;gap:12px;border:1px solid var(--line);border-radius:14px;padding:14px;color:#ddd;cursor:pointer;transition:.15s}
+.dk{border-style:dashed!important;color:#bbb}.dk small{display:block;color:var(--mute);font-size:12px;margin-top:2px}
+.option.dk:has(input:checked){background:#222;color:#fff;border-color:#fff;border-style:solid!important}
+.q label.dk:has(input:checked),.onb-option.dk:has(input:checked){background:#222;color:#fff;border-style:solid!important}
+.nk{display:block;font-size:13px;color:var(--mute);margin:6px 0 2px}
 .option:hover{background:#111;border-color:#555}.option input{margin-top:5px;accent-color:#fff}.option:has(input:checked){background:#fff;color:#000;border-color:#fff}
 .navx{display:flex;justify-content:space-between;gap:12px;margin:16px 0}
 .score{font-size:clamp(64px,12vw,110px);font-weight:900;line-height:.9;letter-spacing:-.07em;margin:10px 0}
@@ -395,26 +399,26 @@ function act(){
  if(cur.math)s+="<div class='calc'><div class='d' id='cd'>0</div><div class='k' id='ck'></div></div>";
  s+=cur.q.map(function(q,i){
   var c="<div class='card q' id='q"+i+"'><p class='t'>"+(i+1)+". "+q[0]+"</p>";
-  if(typeof q[1]=="number")c+="<input type='text' inputmode='decimal' id='i"+i+"' placeholder='Sua resposta'>";
-  else c+=q[1].map(function(o,j){return"<label><input type='radio' name='r"+i+"' value='"+j+"'> "+o+"</label>"}).join("");
+  if(typeof q[1]=="number")c+="<input type='text' inputmode='decimal' id='i"+i+"' placeholder='Sua resposta'><label class='nk'><input type='checkbox' id='k"+i+"'> Não sei resolver (prefiro não chutar)</label>";
+  else c+=q[1].map(function(o,j){return"<label><input type='radio' name='r"+i+"' value='"+j+"'> "+o+"</label>"}).join("")+"<label class='dk'><input type='radio' name='r"+i+"' value='-1'> Não sei essa questão<small>Prefiro não chutar</small></label>";
   return c+"<div class='fb' id='f"+i+"'></div></div>"}).join("");
  return s+"<div class='score' id='sc'></div><button class='btn' onclick='fix()'>Corrigir</button> <button class='btn g' onclick='redo()'>Refazer</button>";
 }
 function fix(){
- var ok=0;
+ var ok=0,nk=0;
  cur.q.forEach(function(q,i){
-  var box=document.getElementById("q"+i),f=document.getElementById("f"+i),r,right,msg;
+  var box=document.getElementById("q"+i),f=document.getElementById("f"+i),r,right,msg,dk=false;
   if(typeof q[1]=="number"){
    var v=document.getElementById("i"+i).value.replace(",",".").trim();
-   r=v!==""&&Math.abs(parseFloat(v)-q[1])<0.01;right=String(q[1]).replace(".",",");msg="Resposta certa: "+right;
+   dk=!!document.getElementById("k"+i).checked;r=!dk&&v!==""&&Math.abs(parseFloat(v)-q[1])<0.01;right=String(q[1]).replace(".",",");msg="Resposta certa: "+right;
   }else{
    var s=document.querySelector("input[name=r"+i+"]:checked");
-   r=s&&+s.value==q[2];msg="Resposta certa: "+q[1][q[2]]+". "+q[3];
+   dk=!!s&&+s.value==-1;r=s&&+s.value==q[2];msg="Resposta certa: "+q[1][q[2]]+". "+q[3];
   }
-  if(r)ok++;
-  box.className="card q "+(r?"ok":"no");f.className="fb "+(r?"ok":"no");f.textContent=(r?"✔ Acertou! ":"✘ Errou. ")+(r?"":msg);
+  if(r)ok++;if(dk)nk++;
+  box.className="card q "+(r?"ok":"no");f.className="fb "+(r?"ok":"no");f.textContent=(r?"✔ Acertou! ":dk?"❓ Você marcou que não sabe. Sem problema: veja como é e tente de novo. ":"✘ Errou. ")+(r?"":msg);
  });
- var n=cur.q.length;document.getElementById("sc").textContent="Você acertou "+ok+" de "+n+(ok==n?" 🎉":"");
+ var n=cur.q.length;document.getElementById("sc").textContent="Você acertou "+ok+" de "+n+(ok==n?" 🎉":"")+(nk?" · Não sei: "+nk+" (estude a explicação e refaça)":"");
 }
 var ex="";
 function calcInit(){
@@ -493,27 +497,27 @@ function view(){
  var s=S[cur.k];
  if(!E)E={i:0,st:0,a:s.q.map(function(){return null})};
  if(E.st==1)ques(s);else if(E.st==2)resu(s);else{
-  main.innerHTML="<section class='hero'><div class='eb'>"+s.s+"</div><h1>"+s.n.toUpperCase()+"</h1><p>Prova com "+s.q.length+" questões de Português, Matemática e Ciências. Escolha uma alternativa por questão e veja seu desempenho no final.</p><div class='stats'><div class='stat'><b>"+s.q.length+"</b>questões</div><div class='stat'><b>3</b>matérias</div><div class='stat'><b>4</b>alternativas</div><div class='stat'><b>1</b>diagnóstico</div></div></section><div class='notice'>Simulado autoral de preparação, não é a prova oficial do SENAI. Você pode voltar e mudar respostas antes de finalizar. Nas questões de Matemática há uma mini calculadora.</div><div class='navx'><button class='btn g' onclick='goHome()'>Início</button><button class='btn' id='go'>Começar prova</button></div>";
+  main.innerHTML="<section class='hero'><div class='eb'>"+s.s+"</div><h1>"+s.n.toUpperCase()+"</h1><p>Prova com "+s.q.length+" questões de Português, Matemática e Ciências. Escolha uma alternativa por questão e veja seu desempenho no final.</p><div class='stats'><div class='stat'><b>"+s.q.length+"</b>questões</div><div class='stat'><b>3</b>matérias</div><div class='stat'><b>4</b>alternativas + Não sei</div><div class='stat'><b>1</b>diagnóstico</div></div></section><div class='notice'>Simulado autoral de preparação, não é a prova oficial do SENAI. Não chute: se você não sabe, marque “Não sei essa questão”. Assim o resultado mostra o que você realmente domina e o que precisa estudar. Você pode voltar e mudar respostas antes de finalizar. Nas questões de Matemática há uma mini calculadora.</div><div class='navx'><button class='btn g' onclick='goHome()'>Início</button><button class='btn' id='go'>Começar prova</button></div>";
   document.getElementById("go").onclick=function(){E.st=1;render()}}
  window.scrollTo(0,0)}
 function prog(n){var d=E.a.filter(function(x){return x!==null}).length;document.getElementById("bar").style.width=d/n*100+"%";document.getElementById("pp").textContent=Math.round(d/n*100)+"%"}
 function ques(s){
  var q=s.q[E.i],n=s.q.length,d=E.a.filter(function(x){return x!==null}).length;
- main.innerHTML="<div class='exh'><div><div class='eb'>"+s.n+"</div><b>Questão "+(E.i+1)+" de "+n+"</b></div><div class='pw'><div class='pm'><span>Respondidas</span><span id='pp'>"+Math.round(d/n*100)+"%</span></div><div class='pg'><div class='bar' id='bar' style='width:"+d/n*100+"%'></div></div></div></div><article class='question'><div class='qh'><span class='tag'>"+q[0]+"</span><span class='eb'>"+(E.i+1)+"/"+n+"</span></div><h2>"+q[1]+"</h2><div class='options'>"+q[2].map(function(o,j){return "<label class='option'><input type='radio' name='o' value='"+j+"'"+(E.a[E.i]===j?" checked":"")+"><span><b>"+"ABCD".charAt(j)+".</b> "+o+"</span></label>"}).join("")+"</div>"+(q[0]=="Matemática"?"<div class='calc' style='margin:16px 0 0'><div class='d' id='cd'>0</div><div class='k' id='ck'></div></div>":"")+"</article><div class='navx'><button class='btn g' id='pv'"+(E.i?"":" disabled")+">Anterior</button><button class='btn' id='nx'>"+(E.i==n-1?"Finalizar prova":"Próxima")+"</button></div><div class='qn'>"+s.q.map(function(_,i){return "<button class='"+(E.a[i]!==null?"d ":"")+(i==E.i?"c":"")+"' onclick='E.i="+i+";render()'>"+(i+1)+"</button>"}).join("")+"</div>";
+ main.innerHTML="<div class='exh'><div><div class='eb'>"+s.n+"</div><b>Questão "+(E.i+1)+" de "+n+"</b></div><div class='pw'><div class='pm'><span>Respondidas</span><span id='pp'>"+Math.round(d/n*100)+"%</span></div><div class='pg'><div class='bar' id='bar' style='width:"+d/n*100+"%'></div></div></div></div><article class='question'><div class='qh'><span class='tag'>"+q[0]+"</span><span class='eb'>"+(E.i+1)+"/"+n+"</span></div><h2>"+q[1]+"</h2><div class='options'>"+q[2].map(function(o,j){return "<label class='option'><input type='radio' name='o' value='"+j+"'"+(E.a[E.i]===j?" checked":"")+"><span><b>"+"ABCD".charAt(j)+".</b> "+o+"</span></label>"}).join("")+"<label class='option dk'><input type='radio' name='o' value='-1'"+(E.a[E.i]===-1?" checked":"")+"><span><b>?</b> Não sei essa questão<small>Prefiro não chutar. Assim o site sabe o que precisa te ensinar.</small></span></label></div>"+(q[0]=="Matemática"?"<div class='calc' style='margin:16px 0 0'><div class='d' id='cd'>0</div><div class='k' id='ck'></div></div>":"")+"</article><div class='navx'><button class='btn g' id='pv'"+(E.i?"":" disabled")+">Anterior</button><button class='btn' id='nx'>"+(E.i==n-1?"Finalizar prova":"Próxima")+"</button></div><div class='qn'>"+s.q.map(function(_,i){return "<button class='"+(E.a[i]!==null?"d ":"")+(i==E.i?"c":"")+"' onclick='E.i="+i+";render()'>"+(i+1)+"</button>"}).join("")+"</div>";
  main.querySelectorAll("input").forEach(function(x){x.onchange=function(){E.a[E.i]=+x.value;prog(n)}});
  document.getElementById("pv").onclick=function(){E.i--;render()};
- document.getElementById("nx").onclick=function(){if(E.a[E.i]===null){alert("Escolha uma alternativa antes de continuar.");return}if(E.i<n-1){E.i++;render()}else fin()};
+ document.getElementById("nx").onclick=function(){if(E.a[E.i]===null){alert("Escolha uma alternativa ou marque \"Não sei\" antes de continuar.");return}if(E.i<n-1){E.i++;render()}else fin()};
  if(q[0]=="Matemática")calcInit();
  window.scrollTo(0,0)}
 function fin(){var b=E.a.filter(function(x){return x===null}).length;if(b&&!confirm("Você deixou "+b+" questão(ões) em branco. Corrigir mesmo assim?"))return;E.st=2;render()}
 function resu(s){
- var by={},ok=0,bl=0,n=s.q.length;
- s.q.forEach(function(q,i){var a=by[q[0]]=by[q[0]]||{o:0,t:0};a.t++;if(E.a[i]===null)bl++;if(E.a[i]===q[3]){ok++;a.o++}});
+ var by={},ok=0,bl=0,dk=0,n=s.q.length;
+ s.q.forEach(function(q,i){var a=by[q[0]]=by[q[0]]||{o:0,t:0};a.t++;if(E.a[i]===null)bl++;if(E.a[i]===-1)dk++;if(E.a[i]===q[3]){ok++;a.o++}});
  var p=Math.round(ok/n*100);
  var ar=Object.keys(by).map(function(k){return [k,by[k].o,by[k].t,Math.round(by[k].o/by[k].t*100)]});
  var sr=ar.slice().sort(function(a,b){return b[3]-a[3]}),w=sr[sr.length-1];
- var rv=s.q.map(function(q,i){if(E.a[i]===q[3])return "";return "<div class='rv'><b>Questão "+(i+1)+" · "+q[0]+"</b><br>Sua resposta: "+(E.a[i]===null?"em branco":"ABCD".charAt(E.a[i])+". "+q[2][E.a[i]])+"<br>Correta: "+"ABCD".charAt(q[3])+". "+q[2][q[3]]+"<br><i>"+q[4]+"</i></div>"}).join("");
- main.innerHTML="<section class='hero'><div class='eb'>Resultado · "+s.n+"</div><div class='score'>"+p+"%</div><p>Você acertou "+ok+" de "+n+" questões"+(bl?" e deixou "+bl+" em branco":"")+". "+(p>=80?"Excelente desempenho!":p>=60?"Bom resultado, revise os erros para melhorar.":"Use os erros como guia de estudo e tente de novo.")+"</p></section><div class='ag'><div class='card cc'><canvas id='cv' width='180' height='180'></canvas><div style='flex:1;min-width:190px'><h3>Desempenho por área</h3>"+ar.map(function(a){return "<div class='ar'><div class='al'><span>"+a[0]+"</span><span>"+a[1]+"/"+a[2]+" · "+a[3]+"%</span></div><div class='mn'><i style='width:"+a[3]+"%'></i></div></div>"}).join("")+"</div></div><div class='card'><h3>Diagnóstico</h3><div class='dg'><b>🏆 Melhor desempenho</b>"+sr[0][0]+" com "+sr[0][3]+"% de acerto.</div><div class='dg'><b>🎯 Prioridade de estudo</b>"+w[0]+" com "+w[3]+"%. Revise esse conteúdo primeiro.</div><div class='dg'><b>📈 Próximo passo</b>Leia as explicações abaixo e refaça a prova para ver sua evolução.</div></div></div><div class='card'><h3>Questões para revisar</h3>"+(rv||"<p>Parabéns! Você acertou tudo. 🎉</p>")+"</div><div class='navx'><button class='btn g' onclick='goHome()'>Início</button><button class='btn' onclick='pick("+cur.k+")'>Refazer prova</button></div>";
+ var rv=s.q.map(function(q,i){if(E.a[i]===q[3])return "";return "<div class='rv'><b>Questão "+(i+1)+" · "+q[0]+"</b><br>Sua resposta: "+(E.a[i]===null?"em branco":E.a[i]===-1?"Não sei (você não chutou)":"ABCD".charAt(E.a[i])+". "+q[2][E.a[i]])+"<br>Correta: "+"ABCD".charAt(q[3])+". "+q[2][q[3]]+"<br><i>"+q[4]+"</i></div>"}).join("");
+ main.innerHTML="<section class='hero'><div class='eb'>Resultado · "+s.n+"</div><div class='score'>"+p+"%</div><p>Você acertou "+ok+" de "+n+" questões"+(bl?" e deixou "+bl+" em branco":"")+(dk?" e marcou “Não sei” em "+dk:"")+". "+(p>=80?"Excelente desempenho!":p>=60?"Bom resultado, revise os erros para melhorar.":"Use os erros como guia de estudo e tente de novo.")+"</p></section><div class='ag'><div class='card cc'><canvas id='cv' width='180' height='180'></canvas><div style='flex:1;min-width:190px'><h3>Desempenho por área</h3>"+ar.map(function(a){return "<div class='ar'><div class='al'><span>"+a[0]+"</span><span>"+a[1]+"/"+a[2]+" · "+a[3]+"%</span></div><div class='mn'><i style='width:"+a[3]+"%'></i></div></div>"}).join("")+"</div></div><div class='card'><h3>Diagnóstico</h3><div class='dg'><b>🏆 Melhor desempenho</b>"+sr[0][0]+" com "+sr[0][3]+"% de acerto.</div><div class='dg'><b>🎯 Prioridade de estudo</b>"+w[0]+" com "+w[3]+"%. Revise esse conteúdo primeiro.</div><div class='dg'><b>📈 Próximo passo</b>Leia as explicações abaixo e refaça a prova para ver sua evolução.</div>"+(dk?"<div class='dg'><b>❓ Você disse que não sabe</b>Marcou “Não sei” em "+dk+" questão(ões). Isso é bom: são exatamente os assuntos para estudar primeiro. Elas já foram para o seu caderno de erros.</div>":"")+"</div></div><div class='card'><h3>Questões para revisar</h3>"+(rv||"<p>Parabéns! Você acertou tudo. 🎉</p>")+"</div><div class='navx'><button class='btn g' onclick='goHome()'>Início</button><button class='btn' onclick='pick("+cur.k+")'>Refazer prova</button></div>";
  var c=document.getElementById("cv").getContext("2d");c.lineWidth=16;c.lineCap="round";c.strokeStyle="#222";c.beginPath();c.arc(90,90,70,0,7);c.stroke();
  if(p>0){c.strokeStyle="#fff";c.beginPath();c.arc(90,90,70,-1.5708,-1.5708+p/100*6.2832);c.stroke()}
  c.fillStyle="#fff";c.font="700 32px system-ui";c.textAlign="center";c.fillText(p+"%",90,101);
@@ -789,10 +793,10 @@ var RS=null;
 function RV(){if(RS&&RS.i<RS.l.length)return RQ();var L=ER(),du=L.filter(function(x){return x.d<=Date.now()});
  main.innerHTML="<h2>Caderno de erros</h2><div style='color:var(--mute)'>Questões que você errou voltam em 1, 3, 7, 14 e 30 dias, até você dominar.</div><br><div class='stats' style='margin:0 0 16px'><div class='stat'><b>"+L.length+"</b>no caderno</div><div class='stat'><b>"+du.length+"</b>para revisar hoje</div></div>"+(du.length?"<button class='btn' onclick='RG()'>Revisar agora ("+Math.min(du.length,15)+")</button>":"<div class='card'><p>"+(L.length?"Nada para revisar agora. Volte amanhã!":"Vazio por enquanto. Os erros dos simulados e das atividades entram aqui sozinhos.")+"</p></div>");window.scrollTo(0,0)}
 function RG(){RS={l:ER().filter(function(x){return x.d<=Date.now()}).slice(0,15),i:0,r:0};render()}
-function RQ(){var x=RS.l[RS.i];main.innerHTML="<h2>Revisão "+(RS.i+1)+"/"+RS.l.length+"</h2><div class='card q'><p class='t'><small style='color:var(--mute)'>"+x.a+"</small><br>"+x.t+"</p>"+(x.o?x.o.map(function(o,j){return "<label><input type='radio' name='rv' value='"+j+"'> "+o+"</label>"}).join(""):"<input type='text' inputmode='decimal' id='rvt' placeholder='Sua resposta'>")+"<div class='fb' id='rvf'></div></div><button class='btn' id='rvb' onclick='RA()'>Responder</button>";window.scrollTo(0,0)}
-function RA(){var x=RS.l[RS.i],ok,f=document.getElementById("rvf"),b=document.getElementById("rvb");
- if(x.o){var q=document.querySelector("input[name=rv]:checked");if(!q)return;ok=+q.value==x.c}else{var v=document.getElementById("rvt").value.replace(",",".").trim();ok=v!==""&&Math.abs(parseFloat(v)-x.c)<.01}
- f.className="fb "+(ok?"ok":"no");f.textContent=(ok?"✔ Acertou! ":"✘ Errou. Certa: "+(x.o?x.o[x.c]:String(x.c).replace(".",","))+". ")+(x.e||"");
+function RQ(){var x=RS.l[RS.i];main.innerHTML="<h2>Revisão "+(RS.i+1)+"/"+RS.l.length+"</h2><div class='card q'><p class='t'><small style='color:var(--mute)'>"+x.a+"</small><br>"+x.t+"</p>"+(x.o?x.o.map(function(o,j){return "<label><input type='radio' name='rv' value='"+j+"'> "+o+"</label>"}).join("")+"<label class='dk'><input type='radio' name='rv' value='-1'> Não sei essa questão<small>Prefiro não chutar</small></label>":"<input type='text' inputmode='decimal' id='rvt' placeholder='Sua resposta'><label class='nk'><input type='checkbox' id='rvk'> Não sei resolver (prefiro não chutar)</label>")+"<div class='fb' id='rvf'></div></div><button class='btn' id='rvb' onclick='RA()'>Responder</button>";window.scrollTo(0,0)}
+function RA(){var x=RS.l[RS.i],ok,dk=false,f=document.getElementById("rvf"),b=document.getElementById("rvb");
+ if(x.o){var q=document.querySelector("input[name=rv]:checked");if(!q)return;dk=+q.value==-1;ok=+q.value==x.c}else{var v=document.getElementById("rvt").value.replace(",",".").trim();dk=!!document.getElementById("rvk").checked;ok=!dk&&v!==""&&Math.abs(parseFloat(v)-x.c)<.01}
+ f.className="fb "+(ok?"ok":"no");f.textContent=(ok?"✔ Acertou! ":(dk?"❓ Você marcou que não sabe. Certa: ":"✘ Errou. Certa: ")+(x.o?x.o[x.c]:String(x.c).replace(".",","))+". ")+(x.e||"");
  var L=ER(),y=L.filter(function(z){return z.t==x.t})[0];if(y){adv(L,y,ok,1);svE(L)}if(ok)RS.r++;
  b.textContent=RS.i<RS.l.length-1?"Próxima":"Finalizar";b.onclick=function(){RS.i++;if(RS.i>=RS.l.length){var r=RS.r,n=RS.l.length;RS=null;main.innerHTML="<h2>Revisão concluída</h2><div class='card'><p>Você acertou <b>"+r+" de "+n+"</b>. O que errou volta amanhã.</p><button class='btn' onclick='render()'>Voltar ao caderno</button></div>";return}render()}}
 var _HM=HM;HM=function(){_HM();var dt=ld("sn_date"),du=ER().filter(function(x){return x.d<=Date.now()}).length,left=dt?DF(TD(),dt):-1,t=left>=0?TK(0):null;
@@ -800,7 +804,7 @@ var _HM=HM;HM=function(){_HM();var dt=ld("sn_date"),du=ER().filter(function(x){r
 var _v=view,_r=resu;
 view=function(){if(cur.home)return HM();if(cur.cad)return CAD();if(cur.mat)return MAT();if(cur.prog)return PG();if(cur.plan)return PL();if(cur.rev)return RV();var r=_v(),nv=main.querySelector(".navx");if(cur.ex&&E&&!E.st&&nv)nv.insertAdjacentHTML("beforebegin","<div class='card'><h3>Tempo da prova</h3><p>Minutos: <input type='text' id='tt' value='"+TL()+"' style='width:80px;display:inline-block' onchange=\"sv('sn_time',this.value||'0')\"> (0 = sem limite)</p><small style='color:var(--mute)'>Confira no edital o tempo real da sua prova.</small></div>");return r};
 resu=function(s){
- if(!E.saved){E.saved=1;E.sec=E.t0?Math.round((Date.now()-E.t0)/1000):0;s.q.forEach(function(q,i){addE(q[0],q[1],q[2],q[3],q[4],E.a[i]===q[3])});var by={},ok=0,n=s.q.length;s.q.forEach(function(q,i){var a=by[q[0]]=by[q[0]]||[0,0];a[1]++;if(E.a[i]===q[3]){ok++;a[0]++}});
+ if(!E.saved){E.saved=1;E.sec=E.t0?Math.round((Date.now()-E.t0)/1000):0;s.q.forEach(function(q,i){addE(q[0],q[1],q[2],q[3],q[4],E.a[i]===q[3])});var by={},ok=0,n=s.q.length;s.q.forEach(function(q,i){var a=by[q[0]]=by[q[0]]||[0,0];a[1]++;if(E.a[i]===q[3]){ok++;a[0]++}else if(E.a[i]===-1)a[2]=(a[2]||0)+1});
   var h=HS();E.prev=h.filter(function(x){return x.k==cur.k}).pop();E.best=h.reduce(function(m,x){return Math.max(m,x.p)},-1);E.p=Math.round(ok/n*100);h.push({k:cur.k,t:Date.now(),p:E.p,a:by,s:E.sec});sv("sn_hist",JSON.stringify(h.slice(-60)))}
  _r(s);
  var pv=E.prev,d=pv?E.p-pv.p:0,box="<div class='card'><h3>Comparação com suas provas</h3><p>"+(pv?"Vs. sua última tentativa neste simulado: <b>"+dl(d)+" pontos</b> ("+pv.p+"% → "+E.p+"%).":"Primeira tentativa neste simulado. Faça de novo para ver sua evolução.")+"</p>"+(E.best>=0?"<p>"+(E.p>E.best?"Esta é a <b>sua melhor nota</b> entre todas as provas! 🏆":"Sua melhor nota até agora: <b>"+E.best+"%</b>.")+"</p>":"")+(E.sec?"<p>⏱ Tempo: <b>"+FT(E.sec)+"</b>"+(TL()&&E.sec>TL()*60?" (passou do limite)":"")+"</p>":"")+"<button class='btn g' onclick='cur={prog:1};render()'>Ver meu progresso completo</button> <button class='btn' onclick='cur={rev:1};render()'>Revisar meus erros</button></div>";
@@ -948,9 +952,9 @@ redo=function(){if(cur.lv)cur.q=lvQ(cur.lv);if(cur.prova)newProva();render()};
 var _o7=openT;openT=function(i){var t=T[i];t.lv=0;if(t.q0)t.q=t.q0;_o7(i)};
 /* correção: explica acertos e erros; guarda desempenho por tópico */
 var _f7=fix;fix=function(){_f7();if(cur.prova)return;var ts=TSg(),r=ts[cur.id]||[0,0],pp=(cur.e.filter(function(c){return c[0]=="Passo a passo resolvido"})[0]||[])[1];
- cur.q.forEach(function(q,i){var b=document.getElementById("q"+i),f=document.getElementById("f"+i),ok=b.className.indexOf("no")<0;r[1]++;if(ok)r[0]++;
-  if(typeof q[1]=="number")f.innerHTML=(ok?"✔ Certo. ":"✘ Errado. Resposta certa: "+String(q[1]).replace(".",",")+". ")+(pp?"<details><summary style='cursor:pointer'>Ver o passo a passo</summary><div class='ex'>"+pp+"</div></details>":"");
-  else f.innerHTML=(ok?"✔ Certo. ":"✘ Errado. ")+"Resposta certa: "+q[1][q[2]]+". <b>Por quê:</b> "+q[3]});
+ cur.q.forEach(function(q,i){var b=document.getElementById("q"+i),f=document.getElementById("f"+i),ok=b.className.indexOf("no")<0,dk=(typeof q[1]=="number")?!!(document.getElementById("k"+i)||{}).checked:(function(){var c=document.querySelector("input[name=r"+i+"]:checked");return !!c&&+c.value==-1})();r[1]++;if(ok)r[0]++;
+  if(typeof q[1]=="number")f.innerHTML=(ok?"✔ Certo. ":(dk?"❓ Você marcou que não sabe. ":"✘ Errado. ")+"Resposta certa: "+String(q[1]).replace(".",",")+". ")+(pp?"<details><summary style='cursor:pointer'>Ver o passo a passo</summary><div class='ex'>"+pp+"</div></details>":"");
+  else f.innerHTML=(ok?"✔ Certo. ":dk?"❓ Você marcou que não sabe. ":"✘ Errado. ")+"Resposta certa: "+q[1][q[2]]+". <b>Por quê:</b> "+q[3]});
  if(r[1]>30){r[0]=Math.round(r[0]/2);r[1]=15}ts[cur.id]=r;sv(TSK,JSON.stringify(ts))};
 /* progresso: dominados x dificuldades; amigos fica recolhido no fim */
 var _P7=PG;PG=function(){_P7();var ts=TSg(),er=ER(),ok=[],hd=[];
@@ -1056,14 +1060,14 @@ var _ex9=expl;expl=function(){var a=AULA[cur.id],r=_ex9();return a?"<div class='
   document.body.classList.toggle('onboarding',hide);
  }
  function frame(content){hideShell(true);main.innerHTML='<div class="onb"><div class="onb-brand">ESTUDO <span>SENAI</span></div>'+content+'</div>';window.scrollTo(0,0)}
- function optionMarkup(item,i){let q=item.q; return '<div class="onb-options">'+q[1].map((o,j)=>'<label class="onb-option"><input type="radio" name="diag-answer" value="'+j+'" '+(answers[i]&&answers[i].value===j?'checked':'')+'><span>'+o+'</span></label>').join('')+'</div>';
+ function optionMarkup(item,i){let q=item.q; return '<div class="onb-options">'+q[1].map((o,j)=>'<label class="onb-option"><input type="radio" name="diag-answer" value="'+j+'" '+(answers[i]&&answers[i].value===j?'checked':'')+'><span>'+o+'</span></label>').join('')+'<label class="onb-option dk"><input type="radio" name="diag-answer" value="-1" '+(answers[i]&&answers[i].value===-1?'checked':'')+'><span>Não sei essa questão<small>Prefiro não chutar</small></span></label></div>';
  }
  function showDiagnostic(){
   let item=dq[di],subCount=dq.slice(0,di).filter(x=>x.g===item.g).length+1,subjectTotal=dq.filter(x=>x.g===item.g).length;
-  frame('<div class="onb-kicker">AVALIAÇÃO INICIAL · '+(di+1)+' DE '+dq.length+'</div><div class="onb-progress"><i style="width:'+((di+1)/dq.length*100)+'%"></i></div><div class="onb-meta">'+item.g+' <span>Questão '+subCount+' de '+subjectTotal+'</span></div><h1>Vamos descobrir seu ponto de partida.</h1><p class="onb-muted">Responda sem consultar material. Isso ajuda a montar um plano que faça sentido para você.</p><div class="onb-question"><div class="onb-qnum">QUESTÃO '+(di+1)+'</div><h2>'+item.q[0]+'</h2>'+optionMarkup(item,di)+'<div class="onb-error" id="diag-error"></div></div><div class="onb-actions">'+(di?'<button class="btn g" id="diag-back">← Voltar</button>':'<span></span>')+'<button class="btn" id="diag-next">'+(di===dq.length-1?'Ver resultado':'Próxima questão →')+'</button></div><p class="onb-foot">A avaliação tem 60 questões: 20 por matéria, com dificuldade crescente.</p>');
+  frame('<div class="onb-kicker">AVALIAÇÃO INICIAL · '+(di+1)+' DE '+dq.length+'</div><div class="onb-progress"><i style="width:'+((di+1)/dq.length*100)+'%"></i></div><div class="onb-meta">'+item.g+' <span>Questão '+subCount+' de '+subjectTotal+'</span></div><h1>Vamos descobrir seu ponto de partida.</h1><p class="onb-muted">Responda sem consultar material. Não chute: se você não sabe, marque “Não sei essa questão”. Um chute que acerta esconde o que você precisa estudar e atrapalha o seu plano.</p><div class="onb-question"><div class="onb-qnum">QUESTÃO '+(di+1)+'</div><h2>'+item.q[0]+'</h2>'+optionMarkup(item,di)+'<div class="onb-error" id="diag-error"></div></div><div class="onb-actions">'+(di?'<button class="btn g" id="diag-back">← Voltar</button>':'<span></span>')+'<button class="btn" id="diag-next">'+(di===dq.length-1?'Ver resultado':'Próxima questão →')+'</button></div><p class="onb-foot">A avaliação tem 60 questões: 20 por matéria, com dificuldade crescente.</p>');
   let next=document.getElementById('diag-next');next.onclick=()=>{
    let value;
-   {let el=document.querySelector('input[name="diag-answer"]:checked');if(!el){document.getElementById('diag-error').textContent='Escolha uma alternativa para continuar.';return}value=Number(el.value)}
+   {let el=document.querySelector('input[name="diag-answer"]:checked');if(!el){document.getElementById('diag-error').textContent='Escolha uma alternativa ou marque “Não sei” para continuar.';return}value=Number(el.value)}
    answers[di]={value};
    if(di<dq.length-1){di++;showDiagnostic()}else finishDiagnostic();
   };
@@ -1071,9 +1075,9 @@ var _ex9=expl;expl=function(){var a=AULA[cur.id],r=_ex9();return a?"<div class='
  }
  function correct(item,a){if(!a)return false;return a.value===item.q[2]}
  function finishDiagnostic(){
-  let result={date:new Date().toISOString(),total:dq.length,subjects:{},topics:{},misses:[]};
+  let result={date:new Date().toISOString(),total:dq.length,dk:0,subjects:{},topics:{},misses:[]};
   subjects.forEach(g=>{let list=dq.map((x,i)=>({...x,answer:answers[i]})).filter(x=>x.g===g);let ok=list.filter(x=>correct(x,x.answer)).length;result.subjects[g]={ok,total:list.length,pct:Math.round(ok/list.length*100)}});
-  dq.forEach((x,i)=>{let ok=correct(x,answers[i]);if(!result.topics[x.id])result.topics[x.id]={name:x.topic,g:x.g,ok:0,total:0};result.topics[x.id].total++;if(ok)result.topics[x.id].ok++;else result.misses.push({g:x.g,topic:x.topic,q:x.q[0],explanation:x.q[3]})});
+  dq.forEach((x,i)=>{let ok=correct(x,answers[i]);if(!result.topics[x.id])result.topics[x.id]={name:x.topic,g:x.g,ok:0,total:0};result.topics[x.id].total++;if(ok)result.topics[x.id].ok++;else{let d=!!(answers[i]&&answers[i].value===-1);if(d){result.dk++;result.topics[x.id].dk=(result.topics[x.id].dk||0)+1}result.misses.push({g:x.g,topic:x.topic,q:x.q[0],explanation:x.q[3],dk:d})}});
   Object.keys(result.topics).forEach(k=>{let t=result.topics[k];t.pct=Math.round(t.ok/t.total*100)});
   sv('sn_diagnostic',JSON.stringify(result));sv('sn_diag_answers',JSON.stringify(dq.map((x,i)=>({g:x.g,topic:x.topic,q:x.q[0],correct:correct(x,answers[i])}))));
   showResults(result);
@@ -1083,8 +1087,8 @@ var _ex9=expl;expl=function(){var a=AULA[cur.id],r=_ex9();return a?"<div class='
   let topics=Object.keys(r.topics||{}).map(k=>r.topics[k]).sort((a,b)=>a.pct-b.pct);
   let weakest=topics.filter(x=>x.pct<50).slice(0,5),middle=topics.filter(x=>x.pct>=50&&x.pct<80).slice(0,5),best=topics.filter(x=>x.pct>=80).slice(0,5);
   function topicList(title,list,empty){return '<div class="onb-topic-group"><b>'+title+'</b>'+(list.length?list.map(x=>'<div class="onb-topic"><span>'+x.name+' <small>· '+x.g+'</small></span><strong>'+x.pct+'%</strong></div>').join(''):'<p class="onb-muted">'+empty+'</p>')+'</div>'}
-  let review=(r.misses||[]).slice(0,12).map(x=>'<div class="onb-topic"><span><b>'+x.g+' · '+x.topic+'</b><br>'+x.q+'<small style="display:block">'+(x.explanation||'Revise o conceito deste tópico e tente novamente.')+'</small></span></div>').join('');
-  frame('<div class="onb-kicker">AVALIAÇÃO CONCLUÍDA</div><h1>Seu ponto de partida.</h1><p class="onb-muted">Você respondeu '+(r.total||60)+' questões — 20 de cada matéria. O resultado identifica pontos fortes e dificuldades para orientar seu plano.</p><div class="onb-results">'+cards+'</div><div class="onb-topic-box">'+topicList('Precisa de mais atenção',weakest,'Nenhum tópico ficou abaixo de 50%.')+topicList('Para revisar',middle,'Nenhum tópico ficou nesta faixa.')+topicList('Você já demonstra domínio',best,'Vamos descobrir seus pontos fortes ao longo dos estudos.')+'</div><div class="onb-topic-box"><b>Questões para revisar</b>'+(review||'<p class="onb-muted">Nenhum erro registrado. Excelente!</p>')+'</div><button class="btn onb-full" id="to-schedule">Montar meu plano de estudo →</button><p class="onb-foot">O plano será calculado com seus resultados, a data da prova e sua disponibilidade.</p>');
+  let review=(r.misses||[]).slice(0,12).map(x=>'<div class="onb-topic"><span><b>'+x.g+' · '+x.topic+(x.dk?' · você marcou “Não sei”':'')+'</b><br>'+x.q+'<small style="display:block">'+(x.explanation||'Revise o conceito deste tópico e tente novamente.')+'</small></span></div>').join('');
+  frame('<div class="onb-kicker">AVALIAÇÃO CONCLUÍDA</div><h1>Seu ponto de partida.</h1><p class="onb-muted">Você respondeu '+(r.total||60)+' questões — 20 de cada matéria. O resultado identifica pontos fortes e dificuldades para orientar seu plano.'+(r.dk?' Você marcou “Não sei” em <b>'+r.dk+'</b> questões: são os assuntos que o plano vai priorizar, sem chute.':'')+'</p><div class="onb-results">'+cards+'</div><div class="onb-topic-box">'+topicList('Precisa de mais atenção',weakest,'Nenhum tópico ficou abaixo de 50%.')+topicList('Para revisar',middle,'Nenhum tópico ficou nesta faixa.')+topicList('Você já demonstra domínio',best,'Vamos descobrir seus pontos fortes ao longo dos estudos.')+'</div><div class="onb-topic-box"><b>Questões para revisar</b>'+(review||'<p class="onb-muted">Nenhum erro registrado. Excelente!</p>')+'</div><button class="btn onb-full" id="to-schedule">Montar meu plano de estudo →</button><p class="onb-foot">O plano será calculado com seus resultados, a data da prova e sua disponibilidade.</p>');
   document.getElementById('to-schedule').onclick=showSchedule;
  }
  function showSchedule(){
