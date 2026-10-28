@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Estudo SENAI</title>
+<style>
+:root{color-scheme:dark;--bg:#000;--card:#111;--line:#2a2a2a;--tx:#eee;--mute:#999;--ac:#fff;--ok:#fff;--no:#aaa;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body{display:flex;min-height:100vh}
+nav{width:250px;flex:none;border-right:1px solid var(--line);padding:16px;position:sticky;top:0;height:100vh;overflow-y:auto}
+nav h1{font-size:18px;margin:0 0 14px}
+nav h1 span{color:var(--ac)}
+.grp{font-size:12px;color:var(--mute);text-transform:uppercase;letter-spacing:.08em;margin:16px 0 6px}
+nav button{display:block;width:100%;text-align:left;background:none;border:0;color:var(--tx);padding:9px 10px;border-radius:8px;font:inherit;cursor:pointer}
+nav button:hover{background:var(--card)}
+nav button.on{background:var(--ac);color:#000;font-weight:600}
+main{flex:1;min-width:0;padding:24px;max-width:780px;margin:0 auto;width:100%}
+h2{margin:0 0 4px;font-size:26px}
+.tabs{display:flex;gap:8px;margin:14px 0 18px}
+.tabs button{flex:1;padding:10px;background:var(--card);border:1px solid var(--line);color:var(--tx);border-radius:10px;font:inherit;cursor:pointer}
+.tabs button.on{border-color:var(--ac);color:var(--ac);font-weight:600}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+.card h3{margin:0 0 6px;font-size:17px;color:var(--ac)}
+.card p{margin:6px 0}
+.ex{background:#000;border-left:3px solid var(--ac);padding:8px 12px;border-radius:6px;margin:8px 0}
+.btn{background:var(--ac);color:#000;border:0;border-radius:10px;padding:10px 16px;font:inherit;font-weight:600;cursor:pointer}
+.btn.g{background:var(--card);color:var(--tx);border:1px solid var(--line)}
+textarea,input[type=text]{width:100%;background:#000;color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit}
+textarea{min-height:120px;margin-top:10px;resize:vertical}
+.q p.t{font-weight:600;margin:0 0 8px}
+.q label{display:block;padding:8px 10px;border:1px solid var(--line);border-radius:8px;margin:6px 0;cursor:pointer}
+.q.ok{border-color:var(--ok);border-width:2px}.q.no{border-color:var(--no);border-style:dashed}
+.fb{margin-top:8px;font-size:15px}.fb.ok{color:var(--ok)}.fb.no{color:var(--no)}
+.score{font-size:20px;font-weight:700;text-align:center;margin:12px 0}
+.calc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;max-width:260px;margin-bottom:14px}
+.calc .d{background:#000;border-radius:8px;padding:8px 10px;text-align:right;font-size:22px;min-height:44px;overflow:hidden;word-break:break-all}
+.calc .k{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}
+.calc .k button{padding:12px 0;background:#1d1d1d;border:0;color:var(--tx);border-radius:8px;font:inherit;font-size:18px;cursor:pointer}
+.calc .k button.o{background:#2e2e2e}.calc .k button.e{background:var(--ac);color:#000}
+.top{display:none}
+@media(max-width:760px){
+ body{display:block}
+ nav{display:none;position:fixed;inset:0;z-index:5;width:100%;height:100%;background:var(--bg);padding-top:calc(16px + env(safe-area-inset-top,0px))}
+ nav.open{display:block}
+ .top{display:flex;align-items:center;justify-content:space-between;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:10px 16px;border-bottom:1px solid var(--line);z-index:4}
+ main{padding:16px}
+}
+
+nav{width:268px;background:#050505;padding:18px 14px}
+.brand{display:flex;align-items:center;gap:12px;padding:2px 4px 16px;margin-bottom:6px;border-bottom:1px solid var(--line);font-weight:800;line-height:1.25}
+.brand span{color:var(--mute)}.brand small{display:block;font-weight:400;font-size:12px;color:var(--mute)}
+.lg{width:40px;height:40px;border-radius:12px;background:#fff;color:#000;display:grid;place-items:center;font-size:20px;flex:none}
+.brand .x{display:none;margin-left:auto;width:36px;height:36px;border:1px solid var(--line);background:none;color:var(--tx);border-radius:10px;padding:0;justify-content:center}
+nav button{display:flex;align-items:center;gap:11px;margin:2px 0;transition:.15s}
+nav button i{font-style:normal;font-size:12px;font-weight:700;width:30px;height:30px;border-radius:9px;border:1px solid var(--line);display:grid;place-items:center;flex:none}
+nav button.on i{border-color:#000}
+.grp{padding-left:6px}
+main{max-width:900px}
+.btn{transition:.2s}.btn:hover{transform:translateY(-1px)}.btn:disabled{opacity:.35;cursor:default;transform:none}
+.eb{font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+.hero{position:relative;overflow:hidden;background:#080808;border:1px solid var(--line);border-radius:24px;padding:36px;margin-bottom:18px}
+.hero:before,.hero:after{content:"";position:absolute;border:1px solid #2a2a2a;border-radius:50%}
+.hero:before{width:480px;height:480px;right:-240px;top:-240px}.hero:after{width:240px;height:240px;right:-110px;top:-110px}
+.hero>*{position:relative;z-index:1}
+.hero h1{font-size:clamp(36px,7vw,64px);line-height:.95;letter-spacing:-.05em;margin:12px 0 14px}
+.hero p{color:#aaa;max-width:620px;margin:0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:26px}
+.stat{background:#080808;padding:16px;color:var(--mute);font-size:13px}.stat b{display:block;font-size:26px;color:#fff}
+.sec{margin:26px 0 12px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.tile{display:block;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;color:var(--tx);font:inherit;cursor:pointer;transition:.2s}
+.tile:hover{border-color:#fff;transform:translateY(-2px)}.tile b{display:block;font-size:17px;margin:6px 0 2px}.tile small{color:var(--mute)}.tile .n{font-size:11px;letter-spacing:.14em;color:var(--mute);text-transform:uppercase}
+.notice{border:1px solid var(--line);background:#080808;border-radius:14px;padding:14px 16px;color:#aaa;font-size:14px;margin:0 0 16px}
+.exh{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:12px}.pw{min-width:200px;flex:1;max-width:300px}.pm{display:flex;justify-content:space-between;font-size:12px;color:#aaa;margin-bottom:6px}
+.pg{height:7px;background:#171717;border:1px solid var(--line);border-radius:9px;overflow:hidden}.bar{height:100%;background:#fff;transition:.3s}
+.question{background:#080808;border:1px solid var(--line);border-radius:20px;padding:26px;margin-bottom:14px}
+.qh{display:flex;justify-content:space-between;align-items:center}
+.tag{background:#fff;color:#000;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;padding:6px 10px;border-radius:99px}
+.question h2{font-size:21px;line-height:1.45;margin:14px 0 20px}
+.options{display:grid;gap:10px}.option{display:flex;gap:12px;border:1px solid var(--line);border-radius:14px;padding:14px;color:#ddd;cursor:pointer;transition:.15s}
+.option:hover{background:#111;border-color:#555}.option input{margin-top:5px;accent-color:#fff}.option:has(input:checked){background:#fff;color:#000;border-color:#fff}
+.navx{display:flex;justify-content:space-between;gap:12px;margin:16px 0}
+.score{font-size:clamp(64px,12vw,110px);font-weight:900;line-height:.9;letter-spacing:-.07em;margin:10px 0}
+.ag{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;margin-bottom:14px}.ag .card{margin:0}
+.cc{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.ar{margin:14px 0}.al{display:flex;justify-content:space-between;font-size:13px;font-weight:700}.mn{height:9px;background:#171717;border-radius:9px;overflow:hidden;margin-top:7px}.mn i{display:block;height:100%;background:#fff}
+.dg{border:1px solid var(--line);background:#0c0c0c;border-radius:12px;padding:12px;margin-top:10px;color:#aaa;font-size:14px}.dg b{display:block;color:#fff}
+.rv{padding:14px 0;border-bottom:1px solid #202020;color:#aaa;font-size:15px}.rv b{color:#fff}.rv i{color:#ddd}
+@media(max-width:760px){.brand .x{display:flex;align-items:center}.stats{grid-template-columns:1fr 1fr}.ag{grid-template-columns:1fr}.hero{padding:24px 20px}.question{padding:18px}.exh{flex-direction:column;align-items:stretch}.pw{max-width:none}.navx{position:sticky;bottom:calc(8px + env(safe-area-inset-bottom,0px));background:#050505ee;border:1px solid var(--line);border-radius:14px;padding:10px}}
+.qn{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.qn button{width:34px;height:34px;border-radius:8px;border:1px solid var(--line);background:#0a0a0a;color:var(--mute);font:inherit;font-size:12px;cursor:pointer}.qn .d{background:#262626;color:#fff}.qn .c{border-color:#fff;color:#fff}
+
+/* v3: visual e organização */
+main>*{animation:fi .28s both}@keyframes fi{from{opacity:0;transform:translateY(6px)}}
+*:focus-visible{outline:2px solid #fff;outline-offset:2px}
+nav::-webkit-scrollbar{width:6px}nav::-webkit-scrollbar-thumb{background:#222;border-radius:9px}
+main{padding:32px 28px 72px}h2{letter-spacing:-.02em}
+.card{transition:border-color .2s}.card:hover{border-color:#3a3a3a}
+.tile{background:linear-gradient(160deg,#141414,#0a0a0a)}
+.top{backdrop-filter:blur(10px);background:rgba(0,0,0,.82)}
+nav #bq{margin:12px 0 2px;padding:9px 12px;font-size:14px;border-radius:10px}
+.grp.fold{display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;padding:7px 6px;border-radius:8px}
+.grp.fold:hover{background:#0d0d0d;color:#ccc}
+.grp.fold span:before{content:"▾  ";font-size:10px}.grp.shut span:before{content:"▸  "}
+.grp.fold em{font-style:normal;font-size:11px;border:1px solid var(--line);border-radius:99px;padding:1px 8px;color:var(--mute)}
+@media(max-width:760px){main{padding:18px 16px 72px}}
+.dy{border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:10px 0;background:#0a0a0a}.dy.hj{border-color:#fff}
+.dh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}.dh span{color:var(--mute);font-size:13px;text-transform:capitalize}
+.bk{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-top:1px solid #1c1c1c}
+.tm{flex:none;min-width:78px;text-align:center;font-size:13px;font-weight:700;background:#fff;color:#000;border-radius:8px;padding:4px 6px}
+.bt{flex:1;min-width:0}.bt small{display:block;color:var(--mute);font-size:13px;margin-top:2px}.bk .btn{flex:none;padding:6px 16px}
+
+#spl{position:fixed;inset:0;z-index:99;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;transition:opacity .6s,visibility .6s;cursor:pointer}
+#spl.out{opacity:0;visibility:hidden}
+#spl .lo{position:relative;width:96px;height:96px;display:grid;place-items:center}
+#spl svg{position:absolute;inset:0;width:96px;height:96px;transform:rotate(-90deg)}
+#spl circle{fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-dasharray:289;stroke-dashoffset:289;animation:dr 1.5s .1s cubic-bezier(.6,0,.2,1) forwards}
+#spl circle.g{stroke:#1f1f1f;stroke-dashoffset:0;animation:none}
+#spl b{width:52px;height:52px;border-radius:15px;background:#fff;color:#000;display:grid;place-items:center;font-size:26px;animation:pop .7s .25s cubic-bezier(.2,1.6,.4,1) both}
+#spl h1{margin:0;font-size:20px;letter-spacing:.35em;text-transform:uppercase;padding-left:.35em;animation:up .6s .7s both}
+#spl .br{width:180px;height:3px;background:#1a1a1a;border-radius:9px;overflow:hidden;animation:up .4s .9s both}
+#spl .br i{display:block;height:100%;width:0;background:#fff;animation:fl 1.2s 1s ease-in-out forwards}
+#spl small{color:var(--mute);max-width:260px;text-align:center;min-height:40px;animation:up .5s 1.1s both}
+@keyframes dr{to{stroke-dashoffset:0}}@keyframes pop{from{transform:scale(0) rotate(-40deg);opacity:0}}
+@keyframes up{from{opacity:0;transform:translateY(10px)}}@keyframes fl{to{width:100%}}
+@media(prefers-reduced-motion:reduce){#spl *{animation-duration:.01s!important;animation-delay:0s!important}}
+nav a{display:flex;align-items:center;gap:11px;margin:2px 0;padding:9px 10px;border-radius:8px;color:var(--tx);text-decoration:none}nav a:hover{background:var(--card)}
+nav a i{font-style:normal;font-size:12px;font-weight:700;width:30px;height:30px;border-radius:9px;border:1px solid var(--line);display:grid;place-items:center;flex:none}
+a.btn{display:inline-block;text-decoration:none;margin:2px 6px 2px 0}
+
+/* v4: home organizada, barra inferior no celular, navegação entre tópicos */
+.hero{padding:30px}.st{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 4px;font-size:14px;color:var(--mute)}.st span{border:1px solid var(--line);border-radius:99px;padding:5px 14px}.st b{color:#fff}
+details.gp{margin:6px 0 20px}details.gp>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:10px 2px;border-bottom:1px solid var(--line);margin-bottom:12px;font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+details.gp>summary::-webkit-details-marker{display:none}details.gp>summary em{font-style:normal;font-size:11px;border:1px solid var(--line);border-radius:99px;padding:1px 9px;letter-spacing:0}details.gp>summary:after{content:"▾";margin-left:auto}details.gp:not([open])>summary:after{content:"▸"}
+.nx{display:flex;gap:10px;flex-wrap:wrap;margin:24px 0 8px}.nx .btn{flex:1;min-width:130px}
+#tb{display:none}
+@media(max-width:760px){#tb{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:4;background:rgba(5,5,5,.94);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
+#tb button{flex:1;background:none;border:0;color:var(--mute);font:inherit;font-size:11px;padding:6px 0;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer}
+#tb button b{font-size:18px;line-height:1}#tb button.on{color:#fff}main{padding-bottom:96px}.navx{bottom:calc(72px + env(safe-area-inset-bottom,0px))}nav.open~#tb{display:none}}
+
+.cdn ul{margin:8px 0 12px;padding-left:18px}.cdn li{margin:9px 0}.cdn li .ex{margin:6px 0 0}
+.cdh{display:flex;justify-content:space-between;align-items:baseline;gap:10px}.cdh span{font-size:13px;color:var(--mute);white-space:nowrap}
+.my{border:1px dashed var(--line);border-radius:10px;padding:10px 12px;margin:10px 0 12px;font-size:15px;color:#ccc}.my b{color:#fff}
+
+/* v5: home enxuta + matérias com ícone */
+.hero.sm{padding:22px 26px}.hero.sm h1{font-size:clamp(28px,5vw,44px);margin:8px 0 14px}
+.subs{display:none}@media(max-width:760px){.subs{display:block}}
+nav button .ct{margin-left:auto;font-style:normal;font-size:11px;color:var(--mute)}nav button.on .ct{color:#000}
+.mh{display:flex;align-items:center;gap:16px;margin:4px 0 20px}.mi{width:68px;height:68px;border-radius:20px;border:1px solid var(--line);background:#0a0a0a;display:grid;place-items:center;flex:none}
+.tile .n svg{display:block}.bk0{margin-bottom:14px;padding:6px 14px;font-size:14px}
+
+/* v6: barra de estudo e cronômetro */
+.sbw{padding:12px 4px 14px;margin:2px 0 8px;border-bottom:1px solid var(--line)}.sbw.home{border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:0 0 16px;background:#0a0a0a}
+.sbt{display:flex;justify-content:space-between;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}.sbt b{color:#fff;letter-spacing:0}
+.sbb{height:8px;border-radius:99px;background:#1a1a1a;overflow:hidden;margin:8px 0 6px}.sbf{display:block;height:100%;width:0;border-radius:99px;background:#fff;transition:width .9s cubic-bezier(.3,.8,.3,1)}
+.sbw small{color:var(--mute);font-size:12px}.sbw.up .sbb{animation:glow 1.2s}@keyframes glow{40%{box-shadow:0 0 14px 2px #fff8}}
+#tm{position:fixed;right:16px;bottom:16px;z-index:6}
+#tmc{display:flex;align-items:center;gap:8px;background:#0b0b0b;color:#fff;border:1px solid var(--line);border-radius:99px;padding:8px 14px;font:inherit;font-size:14px;font-variant-numeric:tabular-nums;cursor:pointer;box-shadow:0 6px 24px #000a}
+#tmc i{width:8px;height:8px;border-radius:50%;background:#555}#tm.run #tmc i{background:#fff;animation:pl 1.4s infinite}@keyframes pl{50%{opacity:.25}}
+#tmp{display:none;position:absolute;right:0;bottom:48px;width:250px;background:#0b0b0b;border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:0 10px 30px #000c}
+#tm.open #tmp{display:block}#tmp h4{margin:0 0 2px;font-size:12px;color:var(--mute);letter-spacing:.1em;text-transform:uppercase}
+#tmp .big{font-size:28px;font-weight:800;font-variant-numeric:tabular-nums;margin-bottom:4px}
+#tmp label{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:14px;margin:10px 0 0}
+#tmp input{width:76px;text-align:center;padding:6px;background:#000;color:#fff;border:1px solid var(--line);border-radius:8px;font:inherit}
+#tmp .row{display:flex;gap:8px;margin-top:12px}#tmp .row .btn{flex:1;padding:8px 6px;font-size:14px}
+#tmo{position:fixed;inset:0;z-index:50;background:#000c;display:none;place-items:center;padding:20px}#tmo.on{display:grid}
+#tmo .bx{max-width:340px;width:100%;background:#0b0b0b;border:1px solid #444;border-radius:20px;padding:26px 22px;text-align:center;animation:pop2 .45s cubic-bezier(.2,1.5,.4,1)}@keyframes pop2{from{transform:scale(.7);opacity:0}}
+#tmo .em{font-size:54px;line-height:1}#tmo h3{margin:12px 0 6px;font-size:22px}#tmo p{color:var(--mute);margin:0 0 16px}
+nav.open~#tm{display:none}@media(max-width:760px){#tm{top:calc(62px + env(safe-area-inset-top,0px));bottom:auto;right:10px}#tmp{bottom:auto;top:46px}}
+
+.tmo2{display:flex;gap:8px;margin-top:10px}.tmo2 .btn{flex:1;padding:12px 6px;font-size:14px;display:flex;flex-direction:column;align-items:center;gap:4px}.tmo2 .btn span{font-size:22px}
+
+.topic-doodle{display:block;color:#f4f4f4;opacity:.94;flex:none;}
+.tile .n{display:flex;align-items:center;justify-content:center;color:#fff;}
+.tile .n .topic-doodle{width:28px;height:28px;}
+</style>
+</head>
+<body>
+<div id="spl"><div class="lo"><svg viewBox="0 0 96 96"><circle class="g" cx="48" cy="48" r="46"/><circle cx="48" cy="48" r="46"/></svg><b>S</b></div><h1>Estudo SENAI</h1><div class="br"><i></i></div><small id="tip"></small></div>
+<div class="top"><b>Estudo <span style="color:var(--ac)">SENAI</span></b><button class="btn g" id="menu">☰ Menu</button></div>
+<nav id="nav"><div class="brand"><b class="lg">S</b><div>Estudo <span>SENAI</span><small>Prepare-se para a prova</small></div><button class="x" onclick="document.getElementById('nav').classList.remove('open')">✕</button></div></nav>
+<main id="main"></main>
+<div id="tb"><button data-k="home" data-b="bhome"><b>⌂</b>Início</button><button data-k="plan" data-b="bplan"><b>▦</b>Plano</button><button data-k="rev" data-b="brev"><b>✎</b>Erros</button><button data-k="prog" data-b="bprog"><b>↗</b>Progresso</button></div>
+<script>
+var T=[
+{g:"Matemática",id:"perc",n:"Porcentagem",math:1,
+e:[["O que é?","Porcentagem é uma fração de denominador 100. <b>20%</b> = 20/100 = 0,20."],
+["Como calcular % de um número","Multiplique o número pelo decimal da porcentagem.<div class='ex'>20% de 350 → 350 × 0,20 = <b>70</b></div>"],
+["Desconto e aumento","<b>Desconto:</b> multiplique por (1 − %). <b>Aumento:</b> multiplique por (1 + %).<div class='ex'>Desconto de 10% em R$ 200 → 200 × 0,90 = <b>180</b></div>"],
+["Quanto % um valor é do outro?","Divida a parte pelo total e multiplique por 100.<div class='ex'>10 é quantos % de 40? → 10 ÷ 40 = 0,25 → <b>25%</b></div>"]],
+q:[["Quanto é 20% de 350?",70],["Um produto de R$ 200 tem 15% de desconto. Quanto vai custar (em R$)?",170],["Um item de R$ 80 aumentou 10%. Qual o novo preço (em R$)?",88],["45 é quantos % de 180?",25]]},
+{g:"Matemática",id:"r3",n:"Regra de três",math:1,
+e:[["Ideia","Serve para achar um valor quando você tem três e falta um. Monte uma tabela e multiplique em cruz."],
+["Regra de três direta","Se uma grandeza <b>aumenta</b> e a outra também, é direta.<div class='ex'>3 canetas custam R$ 6. 5 canetas custam x?<br>3 → 6 | 5 → x<br>x = (5 × 6) ÷ 3 = <b>10</b></div>"],
+["Regra de três inversa","Se uma <b>aumenta</b> e a outra <b>diminui</b>, é inversa: multiplique em linha.<div class='ex'>4 operários fazem a obra em 12 dias. 8 operários levam x?<br>x = (4 × 12) ÷ 8 = <b>6 dias</b></div>"]],
+q:[["3 canetas custam R$ 6. Quanto custam 5 canetas (R$)?",10],["Um carro anda 240 km em 3 h. Quantos km anda em 5 h na mesma velocidade?",400],["4 operários fazem uma obra em 12 dias. Quantos dias levam 8 operários?",6]]},
+{g:"Matemática",id:"frac",n:"Frações e decimais",math:1,
+e:[["Somar frações","Com mesmo denominador, some só o de cima. Com denominadores diferentes, iguale antes.<div class='ex'>1/2 + 1/4 = 2/4 + 1/4 = <b>3/4</b></div>"],
+["Fração de um número","Divida pelo de baixo e multiplique pelo de cima.<div class='ex'>3/4 de 40 → 40 ÷ 4 = 10 → 10 × 3 = <b>30</b></div>"],
+["Fração em decimal","Divida o de cima pelo de baixo.<div class='ex'>2/5 = 2 ÷ 5 = <b>0,4</b></div>"]],
+q:[["Quanto é 1/2 + 1/4 em decimal?",0.75],["Quanto é 3/4 de 40?",30],["Escreva 2/5 em decimal.",0.4],["Quanto é 1/5 de 250?",50]]},
+{g:"Matemática",id:"eq",n:"Equação do 1º grau",math:1,
+e:[["Objetivo","Descobrir o valor de x. O que está de um lado passa para o outro <b>com o sinal trocado</b>."],
+["Passo a passo","<div class='ex'>2x + 6 = 20<br>2x = 20 − 6<br>2x = 14<br>x = 14 ÷ 2 = <b>7</b></div>"],
+["Com divisão","<div class='ex'>x/3 + 2 = 6<br>x/3 = 4<br>x = 4 × 3 = <b>12</b></div>"]],
+q:[["2x + 6 = 20. Quanto vale x?",7],["4x + 3 = 19. Quanto vale x?",4],["x/3 + 2 = 6. Quanto vale x?",12],["5x − 10 = 25. Quanto vale x?",7]]},
+{g:"Matemática",id:"geo",n:"Geometria",math:1,
+e:[["Áreas","<b>Retângulo:</b> base × altura<br><b>Triângulo:</b> (base × altura) ÷ 2<br><b>Quadrado:</b> lado × lado<br><b>Círculo:</b> π × raio² (π ≈ 3,14)"],
+["Perímetro","É a soma de todos os lados.<div class='ex'>Quadrado de lado 7 → 4 × 7 = <b>28</b></div>"],
+["Volume do cubo","aresta × aresta × aresta.<div class='ex'>Aresta 3 → 3 × 3 × 3 = <b>27</b></div>"]],
+q:[["Área de um retângulo de base 8 e altura 5?",40],["Área de um triângulo de base 10 e altura 6?",30],["Perímetro de um quadrado de lado 7?",28],["Volume de um cubo de aresta 3?",27]]},
+{g:"Matemática",id:"uni",n:"Unidades de medida",math:1,
+e:[["Comprimento","1 km = 1000 m | 1 m = 100 cm<div class='ex'>2,5 km = 2,5 × 1000 = <b>2500 m</b></div>"],
+["Massa","1 kg = 1000 g | 1 tonelada = 1000 kg"],
+["Volume e tempo","1 L = 1000 mL | 1 h = 60 min | 1 min = 60 s<div class='ex'>3 h = 3 × 60 = <b>180 min</b></div>"]],
+q:[["2,5 km são quantos metros?",2500],["3 h são quantos minutos?",180],["4500 g são quantos kg?",4.5],["1,5 L são quantos mL?",1500]]},
+{g:"Português",id:"int",n:"Interpretação de texto",
+e:[["Leia com calma","Leia o texto <b>duas vezes</b> antes de ver as perguntas. Depois, volte ao trecho que a questão cita."],
+["Ideia principal","É o assunto sobre o qual o texto inteiro fala. Não é um detalhe, é o tema geral."],
+["Cuidado com palavras absolutas","Palavras como <b>sempre, nunca, todos, apenas</b> costumam deixar a alternativa errada."],
+["Inferência","É concluir algo que o texto sugere sem dizer direto. Mas a conclusão precisa ter base no texto."]],
+q:[["Em uma questão de interpretação, o que fazer primeiro?",["Chutar a alternativa mais longa","Ler o texto com atenção e depois a pergunta","Ler só as alternativas","Ler só o título"],1,"Ler o texto com atenção evita erros por pressa."],
+["Alternativas com “sempre”, “nunca” e “todos” geralmente estão...",["Corretas","Erradas, por serem muito absolutas","Sem importância","Sempre as primeiras"],1,"Palavras absolutas quase sempre exageram o que o texto diz."],
+["A ideia principal de um texto é...",["O detalhe mais curioso","O assunto geral de que o texto trata","A última frase","O nome do autor"],1,"É o tema que atravessa o texto inteiro."]]},
+{g:"Português",id:"orto",n:"Acentuação e ortografia",
+e:[["Oxítonas","Última sílaba forte. Acentuam-se se terminam em <b>a, e, o, em</b> (+ s): <i>sofá, café, avô, também</i>."],
+["Paroxítonas","Penúltima sílaba forte. Acentuam-se em geral se terminam em <b>l, r, x, n, i, us, ão, ps</b>: <i>fácil, açúcar, órfão</i>."],
+["Proparoxítonas","Antepenúltima sílaba forte. <b>Todas</b> têm acento: <i>lâmpada, máquina, técnico</i>."],
+["Mas / mais","<b>Mas</b> = porém. <b>Mais</b> = quantidade.<div class='ex'>Estudei mais, mas ainda quero revisar.</div>"]],
+q:[["Qual palavra está escrita corretamente?",["Tecnico","Técnico","Têcnico","Técnicó"],1,"“Técnico” é proparoxítona, e toda proparoxítona leva acento."],
+["Complete: “Estudei ___, ___ errei a questão.”",["mas / mais","mais / mas","mais / mais","mas / mas"],1,"Primeiro é quantidade (mais), depois é oposição (mas)."],
+["Qual palavra é proparoxítona?",["Café","Fácil","Lâmpada","Também"],2,"Lâmpada: a sílaba forte é a antepenúltima (lâm-pa-da)."]]},
+{g:"Português",id:"conc",n:"Concordância",
+e:[["Verbal","O verbo concorda com o sujeito em número e pessoa.<div class='ex'>Os alunos <b>estudam</b>. / O aluno <b>estuda</b>.</div>"],
+["Nominal","Artigo, adjetivo e substantivo concordam em gênero e número.<div class='ex'>As provas <b>difíceis</b>.</div>"],
+["Cuidado","Não importa o que vem no meio: ache o sujeito.<div class='ex'>O resultado das provas <b>chegou</b>. (sujeito: resultado)</div>"]],
+q:[["Qual frase está correta?",["Os alunos estuda muito","Os alunos estudam muito","O alunos estudam muito","Os aluno estudam muito"],1,"Sujeito plural (os alunos) pede verbo plural (estudam)."],
+["Qual frase está correta?",["As provas foram difíceis","As provas foi difíceis","As prova foram difícil","As provas foram difícil"],0,"Todos os termos concordam no plural."]]},
+{g:"Português",id:"cl",n:"Classes de palavras",
+e:[["Substantivo, adjetivo e verbo","<b>Substantivo</b> nomeia (casa, beleza). <b>Adjetivo</b> caracteriza (casa <i>grande</i>). <b>Verbo</b> indica ação ou estado (correr, ser)."],["Advérbio e pronome","<b>Advérbio</b> modifica verbo, adjetivo ou outro advérbio (<i>muito, rapidamente, aqui</i>). <b>Pronome</b> substitui o nome (ele, meu, isto, ninguém)."],["Preposição e conjunção","<b>Preposição</b> liga palavras (de, para, em, com). <b>Conjunção</b> liga orações: <b>mas</b> (oposição), <b>e</b> (adição), <b>porque</b> (explicação), <b>portanto</b> (conclusão)."]],
+q:[["Em “Ele corre rapidamente”, “rapidamente” é:",["Adjetivo","Advérbio","Substantivo","Pronome"],1,"Modifica o verbo “corre”."],["Qual conjunção indica oposição?",["e","porque","mas","portanto"],2,"“Mas” opõe duas ideias."],["Em “O cachorro é fiel”, “fiel” é:",["Substantivo","Verbo","Advérbio","Adjetivo"],3,"Caracteriza “cachorro”."]]},
+{g:"Português",id:"cr",n:"Crase e pontuação",
+e:[["Quando usar crase","Crase é <b>a + a</b>. Teste: troque a palavra por uma masculina. Se ficar “ao”, use crase.<div class='ex'>Vou <b>à</b> escola (vou <b>ao</b> colégio ✔)</div>"],["Quando NÃO usar","Não use antes de <b>verbo</b>, <b>pronome</b> (ela, você) ou palavra <b>masculina</b>.<div class='ex'>Começou a chover. | Fui a pé.</div>"],["Vírgula","Use para separar <b>listas</b>, <b>vocativo</b> e <b>expressão no início da frase</b>. Nunca separe sujeito e verbo.<div class='ex'>Comprei pão, leite e ovos. | Ana, venha cá!</div>"]],
+q:[["Qual frase tem crase correta?",["Fui à padaria.","Vou à pé.","Disse à ele.","Começou à chover."],0,"Fui ao mercado → fui à padaria."],["Qual frase tem a vírgula correta?",["Maria, comprou pão.","Pedro, venha aqui!","Ele disse, que viria.","Comprei, pão e leite."],1,"A vírgula separa o vocativo."],["Complete: “Chegamos ___ cidade ontem.”",["a","à","as","há"],1,"Chegar a + a cidade = à cidade."]]},
+{g:"Português",id:"it",n:"Interpretação com texto",
+e:[["Passo a passo","1) Leia o texto todo. 2) Leia a pergunta. 3) Volte ao trecho e marque a resposta. <b>A resposta certa está no texto</b>, não na sua opinião."],["Tipos de pergunta","<b>Explícita:</b> está escrita. <b>Inferência:</b> dedução apoiada no texto. <b>Ideia principal:</b> tema geral. <b>Sentido da palavra:</b> olhe o contexto."]],
+q:[[TX("A empresa reduziu o consumo de energia em 20% depois de trocar as lâmpadas comuns por lâmpadas de LED.","Segundo o texto, o que reduziu o consumo?"),["A troca das lâmpadas por LED","Desligar as máquinas","Mudar de prédio","Contratar mais gente"],0,"Está dito de forma direta."],[TX("Pedro acordou tarde, perdeu o ônibus e chegou atrasado à prova.","Por que Pedro se atrasou?"),["Choveu muito","Acordou tarde e perdeu o ônibus","Errou o endereço","Passou mal"],1,"O texto mostra a causa."]]},
+{g:"Matemática",id:"med",n:"Média, MMC e MDC",math:1,
+e:[["Média","Some tudo e divida pela quantidade.<div class='ex'>Notas 6, 8 e 10 → (6+8+10) ÷ 3 = <b>8</b></div>"],["MMC","Menor múltiplo comum. Serve para igualar denominadores e achar quando algo se repete.<div class='ex'>MMC de 4 e 6 = <b>12</b></div>"],["MDC","Maior divisor comum. Serve para dividir em partes iguais sem sobra.<div class='ex'>MDC de 12 e 18 = <b>6</b></div>"]],
+q:[["Qual a média de 6, 8 e 10?",8],["Qual o MMC de 4 e 6?",12],["Qual o MDC de 12 e 18?",6],["Dois ônibus saem juntos. Um volta a cada 4 min e o outro a cada 6 min. Em quantos minutos saem juntos de novo?",12]]},
+{g:"Matemática",id:"pot",n:"Potência, raiz e Pitágoras",math:1,
+e:[["Potência","Multiplique o número por ele mesmo.<div class='ex'>3² = 3 × 3 = <b>9</b> | 2³ = 2 × 2 × 2 = <b>8</b></div>"],["Raiz quadrada","É o contrário da potência.<div class='ex'>√49 = <b>7</b>, pois 7² = 49</div>"],["Pitágoras","No triângulo retângulo: <b>hipotenusa² = cateto² + cateto²</b>.<div class='ex'>Catetos 3 e 4 → 9 + 16 = 25 → hipotenusa = <b>5</b></div>"]],
+q:[["Quanto é 2³?",8],["Quanto é √81?",9],["Catetos 6 e 8. Quanto vale a hipotenusa?",10],["Quanto é 5² − 3²?",16]]},
+{g:"Ciências",id:"bio",n:"Biologia: célula e corpo",
+e:[["Célula","Unidade da vida. O <b>núcleo</b> guarda o DNA; a <b>membrana</b> controla o que entra e sai."],["Sistemas do corpo","<b>Circulatório:</b> coração e sangue. <b>Respiratório:</b> pulmões. <b>Digestório:</b> estômago e intestino. <b>Excretor:</b> rins. <b>Locomotor:</b> ossos e músculos."],["Plantas","<b>Fotossíntese:</b> gás carbônico + água + luz → glicose + oxigênio, nas folhas. As raízes absorvem água e sais."]],
+q:[["Qual órgão filtra o sangue e produz urina?",["Fígado","Rim","Pulmão","Coração"],1,"Os rins fazem a filtragem."],["Onde fica o DNA da célula?",["Membrana","Núcleo","Parede","Folha"],1,"No núcleo."],["Qual gás as plantas liberam na fotossíntese?",["Gás carbônico","Nitrogênio","Oxigênio","Hidrogênio"],2,"Elas liberam oxigênio."]]},
+{g:"Ciências",id:"qui",n:"Química: matéria e misturas",
+e:[["Estados da matéria","Sólido (forma fixa), líquido (toma a forma do recipiente) e gasoso (ocupa todo o espaço). Mudanças: fusão, evaporação, condensação e solidificação."],["Misturas","<b>Homogênea:</b> uma fase só (água com sal). <b>Heterogênea:</b> mais de uma fase (água e óleo)."],["Reação química","Surgem novas substâncias (ferrugem, queima). Na mudança física só muda a forma (rasgar papel)."]],
+q:[["Água e areia formam uma mistura:",["Homogênea","Heterogênea","Simples","Nuclear"],1,"Têm duas fases visíveis."],["Gelo derretendo é:",["Fusão","Evaporação","Condensação","Combustão"],0,"Sólido para líquido é fusão."],["Qual é uma reação química?",["Ferro enferrujando","Amassar papel","Gelo derretendo","Cortar madeira"],0,"Forma outra substância."]]},
+{g:"Ciências",id:"fis",n:"Física: movimento e energia",math:1,
+e:[["Velocidade média","<b>v = distância ÷ tempo</b><div class='ex'>120 km em 2 h → <b>60 km/h</b></div>"],["Energia e calor","A energia se transforma (química → elétrica numa pilha). O calor passa do corpo mais quente para o mais frio. Metais conduzem bem; isopor e borracha isolam."],["Densidade e inércia","<b>densidade = massa ÷ volume</b>. <b>Inércia:</b> o corpo tende a manter seu movimento (por isso você vai para a frente quando o carro freia)."]],
+q:[["120 km em 2 h. Qual a velocidade média (km/h)?",60],["Massa 200 g e volume 50 cm³. Qual a densidade (g/cm³)?",4],["Qual material é bom isolante térmico?",["Cobre","Alumínio","Isopor","Aço"],2,"O isopor conduz mal o calor."]]},
+{g:"Ciências",id:"seg",n:"Segurança e meio ambiente",
+e:[["EPI e EPC","<b>EPI</b> protege cada pessoa (capacete, luva, óculos, protetor auricular). <b>EPC</b> protege o grupo (grade, sinalização, exaustor)."],["NR","<b>NR</b> significa Norma Regulamentadora; essas normas definem medidas de segurança e saúde no trabalho."],["Meio ambiente","Renováveis: solar, eólica, água. Não renováveis: petróleo e carvão. Reciclar poupa recursos."]],
+q:[["O capacete é um:",["EPC","EPI","NR","Fusível"],1,"Protege uma pessoa."],["NR significa:",["Norma Regulamentadora","Nota de Risco","Novo Registro","Nível de Ruído"],0,"Normas de segurança do trabalho."],["Qual é energia renovável?",["Carvão","Petróleo","Eólica","Gás natural"],2,"O vento não se esgota."]]}
+];
+function TX(t,q){return "<i style='display:block;color:var(--mute);font-weight:400;font-size:15px;margin-bottom:8px'>“"+t+"”</i>"+q}
+T.push(
+{g:"Matemática",id:"razao",n:"Razão e proporção",
+e:[["Razão","Razão é a divisão entre dois números. A razão de 3 para 4 é 3/4.<div class='ex'>20 alunos para 5 professores → 20 ÷ 5 = <b>4 alunos por professor</b></div>"],["Proporção","Proporção é a igualdade entre duas razões. Multiplique em cruz para achar o termo que falta.<div class='ex'>2/3 = x/12 → 3x = 24 → x = <b>8</b></div>"],["Escala","Escala = medida no desenho ÷ medida real.<div class='ex'>Escala 1:100: 5 cm no desenho = 500 cm = <b>5 m</b> na realidade</div>"]],
+q:[["Qual a razão de 15 para 20, simplificada?",["3/4","4/3","5/6","2/3"],0,"15/20 dividindo por 5 dá 3/4."],["Em 2/5 = x/20, quanto vale x?",["4","8","10","50"],1,"5x = 2 × 20 = 40, então x = 8."],["Num mapa de escala 1:50, um muro de 4 cm no desenho tem na realidade:",["2 m","8 m","20 cm","200 m"],0,"4 × 50 = 200 cm = 2 m."],["Uma receita usa 2 xícaras de farinha para 3 de leite. Com 6 xícaras de farinha, quantas de leite?",["6","8","9","12"],2,"2/3 = 6/x → 2x = 18 → x = 9."]]},
+{g:"Português",id:"tipo",n:"Tipos e gêneros de texto",
+e:[["Tipos textuais","<b>Narrativo</b> conta fatos com personagens e tempo. <b>Descritivo</b> mostra características. <b>Dissertativo</b> defende uma ideia com argumentos. <b>Injuntivo</b> dá ordens ou instruções."],["Gêneros","Gênero é a forma do texto no dia a dia: receita, notícia, carta, bula, manual, e-mail, crônica."],["Dica de prova","Veja <b>para quê</b> o texto foi escrito: contar, descrever, convencer ou instruir. Isso diz o tipo."]],
+q:[["Uma receita de bolo, com “misture” e “asse”, é um texto:",["Narrativo","Descritivo","Injuntivo","Dissertativo"],2,"Dá instruções, então é injuntivo."],["Um texto que defende uma opinião com argumentos é:",["Dissertativo","Descritivo","Narrativo","Injuntivo"],0,"Defender uma ideia com argumentos é dissertativo."],["Qual texto é típico do tipo narrativo?",["Manual do usuário","Conto com personagens","Bula de remédio","Lista de compras"],1,"O conto narra fatos com personagens."],["“A sala era ampla, clara e cheia de plantas.” Esse trecho é:",["Narrativo","Injuntivo","Descritivo","Dissertativo"],2,"Mostra características do lugar."]]},
+
+);
+var T_EXTRA = [
+{g:"Matemática",id:"prob",n:"Probabilidade e chance",math:1,ic:"",e:[
+["O que é probabilidade?","É uma forma de medir a chance de um resultado acontecer. Se todos os resultados são igualmente possíveis: probabilidade = casos favoráveis ÷ casos possíveis."],
+["Exemplo com dado","Um dado comum tem 6 resultados possíveis. A chance de sair 3 é 1/6; a chance de sair número par é 3/6 = 1/2 = 50%."],
+["Porcentagem e probabilidade","Converta a fração em decimal ou porcentagem para comunicar a chance: 1/4 = 0,25 = 25%."]],q:[
+["Em uma moeda justa, qual a chance de sair cara?",["25%","50%","75%","100%"],1,"Há 1 resultado favorável entre 2 possíveis: 1/2 = 50%."],
+["Em um dado comum, qual a chance de sair um número par?",["1/6","2/6","3/6","5/6"],2,"Os pares são 2, 4 e 6: 3 resultados em 6 possíveis."],
+["Uma caixa tem 2 bolas azuis e 6 vermelhas. A chance de tirar uma azul é:",["1/4","1/2","3/4","1/8"],0,"São 2 azuis em 8 bolas: 2/8 = 1/4."],
+["A probabilidade de um evento impossível é:",["0%","25%","50%","100%"],0,"Um evento impossível não tem resultados favoráveis: probabilidade zero."]]}
+,{g:"Português",id:"coesao",n:"Coesão e coerência textual",ic:"",e:[
+["Coerência","É quando as ideias fazem sentido juntas e não se contradizem."],
+["Coesão","São recursos que conectam frases e parágrafos, como pronomes e conectivos."],
+["Conectivos importantes","“Mas” indica oposição; “porque” indica causa; “por isso” indica consequência; “além disso” acrescenta informação."]],q:[
+["Qual conectivo indica consequência?",["Mas","Por isso","Embora","Porém"],1,"“Por isso” apresenta um resultado ou consequência."],
+["Complete: “Estava chovendo, ___ levamos guarda-chuvas.”",["por isso","mas","embora","porém"],0,"A chuva explica a consequência: levar guarda-chuvas."],
+["Um texto coerente é aquele em que:",["As ideias fazem sentido entre si","Todas as frases rimam","Não há parágrafos","Só existem frases curtas"],0,"Coerência é a ligação lógica entre as ideias."],
+["Em “Marina comprou um livro. Ela começou a leitura à noite”, “ela” retoma:",["A noite","A leitura","Marina","O livro"],2,"O pronome “ela” retoma Marina e ajuda a conectar as frases."]]}
+,{g:"Ciências",id:"hered",n:"Reprodução e hereditariedade",ic:"",e:[
+["Reprodução","A reprodução permite que os seres vivos originem descendentes. Pode ser sexuada ou assexuada."],
+["Hereditariedade","Características hereditárias são transmitidas dos pais aos descendentes por meio do material genético (DNA)."],
+["Características e ambiente","Algumas características dependem principalmente dos genes; outras também são influenciadas pelo ambiente, como alimentação e condições de vida."]],q:[
+["Qual molécula guarda grande parte das informações hereditárias?",["DNA","Água","Glicose","Oxigênio"],0,"O DNA contém informações genéticas herdadas."],
+["Hereditariedade é:",["A transmissão de características entre gerações","A mudança do estado da água","A circulação do sangue","A formação das nuvens"],0,"Características hereditárias podem passar dos pais aos descendentes."],
+["Qual é um exemplo de reprodução assexuada?",["Divisão de uma bactéria em duas","Fecundação humana","União de gametas","Polinização entre plantas"],0,"Bactérias podem se reproduzir por divisão celular."],
+["Uma característica influenciada pelo ambiente é:",["Uma habilidade desenvolvida com prática","O grupo sanguíneo herdado","Uma sequência de DNA","Um gene"],0,"A prática e o ambiente podem influenciar habilidades desenvolvidas."]]}
+,{g:"Ciências",id:"transform",n:"Transformações físicas e químicas",ic:"",e:[
+["Transformação física","Muda o estado, a forma ou o tamanho, mas não forma uma nova substância. Exemplo: gelo derretendo."],
+["Transformação química","Forma novas substâncias. Exemplos: ferro enferrujando, madeira queimando e alimento estragando."],
+["Indícios de reação química","Mudança de cor, formação de gás, liberação de calor ou formação de um sólido podem indicar reação química, dependendo do caso."]],q:[
+["Qual é uma transformação química?",["Gelo derretendo","Água evaporando","Ferro enferrujando","Papel sendo cortado"],2,"A ferrugem é uma nova substância formada pela reação do ferro com o ambiente."],
+["Água congelando é uma transformação:",["Química","Física","Nuclear","Biológica"],1,"A água continua sendo água; muda apenas o estado físico."],
+["Queimar madeira é uma transformação química porque:",["A madeira só muda de tamanho","São formadas novas substâncias","Vira água pura","Não há mudança"],1,"A combustão forma novas substâncias, como gases e cinzas."],
+["A passagem do líquido para o gasoso chama-se:",["Fusão","Solidificação","Vaporização","Condensação"],2,"Vaporização é a passagem do estado líquido para o gasoso."]]}
+,{g:"Ciências",id:"calor",n:"Calor, temperatura, luz e som",ic:"",e:[
+["Temperatura e calor","Temperatura indica o estado térmico de um corpo. Calor é a transferência de energia térmica entre corpos com temperaturas diferentes."],
+["Propagação do calor","Condução ocorre por contato; convecção ocorre pelo movimento de líquidos ou gases; radiação pode ocorrer até no vácuo."],
+["Luz e som","A luz pode se propagar no vácuo. O som precisa de um meio material, como ar, água ou sólidos."]],q:[
+["O calor passa espontaneamente:",["Do corpo mais frio para o mais quente","Do corpo mais quente para o mais frio","Só entre objetos iguais","Apenas no vácuo"],1,"A energia térmica passa do corpo de maior temperatura para o de menor temperatura."],
+["Qual forma de transferência de calor pode ocorrer no vácuo?",["Condução","Convecção","Radiação","Nenhuma"],2,"A radiação não precisa de meio material."],
+["O som precisa de:",["Um meio material para se propagar","Apenas o vácuo","Luz solar","Uma superfície espelhada"],0,"O som é uma onda mecânica e precisa de um meio material."],
+["Qual material costuma ser bom isolante térmico?",["Cobre","Alumínio","Isopor","Ferro"],2,"O isopor dificulta a transferência de calor."]]}
+,{g:"Ciências",id:"sistemas",n:"Sistemas do corpo humano",ic:"",e:[
+["Digestório","Quebra os alimentos e permite a absorção dos nutrientes, principalmente no intestino delgado."],
+["Respiratório e circulatório","O sistema respiratório realiza trocas gasosas; o circulatório transporta oxigênio, nutrientes e outras substâncias pelo corpo."],
+["Nervoso e excretor","O sistema nervoso coordena respostas e sentidos. O sistema urinário ajuda a eliminar resíduos e regular a água do corpo."]],q:[
+["Onde ocorre a maior parte da absorção dos nutrientes?",["Intestino delgado","Esôfago","Traqueia","Bexiga"],0,"O intestino delgado absorve a maior parte dos nutrientes."],
+["Qual sistema transporta oxigênio pelo corpo?",["Digestório","Circulatório","Esquelético","Reprodutor"],1,"O sangue circula e transporta oxigênio aos tecidos."],
+["Qual é uma função do sistema nervoso?",["Coordenar respostas do corpo","Produzir o ar","Filtrar a luz","Digerir todos os alimentos"],0,"O sistema nervoso recebe informações e coordena respostas."],
+["Os rins fazem parte do sistema:",["Respiratório","Digestório","Urinário","Nervoso"],2,"Os rins filtram o sangue e participam da produção da urina."]]}
+];
+T.push.apply(T,T_EXTRA);
+var XQ={
+perc:[["Quanto é 50% de 84?",42],["Um produto de R$ 120 tem 25% de desconto. Quanto custa (R$)?",90],["12 é quantos % de 48?",25]],
+r3:[["Uma torneira enche 30 L em 5 min. Quantos litros em 12 min?",72],["6 pedreiros fazem um muro em 10 dias. Quantos dias levam 12 pedreiros?",5]],
+frac:[["Quanto é 1/4 + 1/4 em decimal?",0.5],["Quanto é 2/3 de 30?",20],["Escreva 3/4 em decimal.",0.75]],
+eq:[["3x + 5 = 20. Quanto vale x?",5],["2x − 4 = 10. Quanto vale x?",7],["x/2 + 3 = 9. Quanto vale x?",12]],
+geo:[["Área de um quadrado de lado 6?",36],["Perímetro de um retângulo de base 10 e altura 4?",28],["Área de um círculo de raio 2 (use π = 3)?",12]],
+uni:[["5 kg são quantos gramas?",5000],["90 min são quantas horas?",1.5],["3,2 m são quantos cm?",320]],
+med:[["Qual a média de 4, 7 e 10?",7],["Qual o MMC de 3 e 5?",15],["Qual o MDC de 20 e 30?",10]],
+pot:[["Quanto é 3²?",9],["Quanto é √64?",8],["Catetos 5 e 12. Quanto vale a hipotenusa?",13]],
+fis:[["200 km em 4 h. Qual a velocidade média (km/h)?",50],["Massa 300 g e volume 100 cm³. Qual a densidade (g/cm³)?",3]],
+int:[["“Inferir” em um texto significa:",["Copiar uma frase","Concluir algo que não está dito diretamente","Corrigir erros","Resumir em uma palavra"],1,"Inferir é concluir a partir das pistas do texto."],["O título de um texto normalmente serve para:",["Enfeitar a página","Indicar o assunto principal","Mostrar o autor","Separar parágrafos"],1,"O título antecipa o tema."],["Na pergunta “Segundo o texto…”, a resposta deve:",["Vir de uma opinião sua","Estar apoiada no que o texto diz","Ser a mais longa","Ser a mais criativa"],1,"A resposta precisa ter base no texto."]],
+orto:[["Qual palavra é oxítona?",["Café","Mesa","Lâmpada","Médico"],0,"Café: a sílaba forte é a última (ca-FÉ)."],["Qual é a grafia correta?",["Beneficente","Beneficiente","Beneficênte","Benefisente"],0,"A forma correta é “beneficente”."],["Qual par está correto quanto ao uso de “s” ou “z”?",["Beleza / Pesquisa","Belesa / Pesquiza","Beleza / Pesquiza","Belesa / Pesquisa"],0,"Escreve-se “beleza” e “pesquisa”."]],
+conc:[["Qual frase usa corretamente o verbo “haver”?",["Havia muitos alunos na sala.","Haviam muitos alunos na sala.","Houveram muitos alunos na sala.","Haviam muito alunos na sala."],0,"“Haver” com sentido de existir é impessoal: fica no singular."],["Qual frase usa corretamente o verbo “fazer” indicando tempo?",["Fazem cinco anos que moro aqui.","Faz cinco anos que moro aqui.","Fazem cinco ano que moro aqui.","Faz cinco ano que moro aqui."],1,"“Fazer” indicando tempo é impessoal: fica no singular."]],
+cl:[["Em “A casa é grande”, “grande” é:",["Adjetivo","Verbo","Advérbio","Artigo"],0,"Caracteriza o substantivo “casa”."],["Qual palavra é um verbo?",["Estudar","Estudo","Estudioso","Estudante"],0,"“Estudar” indica ação."],["Em “Comprei uma bola”, “uma” é:",["Artigo","Pronome","Preposição","Adjetivo"],0,"É o artigo indefinido que acompanha “bola”."]],
+cr:[["Em qual frase o uso da crase está correto?",["Vou à feira.","Vou à pé.","Vou à ele.","Vou à comprar."],0,"Não há crase antes de palavra masculina, pronome ou verbo."],["Qual frase tem a vírgula correta?",["Maria, minha irmã, chegou.","Maria minha irmã, chegou.","Maria, minha irmã chegou.","Maria minha, irmã chegou."],0,"O aposto vem entre vírgulas."],["Complete: “Referi-me ___ professora.”",["à","a","há","as"],0,"Referir-se a + a professora = à professora."]],
+it:[[TX("A empresa abriu 50 vagas de aprendiz e as inscrições vão até sexta-feira.","Até quando vão as inscrições?"),["Quinta-feira","Sexta-feira","Domingo","Segunda-feira"],1,"O prazo está dito no texto."],[TX("Ana lê todos os dias antes de dormir. Por isso, termina um livro por mês.","Qual a consequência de Ana ler todos os dias?"),["Dormir tarde","Terminar um livro por mês","Comprar mais livros","Ficar cansada"],1,"“Por isso” marca a consequência."],[TX("O laboratório ficou fechado porque os equipamentos estavam em manutenção.","Por que o laboratório fechou?"),["Falta de alunos","Feriado","Manutenção dos equipamentos","Falta de luz"],2,"A causa vem depois de “porque”."]],
+bio:[["Onde ocorre a maior parte da absorção dos nutrientes?",["Intestino delgado","Estômago","Esôfago","Boca"],0,"O intestino delgado absorve os nutrientes."],["Qual é a função dos glóbulos vermelhos?",["Transportar oxigênio","Combater vírus","Digerir alimentos","Produzir hormônios"],0,"A hemoglobina carrega oxigênio."],["Os pulmões fazem parte do sistema:",["Respiratório","Digestório","Excretor","Locomotor"],0,"Trocam oxigênio e gás carbônico."]],
+qui:[["Água com sal totalmente dissolvido é uma mistura:",["Homogênea","Heterogênea","Simples","Radioativa"],0,"Tem uma só fase."],["Qual é um exemplo de mudança física?",["Gelo derretendo","Papel queimando","Ferro enferrujando","Leite azedando"],0,"A substância continua a mesma, só muda o estado."],["Qual é o símbolo químico do oxigênio?",["O","Ox","Og","Oz"],0,"O símbolo do oxigênio é O."]],
+seg:[["Qual EPI protege as mãos?",["Luva","Capacete","Óculos","Protetor auricular"],0,"A luva protege as mãos."],["Qual atitude ajuda a reduzir o impacto ambiental?",["Jogar óleo no ralo","Separar resíduos para descarte correto","Queimar lixo em casa","Desperdiçar água"],1,"Separar resíduos facilita o descarte adequado e a reciclagem."],["Antes de mexer em uma instalação elétrica, o correto é:",["Desligar a energia","Usar as mãos molhadas","Tirar as luvas","Ignorar a sinalização"],0,"Desenergizar é o primeiro passo de segurança."]],};
+
+T.push(
+{g:"Matemática",id:"inteiros",n:"Números inteiros e operações",ic:"➕",math:1,e:[["Positivos e negativos","Na reta numérica, quanto mais à direita, maior o número."],["Regras de sinais","Sinais iguais na multiplicação dão positivo; sinais diferentes dão negativo."],["Ordem das operações","Parênteses; potências e raízes; multiplicações e divisões; somas e subtrações."]],q:[["Quanto é −7 + 12?",5],["Quanto é (−4) × 3?",-12],["Quanto é 18 − 25?",-7]]},
+{g:"Matemática",id:"div",n:"Divisibilidade e números primos",ic:"🔢",math:1,e:[["Regras de divisibilidade","Por 2: termina em par. Por 3: soma dos algarismos múltipla de 3. Por 5: termina em 0 ou 5."],["Números primos","Têm exatamente dois divisores positivos: 1 e eles mesmos. Exemplos: 2, 3, 5, 7, 11."],["Fatoração","12 = 2 × 2 × 3: escrevemos o número como produto de fatores primos."]],q:[["Qual número é divisível por 5?",["42","63","75","88"],2,"75 termina em 5."],["Qual destes é primo?",["9","15","17","21"],2,"17 só é divisível por 1 e por 17."],["Qual a fatoração prima de 12?",["2 × 6","3 × 4","2 × 2 × 3","1 × 12"],2,"2 × 2 × 3 = 12."]]},
+{g:"Matemática",id:"exp",n:"Expressões numéricas e algébricas",ic:"🧮",math:1,e:[["Expressões numéricas","3 + 2 × 4 = 3 + 8 = 11. Faça a multiplicação antes da soma."],["Letras representam números","Se x = 4, então 3x significa 3 × 4 = 12."],["Termos semelhantes","2x + 3x = 5x, mas 2x + 3 não pode ser reduzido a 5x."]],q:[["Quanto é 3 + 2 × 4?",11],["Se x = 5, quanto vale 2x + 3?",13],["Simplifique 4a + 2a.",["6a","6","8a","2a"],0,"Some os coeficientes: 4 + 2 = 6."]]},
+{g:"Matemática",id:"ang",n:"Ângulos e polígonos",ic:"📐",math:1,e:[["Tipos de ângulo","Agudo: menor que 90°. Reto: 90°. Obtuso: entre 90° e 180°. Raso: 180°."],["Triângulos","A soma dos ângulos internos é sempre 180°."],["Quadriláteros","Quadrados e retângulos têm quatro lados; a soma dos ângulos internos é 360°."]],q:[["Um ângulo de 90° é:",["Agudo","Reto","Obtuso","Raso"],1,"Ângulo reto mede 90°."],["Um triângulo tem ângulos de 50° e 60°. O terceiro mede:",70],["A soma dos ângulos internos de um quadrilátero é:",360]]},
+{g:"Matemática",id:"graf",n:"Tabelas, gráficos e estatística",ic:"📊",math:1,e:[["Ler gráficos","Confira título, eixos, unidades e legenda antes de comparar valores."],["Média, moda e mediana","Média: soma dividida pela quantidade. Moda: valor que mais aparece. Mediana: valor central após ordenar."],["Comparação","Em barras, compare alturas; em linhas, observe como os valores mudam ao longo do tempo."]],q:[["Qual a média de 4, 6 e 8?",6],["No conjunto 2, 3, 3, 5, qual é a moda?",3],["Ordenados 1, 4, 7, qual é a mediana?",4]]},
+{g:"Português",id:"porques",n:"Uso dos porquês",ic:"❔",e:[["Por que","Usado em perguntas diretas ou indiretas: “Por que faltou?”; “Quero saber por que faltou.”"],["Porque","Usado em respostas e explicações: “Não fui porque estava doente.”"],["Por quê e porquê","“Por quê” aparece no fim da pergunta. “O porquê” é um substantivo: “Não entendi o porquê.”"]],q:[["Não fui ___ estava doente.",["por que","porque","por quê","porquê"],1,"É uma explicação: porque."],["Você chegou tarde, ___?",["por que","porque","por quê","porquê"],2,"No fim da pergunta, usa-se por quê."],["“Quero saber por que saiu”: uso correto?",["Sim","Não"],0,"É uma pergunta indireta."]]},
+{g:"Português",id:"sem",n:"Sinônimos, antônimos e figuras de linguagem",ic:"💬",e:[["Sinônimos e antônimos","Sinônimos têm sentido parecido (feliz/contente); antônimos têm sentidos opostos (claro/escuro)."],["Literal e figurado","Literal é o sentido direto. Figurado usa imagens, como “morto de cansaço”."],["Figuras de linguagem","Comparação usa “como”; metáfora aproxima ideias; personificação dá características humanas a coisas."]],q:[["Sinônimo de “rápido”:",["Lento","Veloz","Distante","Pesado"],1,"Veloz tem sentido parecido."],["Antônimo de “generoso”:",["Bondoso","Solidário","Egoísta","Gentil"],2,"Egoísta expressa ideia oposta."],["“O vento sussurrava” é:",["Personificação","Antônimo","Plural","Onomatopeia"],0,"O vento recebe uma ação humana."]]},
+{g:"Português",id:"verbos",n:"Verbos, tempos e modos",ic:"🕒",e:[["Tempos verbais","Presente: acontece agora. Passado: já aconteceu. Futuro: acontecerá."],["Modos verbais","Indicativo apresenta fato; subjuntivo expressa hipótese ou desejo; imperativo dá ordem, pedido ou conselho."],["Concordância","“A turma estudou”; “Os alunos estudaram”. O verbo concorda com o sujeito."]],q:[["Em “Ontem eu estudei”, o verbo está no:",["Presente","Passado","Futuro"],1,"“Ontem” indica passado."],["“Feche a porta, por favor” está no modo:",["Indicativo","Subjuntivo","Imperativo"],2,"É um pedido."],["Qual frase está correta?",["Nós vai estudar.","Nós vamos estudar.","Nós fomos estudar amanhã."],1,"O verbo concorda com “nós”."]]},
+{g:"Ciências",id:"eco",n:"Ecologia e cadeias alimentares",ic:"🌱",e:[["Ecossistema","Inclui seres vivos e fatores não vivos, como água, solo, luz e temperatura."],["Cadeia alimentar","Plantas são produtoras; consumidores alimentam-se de outros seres; decompositores reciclam matéria."],["Impactos ambientais","Desmatamento, poluição e excesso de resíduos afetam ecossistemas. Reduzir, reutilizar e reciclar ajuda."]],q:[["Quem produz alimento por fotossíntese?",["Plantas","Carnívoros","Fungos","Todos os animais"],0,"Plantas são produtoras."],["Qual é um decompositor?",["Fungo","Coelho","Capim","Águia"],0,"Fungos e bactérias decompõem matéria."],["Qual ação reduz resíduos?",["Jogar lixo no rio","Reutilizar materiais","Queimar lixo","Desperdiçar água"],1,"Reutilizar reduz resíduos."]]},
+{g:"Ciências",id:"amb",n:"Água, ar, solo e ciclos naturais",ic:"🌎",e:[["Ciclo da água","A água evapora, condensa formando nuvens e retorna por precipitação."],["Atmosfera","O ar é uma mistura de gases, principalmente nitrogênio e oxigênio."],["Solo e erosão","O solo sustenta plantas. A retirada da vegetação pode aumentar a erosão."]],q:[["Vapor virando gotinhas líquidas é:",["Fusão","Condensação","Solidificação","Sublimação"],1,"Condensação transforma gás em líquido."],["Qual gás existe em maior proporção no ar?",["Oxigênio","Nitrogênio","Gás carbônico","Hidrogênio"],1,"O nitrogênio compõe a maior parte do ar."],["A erosão pode aumentar com:",["Vegetação preservada","Retirada da vegetação","Plantio de árvores","Proteção do solo"],1,"Sem vegetação, o solo fica mais exposto."]]},
+{g:"Ciências",id:"forca",n:"Forças, máquinas simples e pressão",ic:"🛠️",math:1,e:[["Força","Uma força pode mudar velocidade, direção do movimento ou deformar um objeto."],["Máquinas simples","Alavancas, roldanas e planos inclinados ajudam a realizar tarefas."],["Pressão","Pressão é força dividida pela área. A mesma força numa área menor produz maior pressão."]],q:[["Uma força pode:",["Só mudar a cor","Alterar movimento ou deformar","Criar matéria","Eliminar massa"],1,"Forças podem alterar movimento e forma."],["Qual é uma máquina simples?",["Alavanca","Bateria","Termômetro","Lâmpada"],0,"A alavanca é uma máquina simples."],["Mantendo a força, se a área diminui, a pressão:",["Aumenta","Diminui","Fica zero","Não existe"],0,"Pressão = força ÷ área."]]}
+);
+
+T.forEach(function(t){if(XQ[t.id])t.q=t.q.concat(XQ[t.id])});
+
+var GO={"Matemática":0,"Português":1,"Ciências":2};
+T.sort(function(a,b){return (GO[a.g]??9)-(GO[b.g]??9)});
+var P={g:"Simulado",id:"prova",n:"Prova",math:1,prova:1,q:[]};
+function newProva(){P.q=[];T.forEach(function(t){t.q.slice().sort(function(){return Math.random()-.5}).slice(0,2).forEach(function(q){var c=q.slice();c[0]="<small style='color:var(--mute)'>"+t.n+"</small><br>"+q[0];P.q.push(c)})})}
+var cur={home:1},tab="e",nav=document.getElementById("nav"),main=document.getElementById("main");
+function sv(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function ld(k){try{return localStorage.getItem(k)||""}catch(e){return""}}
+(function(){function gp(x){var d=document.createElement("div");d.className="grp";d.textContent=x;nav.appendChild(d)}
+function bt(id,ic,tx,fn){var b=document.createElement("button");b.id=id;b.innerHTML="<i>"+ic+"</i>"+tx;b.onclick=function(){nav.classList.remove("open");fn()};nav.appendChild(b)}
+bt("bhome","⌂","Início",goHome);bt("bprog","↗","Meu progresso",function(){cur={prog:1};render()});bt("bplan","◷","Plano de estudo",function(){cur={plan:1};render()});bt("brev","↺","Caderno de erros",function(){cur={rev:1};render()});gp("Matérias");var gs=[];T.forEach(function(t){if(gs.indexOf(t.g)<0)gs.push(t.g)});
+gs.forEach(function(g,k){var b=document.createElement("button");b.id="bm"+k;b.setAttribute("data-g",g);b.innerHTML="<i>"+ICO(g,18)+"</i>"+g+"<em class='ct'>"+T.filter(function(t){return t.g==g}).length+"</em>";b.onclick=function(){nav.classList.remove("open");cur={mat:g};render()};nav.appendChild(b)});
+gp("Simulados");[0,1,2].forEach(function(k){bt("bs"+k,"0"+(k+1),"Simulado "+(k+1),function(){pick(k)})})})();
+document.getElementById("menu").onclick=function(){nav.classList.toggle("open")};
+function render(){
+ document.querySelectorAll("nav button").forEach(function(b){b.classList.remove("on")});var ab=document.getElementById(cur.cad?"bcad":cur.plan?"bplan":cur.rev?"brev":cur.prog?"bprog":cur.home?"bhome":cur.ex?"bs"+cur.k:"b"+cur.id);if(ab)ab.classList.add("on");if(cur.home||cur.ex||cur.prog||cur.plan||cur.rev||cur.cad||cur.mat)return view();
+ var h="<h2>"+cur.n+"</h2><div style='color:var(--mute)'>"+cur.g+"</div><div class='tabs'><button class='"+(tab=="e"?"on":"")+"' onclick=\"go('e')\">Explicação</button><button class='"+(tab=="a"?"on":"")+"' onclick=\"go('a')\">Atividade</button></div>";
+ if(cur.prova)h="<h2>Prova</h2><div style='color:var(--mute)'>Simulado com 2 questões de cada tópico. Responda tudo e clique em Corrigir.</div><br>";main.innerHTML=h+(tab=="e"&&!cur.prova?expl():act());
+ if(tab=="a"&&cur.math)calcInit();
+ window.scrollTo(0,0);
+}
+function go(t){tab=t;render()}
+function redo(){if(cur.prova)newProva();render()}
+function expl(){
+ var s=cur.e.map(function(x){return"<div class='card'><h3>"+x[0]+"</h3><p>"+x[1]+"</p></div>"}).join("");
+ return s+"<button class='btn g' onclick='tg()'>📝 Anotação</button><div id='nt' style='display:none'><textarea id='ta' placeholder='Escreva suas anotações deste tópico...'></textarea><div style='color:var(--mute);font-size:13px'>Salvo automaticamente neste aparelho.</div></div>"+
+ "<p><button class='btn' onclick=\"go('a')\">Ir para a atividade →</button></p>";
+}
+function tg(){var n=document.getElementById("nt"),ta=document.getElementById("ta");n.style.display=n.style.display=="none"?"block":"none";ta.value=ld("sn_"+cur.id);ta.oninput=function(){sv("sn_"+cur.id,ta.value)}}
+function act(){
+ var s="";
+ if(cur.math)s+="<div class='calc'><div class='d' id='cd'>0</div><div class='k' id='ck'></div></div>";
+ s+=cur.q.map(function(q,i){
+  var c="<div class='card q' id='q"+i+"'><p class='t'>"+(i+1)+". "+q[0]+"</p>";
+  if(typeof q[1]=="number")c+="<input type='text' inputmode='decimal' id='i"+i+"' placeholder='Sua resposta'>";
+  else c+=q[1].map(function(o,j){return"<label><input type='radio' name='r"+i+"' value='"+j+"'> "+o+"</label>"}).join("");
+  return c+"<div class='fb' id='f"+i+"'></div></div>"}).join("");
+ return s+"<div class='score' id='sc'></div><button class='btn' onclick='fix()'>Corrigir</button> <button class='btn g' onclick='redo()'>Refazer</button>";
+}
+function fix(){
+ var ok=0;
+ cur.q.forEach(function(q,i){
+  var box=document.getElementById("q"+i),f=document.getElementById("f"+i),r,right,msg;
+  if(typeof q[1]=="number"){
+   var v=document.getElementById("i"+i).value.replace(",",".").trim();
+   r=v!==""&&Math.abs(parseFloat(v)-q[1])<0.01;right=String(q[1]).replace(".",",");msg="Resposta certa: "+right;
+  }else{
+   var s=document.querySelector("input[name=r"+i+"]:checked");
+   r=s&&+s.value==q[2];msg="Resposta certa: "+q[1][q[2]]+". "+q[3];
+  }
+  if(r)ok++;
+  box.className="card q "+(r?"ok":"no");f.className="fb "+(r?"ok":"no");f.textContent=(r?"✔ Acertou! ":"✘ Errou. ")+(r?"":msg);
+ });
+ var n=cur.q.length;document.getElementById("sc").textContent="Você acertou "+ok+" de "+n+(ok==n?" 🎉":"");
+}
+var ex="";
+function calcInit(){
+ ex="";var k=document.getElementById("ck"),d=document.getElementById("cd");
+ ["7","8","9","÷","4","5","6","×","1","2","3","−","0",",","=","+","C","(",")","⌫"].forEach(function(x){
+  var b=document.createElement("button");b.textContent=x;
+  if("÷×−+".indexOf(x)>-1)b.className="o";if(x=="=")b.className="e";
+  b.onclick=function(){
+   if(x=="C")ex="";else if(x=="⌫")ex=ex.slice(0,-1);
+   else if(x=="="){try{var e=ex.replace(/÷/g,"/").replace(/×/g,"*").replace(/−/g,"-").replace(/,/g,".");
+    if(!/^[0-9+\-*\/.() ]+$/.test(e))throw 0;var r=Function("return "+e)();ex=String(Math.round(r*1e8)/1e8).replace(".",",")}catch(z){ex="Erro"}}
+   else{if(ex=="Erro")ex="";ex+=x}
+   d.textContent=ex||"0"};
+  k.appendChild(b)});
+}
+var S=[
+{n:"Simulado 1",s:"Base escolar",q:[
+["Português","Em “Choveu muito, por isso o jogo foi cancelado”, a expressão “por isso” indica:",["Oposição","Consequência","Tempo","Finalidade"],1,"“Por isso” liga a causa (choveu) à consequência (jogo cancelado)."],
+["Português","Qual palavra está acentuada corretamente?",["Heroi","Herói","Héroi","Hérói"],1,"“Herói” é oxítona terminada em ditongo aberto “ói”, então leva acento."],
+["Português","Em “Os livros que comprei são ótimos”, a palavra “que” é:",["Pronome relativo","Conjunção","Advérbio","Preposição"],0,"Aqui “que” retoma “livros”, por isso é pronome relativo."],
+["Português","Qual é o plural correto de “cidadão”?",["Cidadões","Cidadãos","Cidadães","Cidadão"],1,"O plural de “cidadão” é “cidadãos”."],
+["Português","Em “Tenho um milhão de coisas para fazer”, há uma figura de linguagem chamada:",["Hipérbole","Personificação","Ironia","Eufemismo"],0,"Exagerar de propósito para dar ênfase é hipérbole."],
+["Matemática","Quanto é 15% de 240?",["24","30","36","48"],2,"240 × 0,15 = 36."],
+["Matemática","Se 2x + 5 = 21, quanto vale x?",["6","8","10","13"],1,"2x = 21 − 5 = 16, então x = 8."],
+["Matemática","Um retângulo tem base 9 cm e altura 4 cm. Qual é a área?",["13 cm²","18 cm²","26 cm²","36 cm²"],3,"Área = base × altura = 9 × 4 = 36 cm²."],
+["Matemática","Quantos minutos há em 2 horas e meia?",["120","130","150","180"],2,"2 × 60 + 30 = 150 minutos."],
+["Matemática","Quanto é 3/4 + 1/8?",["4/12","7/8","4/8","1"],1,"3/4 = 6/8, e 6/8 + 1/8 = 7/8."],
+["Ciências","Qual gás as plantas absorvem na fotossíntese?",["Oxigênio","Gás carbônico","Nitrogênio","Hidrogênio"],1,"Na fotossíntese a planta usa gás carbônico e libera oxigênio."],
+["Ciências","A mudança da água do estado líquido para o gasoso chama-se:",["Fusão","Solidificação","Evaporação","Condensação"],2,"Líquido para gás é evaporação."],
+["Ciências","Qual órgão bombeia o sangue pelo corpo?",["Pulmão","Fígado","Coração","Rim"],2,"O coração é o órgão que bombeia o sangue."],
+["Ciências","Qual é a unidade de medida da corrente elétrica?",["Volt","Ampère","Ohm","Watt"],1,"Corrente elétrica se mede em ampères (A)."],
+["Ciências","Qual destes materiais é um bom condutor de eletricidade?",["Borracha","Madeira seca","Cobre","Plástico"],2,"Metais, como o cobre, conduzem bem a eletricidade."]
+]},
+{n:"Simulado 2",s:"Intermediário",q:[
+["Português","Qual frase usa corretamente “mau” ou “mal”?",["Ele é um mal aluno.","Ele é um mau aluno.","Ele se sentiu mau.","Ele fala mau inglês."],1,"“Mau” é o oposto de “bom”; “mal” é o oposto de “bem”."],
+["Português","Qual é o antônimo de “escasso”?",["Raro","Abundante","Pequeno","Pouco"],1,"Escasso é o que falta; o contrário é abundante."],
+["Português","Em “Fui ao mercado e comprei pão”, o “e” é uma conjunção:",["Adversativa","Aditiva","Conclusiva","Explicativa"],1,"O “e” soma duas ações, por isso é aditiva."],
+["Português","Em qual frase a crase está correta?",["Vou à escola.","Vou à pé.","Fui à ele.","Estou à fim de sair."],0,"Ir a + a escola = à escola. Não há crase antes de “pé”, “ele” ou “fim”."],
+["Português","O texto que ensina o passo a passo de algo, como uma receita, é do tipo:",["Narrativo","Instrucional","Poético","Humorístico"],1,"Textos que orientam como fazer algo são instrucionais."],
+["Matemática","Uma camiseta de R$ 80 tem desconto de 25%. Qual o preço final?",["R$ 55","R$ 60","R$ 65","R$ 70"],1,"25% de 80 = 20, então 80 − 20 = 60."],
+["Matemática","5 operários fazem um muro em 8 dias. Em quantos dias 10 operários fazem o mesmo muro?",["2","4","16","20"],1,"É regra de três inversa: (5 × 8) ÷ 10 = 4."],
+["Matemática","Qual é o perímetro de um quadrado de lado 12 cm?",["24 cm","36 cm","48 cm","144 cm"],2,"Perímetro = 4 × 12 = 48 cm."],
+["Matemática","Quanto são 2,5 km em metros?",["25","250","2500","25000"],2,"1 km = 1000 m, então 2,5 × 1000 = 2500 m."],
+["Matemática","Na sequência 3, 6, 12, 24, ... qual é o próximo número?",["30","36","48","60"],2,"Cada número é o dobro do anterior: 24 × 2 = 48."],
+["Ciências","Qual é uma característica da reprodução sexuada?",["Envolve a união de gametas","Acontece apenas em bactérias","Não transmite material genético","Produz sempre indivíduos idênticos"],0,"A reprodução sexuada envolve gametas e combina material genético."],
+["Ciências","Qual camada da atmosfera protege a Terra dos raios ultravioleta?",["Troposfera","Camada de ozônio","Litosfera","Hidrosfera"],1,"A camada de ozônio filtra boa parte da radiação UV."],
+["Ciências","Qual é a função dos glóbulos brancos?",["Transportar oxigênio","Defender o corpo","Coagular o sangue","Digerir alimentos"],1,"Os glóbulos brancos fazem parte da defesa do organismo."],
+["Ciências","Quando um carro freia de repente e os passageiros vão para a frente, ocorre:",["Inércia","Magnetismo","Condensação","Fotossíntese"],0,"Pela inércia, o corpo tende a continuar em movimento."],
+["Ciências","Qual destes é um recurso renovável?",["Petróleo","Carvão mineral","Energia solar","Gás natural"],2,"A energia solar não se esgota; os outros são fósseis."]
+]},
+{n:"Simulado 3",s:"Desafio",q:[
+["Português","Em “Se eu estudar, passo”, a oração iniciada por “se” expressa:",["Causa","Condição","Finalidade","Tempo"],1,"“Se” indica uma condição para que algo aconteça."],
+["Português","Qual palavra está escrita de forma INCORRETA?",["Obsessão","Beneficente","Previlégio","Pretensão"],2,"A forma correta é “privilégio”."],
+["Português","Em “Ele chegou cedo, mas não encontrou ninguém”, “mas” indica:",["Adição","Oposição","Conclusão","Explicação"],1,"“Mas” opõe duas ideias."],
+["Português","Em qual frase a vírgula está bem usada?",["Maria, cantou ontem.","Maria cantou, ontem.","Ontem, Maria cantou.","Ontem Maria, cantou."],2,"Não se separa sujeito e verbo; a vírgula após “Ontem” é aceita."],
+["Português","O que significa a palavra “ambíguo”?",["Que permite mais de uma interpretação","Que é muito claro","Que é muito grande","Que é muito rápido"],0,"Ambíguo é o que pode ter dois ou mais sentidos."],
+["Matemática","Um carro anda 90 km em 1,5 h. Qual a velocidade média?",["45 km/h","60 km/h","75 km/h","135 km/h"],1,"90 ÷ 1,5 = 60 km/h."],
+["Matemática","Qual é o volume de um cubo com aresta de 4 cm?",["12 cm³","16 cm³","48 cm³","64 cm³"],3,"4 × 4 × 4 = 64 cm³."],
+["Matemática","Se 3x − 4 = 11, quanto vale x?",["3","4","5","7"],2,"3x = 15, então x = 5."],
+["Matemática","Um item de R$ 50 sofre aumento de 20%. Qual o novo preço?",["R$ 55","R$ 60","R$ 65","R$ 70"],1,"20% de 50 = 10, então 50 + 10 = 60."],
+["Matemática","Qual é a área de um triângulo de base 14 e altura 5?",["19","28","35","70"],2,"(14 × 5) ÷ 2 = 35."],
+["Ciências","Um resistor de 5 Ω é ligado a 20 V. Qual a corrente?",["4 A","100 A","15 A","0,25 A"],0,"I = V ÷ R = 20 ÷ 5 = 4 A."],
+["Ciências","Qual é a função principal dos rins?",["Bombear sangue","Filtrar o sangue e produzir urina","Produzir bile","Trocar gases"],1,"Os rins filtram o sangue e eliminam resíduos na urina."],
+["Ciências","Qual é o principal gás da atmosfera terrestre?",["Oxigênio","Gás carbônico","Nitrogênio","Argônio"],2,"O nitrogênio ocupa cerca de 78% do ar."],
+["Ciências","Água com sal totalmente dissolvido é um exemplo de:",["Mistura homogênea","Mistura heterogênea","Substância simples","Elemento químico"],0,"Tem aspecto uniforme, com uma só fase."],
+["Ciências","A energia armazenada em uma pilha é principalmente:",["Térmica","Química","Eólica","Mecânica"],1,"A pilha transforma energia química em elétrica."]
+]}];
+var E=null;
+function goHome(){cur={home:1};render()}
+function pick(k){cur={ex:1,k:k};E=null;render()}
+function openT(i){cur=T[i];tab="e";render()}
+function view(){
+ if(cur.home){var tot=S.reduce(function(a,x){return a+x.q.length},0);
+  main.innerHTML="<section class='hero'><div class='eb'>Preparação para a prova</div><h1>ESTUDE PARA<br>O SENAI</h1><p>Explicações simples, atividades com correção e simulados completos, em preto e branco, no PC e no celular.</p><div class='stats'><div class='stat'><b>"+T.length+"</b>tópicos</div><div class='stat'><b>"+S.length+"</b>simulados</div><div class='stat'><b>"+tot+"</b>questões de prova</div><div class='stat'><b>4</b>áreas</div></div></section><h3 class='sec'>Simulados</h3><div class='grid'>"+S.map(function(x,k){return "<button class='tile' onclick='pick("+k+")'><span class='n'>0"+(k+1)+"</span><b>"+x.n+"</b><small>"+x.s+" · "+x.q.length+" questões</small></button>"}).join("")+"</div><h3 class='sec'>Conteúdos</h3><div class='grid'>"+T.map(function(t,i){return "<button class='tile' onclick='openT("+i+")'><span class='n'>"+t.g+"</span><b>"+t.n+"</b><small>Explicação + atividade</small></button>"}).join("")+"</div>";
+  return window.scrollTo(0,0)}
+ var s=S[cur.k];
+ if(!E)E={i:0,st:0,a:s.q.map(function(){return null})};
+ if(E.st==1)ques(s);else if(E.st==2)resu(s);else{
+  main.innerHTML="<section class='hero'><div class='eb'>"+s.s+"</div><h1>"+s.n.toUpperCase()+"</h1><p>Prova com "+s.q.length+" questões de Português, Matemática e Ciências. Escolha uma alternativa por questão e veja seu desempenho no final.</p><div class='stats'><div class='stat'><b>"+s.q.length+"</b>questões</div><div class='stat'><b>3</b>matérias</div><div class='stat'><b>4</b>alternativas</div><div class='stat'><b>1</b>diagnóstico</div></div></section><div class='notice'>Simulado autoral de preparação, não é a prova oficial do SENAI. Você pode voltar e mudar respostas antes de finalizar. Nas questões de Matemática há uma mini calculadora.</div><div class='navx'><button class='btn g' onclick='goHome()'>Início</button><button class='btn' id='go'>Começar prova</button></div>";
+  document.getElementById("go").onclick=function(){E.st=1;render()}}
+ window.scrollTo(0,0)}
+function prog(n){var d=E.a.filter(function(x){return x!==null}).length;document.getElementById("bar").style.width=d/n*100+"%";document.getElementById("pp").textContent=Math.round(d/n*100)+"%"}
+function ques(s){
+ var q=s.q[E.i],n=s.q.length,d=E.a.filter(function(x){return x!==null}).length;
+ main.innerHTML="<div class='exh'><div><div class='eb'>"+s.n+"</div><b>Questão "+(E.i+1)+" de "+n+"</b></div><div class='pw'><div class='pm'><span>Respondidas</span><span id='pp'>"+Math.round(d/n*100)+"%</span></div><div class='pg'><div class='bar' id='bar' style='width:"+d/n*100+"%'></div></div></div></div><article class='question'><div class='qh'><span class='tag'>"+q[0]+"</span><span class='eb'>"+(E.i+1)+"/"+n+"</span></div><h2>"+q[1]+"</h2><div class='options'>"+q[2].map(function(o,j){return "<label class='option'><input type='radio' name='o' value='"+j+"'"+(E.a[E.i]===j?" checked":"")+"><span><b>"+"ABCD".charAt(j)+".</b> "+o+"</span></label>"}).join("")+"</div>"+(q[0]=="Matemática"?"<div class='calc' style='margin:16px 0 0'><div class='d' id='cd'>0</div><div class='k' id='ck'></div></div>":"")+"</article><div class='navx'><button class='btn g' id='pv'"+(E.i?"":" disabled")+">Anterior</button><button class='btn' id='nx'>"+(E.i==n-1?"Finalizar prova":"Próxima")+"</button></div><div class='qn'>"+s.q.map(function(_,i){return "<button class='"+(E.a[i]!==null?"d ":"")+(i==E.i?"c":"")+"' onclick='E.i="+i+";render()'>"+(i+1)+"</button>"}).join("")+"</div>";
+ main.querySelectorAll("input").forEach(function(x){x.onchange=function(){E.a[E.i]=+x.value;prog(n)}});
+ document.getElementById("pv").onclick=function(){E.i--;render()};
+ document.getElementById("nx").onclick=function(){if(E.a[E.i]===null){alert("Escolha uma alternativa antes de continuar.");return}if(E.i<n-1){E.i++;render()}else fin()};
+ if(q[0]=="Matemática")calcInit();
+ window.scrollTo(0,0)}
+function fin(){var b=E.a.filter(function(x){return x===null}).length;if(b&&!confirm("Você deixou "+b+" questão(ões) em branco. Corrigir mesmo assim?"))return;E.st=2;render()}
+function resu(s){
+ var by={},ok=0,bl=0,n=s.q.length;
+ s.q.forEach(function(q,i){var a=by[q[0]]=by[q[0]]||{o:0,t:0};a.t++;if(E.a[i]===null)bl++;if(E.a[i]===q[3]){ok++;a.o++}});
+ var p=Math.round(ok/n*100);
+ var ar=Object.keys(by).map(function(k){return [k,by[k].o,by[k].t,Math.round(by[k].o/by[k].t*100)]});
+ var sr=ar.slice().sort(function(a,b){return b[3]-a[3]}),w=sr[sr.length-1];
+ var rv=s.q.map(function(q,i){if(E.a[i]===q[3])return "";return "<div class='rv'><b>Questão "+(i+1)+" · "+q[0]+"</b><br>Sua resposta: "+(E.a[i]===null?"em branco":"ABCD".charAt(E.a[i])+". "+q[2][E.a[i]])+"<br>Correta: "+"ABCD".charAt(q[3])+". "+q[2][q[3]]+"<br><i>"+q[4]+"</i></div>"}).join("");
+ main.innerHTML="<section class='hero'><div class='eb'>Resultado · "+s.n+"</div><div class='score'>"+p+"%</div><p>Você acertou "+ok+" de "+n+" questões"+(bl?" e deixou "+bl+" em branco":"")+". "+(p>=80?"Excelente desempenho!":p>=60?"Bom resultado, revise os erros para melhorar.":"Use os erros como guia de estudo e tente de novo.")+"</p></section><div class='ag'><div class='card cc'><canvas id='cv' width='180' height='180'></canvas><div style='flex:1;min-width:190px'><h3>Desempenho por área</h3>"+ar.map(function(a){return "<div class='ar'><div class='al'><span>"+a[0]+"</span><span>"+a[1]+"/"+a[2]+" · "+a[3]+"%</span></div><div class='mn'><i style='width:"+a[3]+"%'></i></div></div>"}).join("")+"</div></div><div class='card'><h3>Diagnóstico</h3><div class='dg'><b>🏆 Melhor desempenho</b>"+sr[0][0]+" com "+sr[0][3]+"% de acerto.</div><div class='dg'><b>🎯 Prioridade de estudo</b>"+w[0]+" com "+w[3]+"%. Revise esse conteúdo primeiro.</div><div class='dg'><b>📈 Próximo passo</b>Leia as explicações abaixo e refaça a prova para ver sua evolução.</div></div></div><div class='card'><h3>Questões para revisar</h3>"+(rv||"<p>Parabéns! Você acertou tudo. 🎉</p>")+"</div><div class='navx'><button class='btn g' onclick='goHome()'>Início</button><button class='btn' onclick='pick("+cur.k+")'>Refazer prova</button></div>";
+ var c=document.getElementById("cv").getContext("2d");c.lineWidth=16;c.lineCap="round";c.strokeStyle="#222";c.beginPath();c.arc(90,90,70,0,7);c.stroke();
+ if(p>0){c.strokeStyle="#fff";c.beginPath();c.arc(90,90,70,-1.5708,-1.5708+p/100*6.2832);c.stroke()}
+ c.fillStyle="#fff";c.font="700 32px system-ui";c.textAlign="center";c.fillText(p+"%",90,101);
+ window.scrollTo(0,0)}
+
+function R(a,b){return a+Math.floor(Math.random()*(b-a+1))}
+function sh(a){return a.sort(function(){return Math.random()-.5})}
+function U(u){return function(x){return String(x).replace(".",",")+(u?" "+u:"")}}
+function sq(q){var o=q[2],c=o[q[3]],n=sh(o.slice());return [q[0],q[1],n,n.indexOf(c),q[4]]}
+function mk(ar,t,c,w,e,f){var v=[c],st=Math.max(1,Math.round(c/10));
+ w.concat([c+st,c-st,c+2*st,c-2*st,c+3*st]).forEach(function(x){x=Math.round(x*100)/100;if(v.length<4&&x>0&&v.indexOf(x)<0)v.push(x)});
+ return sq([ar,t,v.map(f||U("")),0,e])}
+var BRL=function(x){return "R$ "+String(x).replace(".",",")};
+var M=[
+function(){var p=R(2,9)*5,n=R(2,9)*20,c=p*n/100;return mk("Matemática","Quanto é "+p+"% de "+n+"?",c,[p*n/10,n-c],n+" × "+p+" ÷ 100 = "+c+".")},
+function(){var p=R(1,5)*40,d=[10,20,25,30][R(0,3)],c=p*(100-d)/100;return mk("Matemática","Um produto de R$ "+p+" tem desconto de "+d+"%. Qual o preço final?",c,[p*d/100,p+p*d/100],"Desconto de "+p*d/100+", então "+p+" − "+p*d/100+" = "+c+".",BRL)},
+function(){var p=R(1,5)*40,a=[10,20,25,30][R(0,3)],c=p*(100+a)/100;return mk("Matemática","Um item de R$ "+p+" teve aumento de "+a+"%. Qual o novo preço?",c,[p*a/100,p-p*a/100],"Aumento de "+p*a/100+", então "+p+" + "+p*a/100+" = "+c+".",BRL)},
+function(){var x=R(2,12),a=R(2,6),b=R(1,15),c=a*x+b;return mk("Matemática","Se "+a+"x + "+b+" = "+c+", quanto vale x?",x,[c-b,a],a+"x = "+c+" − "+b+" = "+(c-b)+", então x = "+x+".")},
+function(){var k=R(2,6),u=R(2,5),n=k+R(2,5),c=u*n;return mk("Matemática",k+" canetas custam R$ "+k*u+". Quanto custam "+n+" canetas?",c,[n*k],"Cada caneta custa "+u+"; "+n+" × "+u+" = "+c+".",BRL)},
+function(){var o=[3,4,5,6][R(0,3)],d=R(2,8)*2,c=d/2;return mk("Matemática",o+" operários fazem um serviço em "+d+" dias. Em quantos dias "+o*2+" operários fazem o mesmo serviço?",c,[d*2],"É regra de três inversa: o dobro de operários leva metade dos dias.",U("dias"))},
+function(){var b=R(3,15),h=R(3,12);return mk("Matemática","Qual é a área de um retângulo de "+b+" cm por "+h+" cm?",b*h,[2*(b+h),b+h],"Área = "+b+" × "+h+" = "+b*h+".",U("cm²"))},
+function(){var b=R(3,15),h=R(3,12);return mk("Matemática","Qual é o perímetro de um retângulo de "+b+" cm por "+h+" cm?",2*(b+h),[b*h,b+h],"Perímetro = 2 × ("+b+" + "+h+") = "+2*(b+h)+".",U("cm"))},
+function(){var b=R(2,10)*2,h=R(3,12);return mk("Matemática","Qual é a área de um triângulo de base "+b+" cm e altura "+h+" cm?",b*h/2,[b*h],"Área = ("+b+" × "+h+") ÷ 2 = "+b*h/2+".",U("cm²"))},
+function(){var a=R(2,9);return mk("Matemática","Qual é o volume de um cubo de aresta "+a+" cm?",a*a*a,[a*a,3*a],"Volume = "+a+" × "+a+" × "+a+" = "+a*a*a+".",U("cm³"))},
+function(){var m=R(11,99)*100;return mk("Matemática",m/1000+" km são quantos metros?",m,[m/10,m*10],"Multiplique por 1000: "+m/1000+" × 1000 = "+m+".",U("m"))},
+function(){var h=R(2,9),m=[15,30,45][R(0,2)],c=h*60+m;return mk("Matemática",h+" h e "+m+" min são quantos minutos?",c,[h*100+m,h*60],h+" × 60 + "+m+" = "+c+".",U("min"))},
+function(){var g=R(11,99)*100;return mk("Matemática",g+" g são quantos kg?",g/1000,[g/100,g*10],"Divida por 1000: "+g+" ÷ 1000 = "+g/1000+".",U("kg"))},
+function(){var s=R(2,9),a=R(1,9),c=a+4*s;return mk("Matemática","Qual o próximo número da sequência "+a+", "+(a+s)+", "+(a+2*s)+", "+(a+3*s)+", ...?",c,[c+s,c-s],"A razão é +"+s+": "+(a+3*s)+" + "+s+" = "+c+".")},
+function(){var m=R(5,9),d1=R(1,3),d2=R(1,3);return mk("Matemática","Qual é a média de "+(m-d1)+", "+(m+d2)+", "+(m+d1)+" e "+(m-d2)+"?",m,[m+1,m-1],"Soma = "+4*m+"; "+4*m+" ÷ 4 = "+m+".")},
+function(){var n=R(2,9)*4,k=R(1,3),c=n/4*k;return mk("Matemática","Quanto é "+k+"/4 de "+n+"?",c,[n/4,n-c],n+" ÷ 4 = "+n/4+"; × "+k+" = "+c+".")},
+function(){var v=R(4,12)*10,t=R(2,5);return mk("Matemática","Um carro percorre "+v*t+" km em "+t+" h. Qual a velocidade média?",v,[v*t,v+t],"v = "+v*t+" ÷ "+t+" = "+v+".",U("km/h"))}
+];
+var PH=[
+function(){var r=[2,4,5,10,20][R(0,4)],i=R(1,6);return mk("Ciências","Um resistor de "+r+" Ω recebe "+r*i+" V. Qual a corrente?",i,[r*i,r],"I = V ÷ R = "+r*i+" ÷ "+r+" = "+i+".",U("A"))},
+function(){var r=[2,4,5,10,20][R(0,4)],i=R(1,6);return mk("Ciências","Por um resistor de "+r+" Ω passa uma corrente de "+i+" A. Qual a tensão?",r*i,[r+i],"V = R × I = "+r+" × "+i+" = "+r*i+".",U("V"))},
+function(){var r=[2,4,5,10,20][R(0,4)],i=R(2,6);return mk("Ciências","Uma tensão de "+r*i+" V gera "+i+" A. Qual a resistência?",r,[r*i,i],"R = V ÷ I = "+r*i+" ÷ "+i+" = "+r+".",U("Ω"))},
+function(){var v=[12,24,110,127,220][R(0,4)],i=R(1,5);return mk("Ciências","Um aparelho de "+v+" V consome "+i+" A. Qual a potência?",v*i,[v+i,v/i],"P = V × I = "+v+" × "+i+" = "+v*i+".",U("W"))},
+function(){var v=R(2,9),t=R(5,20);return mk("Ciências","Um ciclista percorre "+v*t+" m em "+t+" s. Qual a velocidade média?",v,[v*t,t],"v = "+v*t+" ÷ "+t+" = "+v+".",U("m/s"))},
+function(){var V=R(2,5),d=R(2,9);return mk("Ciências","Um objeto de "+V*d+" g ocupa "+V+" cm³. Qual a densidade?",d,[V*d,V],"d = m ÷ V = "+V*d+" ÷ "+V+" = "+d+".",U("g/cm³"))}
+];
+var PN=[[
+["Qual frase usa corretamente o “porque”?",["Não vim porque choveu.","Não vim por que choveu.","Não vim porquê choveu.","Não vim por quê choveu."],0,"“Porque”, junto e sem acento, introduz a causa."],
+["“Há dez anos moro aqui.” O “há” indica:",["Tempo passado","Tempo futuro","Lugar","Quantidade"],0,"“Há” com sentido de “faz” indica tempo passado."],
+["Qual palavra é um substantivo?",["Rapidamente","Beleza","Bonito","Correr"],1,"“Beleza” nomeia algo, por isso é substantivo."],
+["Em “Ana comprou um carro novo”, o adjetivo é:",["Ana","comprou","carro","novo"],3,"“Novo” caracteriza o substantivo “carro”."],
+["Qual é o sinônimo de “veloz”?",["Lento","Ligeiro","Pesado","Calmo"],1,"Veloz e ligeiro significam rápido."],
+["Qual expressão tem concordância nominal correta?",["As casas bonita","Os meninos alegres","A meninas educadas","Os livro novos"],1,"Artigo, substantivo e adjetivo concordam no plural."],
+["Em “Eles chegaram ontem”, o verbo está no:",["Presente","Pretérito perfeito","Futuro","Infinitivo"],1,"“Chegaram” indica ação já concluída."],
+["Qual é o feminino de “ator”?",["Atora","Atriz","Atrizes","Atriza"],1,"O feminino de “ator” é “atriz”."],
+["Em “O professor elogiou os alunos”, o sujeito é:",["Os alunos","Elogiou","O professor","Os alunos elogiou"],2,"Quem pratica a ação é “o professor”."],
+["Qual alternativa está escrita corretamente?",["Pesquiza","Pesquisa","Pezquisa","Pesquissa"],1,"A grafia correta é “pesquisa”."],
+["Um texto que relata fatos recentes, como o de um jornal, é:",["Notícia","Poema","Conto","Receita"],0,"A notícia informa fatos atuais."],
+["Em “Ele é mais alto que eu”, a frase faz uma:",["Comparação","Ordem","Pergunta","Súplica"],0,"Compara a altura de duas pessoas."],
+["Qual palavra é oxítona?",["Pássaro","Café","Útil","Árvore"],1,"“Café” tem a última sílaba forte (ca-FÉ)."],
+["Em “Ninguém sabia a resposta”, “ninguém” é pronome:",["Pessoal","Indefinido","Possessivo","Demonstrativo"],1,"Refere-se a pessoa de forma indeterminada."],
+["Qual frase tem pontuação correta?",["Ana, venha cá!","Ana venha, cá!","Ana venha cá,!","Ana, venha, cá"],0,"A vírgula separa o vocativo “Ana”."]
+],[
+["Qual alternativa tem erro de ortografia?",["Exceção","Beneficiente","Advogado","Excesso"],1,"A forma correta é “beneficente”."],
+["Em “Estudei, pois a prova era difícil”, “pois” indica:",["Explicação","Oposição","Tempo","Condição"],0,"Explica o motivo de ter estudado."],
+["Qual frase está na voz passiva?",["O cão mordeu o carteiro.","O carteiro foi mordido pelo cão.","O carteiro correu.","O cão late."],1,"O sujeito sofre a ação."],
+["Qual é o coletivo de “abelhas”?",["Cardume","Enxame","Matilha","Manada"],1,"Abelhas formam um enxame."],
+["Em “Preciso de ajuda”, a preposição é:",["Preciso","de","ajuda","Em"],1,"“De” liga o verbo ao complemento."],
+["Qual palavra é paroxítona?",["Amor","Café","Mesa","Sofá"],2,"“Mesa” tem a sílaba forte na penúltima (ME-sa)."],
+["Em “Choveu a noite toda”, o verbo “chover” indica:",["Fenômeno da natureza","Ação de uma pessoa","Estado de espírito","Ordem"],0,"É um verbo de fenômeno natural."],
+["Em qual frase a crase está correta?",["Ela foi à padaria.","Ela foi à pé.","Ela viu à Maria.","Ele foi à Brasília."],0,"Ir a + a padaria = à padaria."],
+["A expressão “dar uma mão” significa:",["Ajudar","Machucar","Aplaudir","Comprar"],0,"É uma expressão figurada para ajudar."],
+["Qual é o plural de “pão”?",["Pãos","Pães","Pões","Pãe"],1,"O plural é “pães”."],
+["“Venha logo!” é uma frase:",["Declarativa","Imperativa","Interrogativa","Descritiva"],1,"Expressa uma ordem."],
+["Qual palavra é um advérbio?",["Bonito","Rapidamente","Casa","Estudo"],1,"“Rapidamente” indica modo."],
+["Qual é o antônimo de “generoso”?",["Bondoso","Egoísta","Gentil","Honesto"],1,"O contrário de generoso é egoísta."],
+["Em “Meus amigos chegaram”, “meus” é pronome:",["Possessivo","Pessoal","Relativo","Indefinido"],0,"Indica posse."],
+["Qual frase está correta?",["Faz dois anos que não o vejo.","Fazem dois anos que não o vejo.","Fazem dois ano que não o vejo.","Faz dois anos que não vejo-o."],0,"“Fazer” indicando tempo é impessoal."]
+],[
+["Em “Estudou muito; logo, passou”, “logo” indica:",["Conclusão","Oposição","Tempo","Comparação"],0,"“Logo” introduz a conclusão."],
+["Qual palavra tem sentido contrário a “antes”?",["Depois","Cedo","Ontem","Nunca"],0,"O oposto de antes é depois."],
+["Em “Eu e ela fomos ao cinema”, o sujeito é:",["Simples","Composto","Oculto","Indeterminado"],1,"Há dois núcleos: eu e ela."],
+["Qual frase está correta?",["Haviam muitas pessoas.","Havia muitas pessoas.","Haviam muita pessoa.","Houveram muitas pessoas."],1,"“Haver” no sentido de existir é impessoal."],
+["Qual é o sentido de “inevitável”?",["Que não pode ser evitado","Que é fácil","Que é raro","Que é falso"],0,"Inevitável é o que não se pode evitar."],
+["O texto com personagens, tempo, lugar e enredo é:",["Narrativo","Instrucional","Expositivo","Publicitário"],0,"Narrar é contar uma história."],
+["Em “Ela canta bem”, “bem” é:",["Adjetivo","Advérbio","Substantivo","Verbo"],1,"“Bem” modifica o verbo “canta”."],
+["Qual palavra está acentuada corretamente?",["Orgão","Órgão","Orgãõ","Órgao"],1,"“Órgão” é paroxítona terminada em “ão”."],
+["Qual frase tem conjunção adversativa?",["Estudei e passei.","Estudei, mas não passei.","Estudei porque quis.","Estudei logo cedo."],1,"“Mas” opõe duas ideias."],
+["Em “A turma estudou unida”, “unida” concorda com:",["Turma","Estudou","A","Unida"],0,"O adjetivo concorda com “turma”."],
+["Qual é o diminutivo de “casa”?",["Casarão","Casinha","Casona","Casaco"],1,"O diminutivo é “casinha”."],
+["O ponto de interrogação serve para:",["Fazer uma pergunta","Dar uma ordem","Indicar surpresa","Separar itens"],0,"Ele marca perguntas."],
+["Qual palavra tem prefixo?",["Desfazer","Pedreiro","Casinha","Floresta"],0,"“Des-” é um prefixo."],
+["Em “Comprei pão, leite e ovos”, as vírgulas separam:",["Itens de uma enumeração","Orações subordinadas","Vocativos","Apostos"],0,"A vírgula separa os itens da lista."],
+["Qual frase está correta?",["Vendem-se casas.","Vende-se casas.","Vendem casas-se.","Se vendem-casas."],0,"O verbo concorda com “casas”."]
+]];
+var CN=[[
+["Qual é a unidade de massa no SI?",["Litro","Quilograma","Metro","Newton"],1,"A unidade de massa é o quilograma (kg)."],
+["Qual parte da célula guarda o material genético?",["Núcleo","Membrana","Vacúolo","Parede celular"],0,"O DNA fica no núcleo."],
+["Qual é o estado físico da água a 25 °C?",["Sólido","Líquido","Gasoso","Plasma"],1,"Entre 0 °C e 100 °C a água é líquida."],
+["Qual astro é o centro do Sistema Solar?",["Terra","Lua","Sol","Júpiter"],2,"Os planetas giram em torno do Sol."],
+["Ossos e músculos formam o sistema:",["Digestório","Locomotor","Respiratório","Nervoso"],1,"Eles permitem o movimento."],
+["Qual processo permite que as plantas produzam seu próprio alimento?",["Fotossíntese","Digestão","Evaporação","Combustão"],0,"Na fotossíntese, as plantas usam luz, água e gás carbônico para produzir açúcares."],
+["Qual destes é um metal?",["Enxofre","Ferro","Carbono","Oxigênio"],1,"O ferro é um metal."],
+["Para que serve o EPI no trabalho?",["Enfeitar","Proteger o trabalhador","Aumentar o ruído","Reduzir o salário"],1,"EPI protege contra riscos e acidentes."],
+["A reciclagem de papel ajuda a:",["Reduzir o uso de recursos naturais","Aumentar o lixo","Poluir rios","Gastar mais energia"],0,"Reaproveitar o material poupa árvores."]
+],[
+["Quem causa as marés principalmente?",["O vento","A atração da Lua","As chuvas","Os vulcões"],1,"A gravidade da Lua puxa a água dos mares."],
+["Quando o gelo derrete, ocorre uma mudança:",["Química","Física","Nuclear","Biológica"],1,"A água continua sendo a mesma substância; só muda de estado físico."],
+["Qual instrumento mede temperatura?",["Balança","Termômetro","Régua","Barômetro"],1,"O termômetro mede a temperatura."],
+["Qual vitamina a pele produz com a luz do sol?",["C","D","A","K"],1,"A exposição ao sol estimula a vitamina D."],
+["A queima de combustíveis fósseis aumenta o:",["Oxigênio","Gás carbônico","Hélio","Argônio"],1,"A queima libera CO₂."],
+["Reação química é a:",["Mudança só de forma","Transformação de substâncias em outras","Mistura de cores","Mudança de lugar"],1,"Surgem novas substâncias."],
+["Em segurança do trabalho, “NR” significa:",["Norma Regulamentadora","Nota de Risco","Novo Regulamento","Número de Registro"],0,"As NRs são normas de segurança do trabalho."],
+["Qual material é isolante térmico?",["Alumínio","Cobre","Isopor","Aço"],2,"O isopor conduz mal o calor."],
+["A força que puxa os corpos para a Terra é a:",["Gravidade","Inércia","Atrito","Pressão"],0,"É a força gravitacional."]
+],[
+["Qual é a função principal dos glóbulos vermelhos?",["Transportar oxigênio","Digerir alimentos","Produzir urina","Formar ossos"],0,"Os glóbulos vermelhos transportam oxigênio pelo sangue."],
+["A fotossíntese ocorre principalmente nas:",["Raízes","Folhas","Sementes","Pedras"],1,"As folhas têm clorofila."],
+["A velocidade é a razão entre:",["Massa e volume","Distância e tempo","Força e área","Energia e massa"],1,"v = distância ÷ tempo."],
+["Água e óleo formam uma mistura:",["Homogênea","Heterogênea","Simples","Nuclear"],1,"Têm duas fases visíveis."],
+["Qual processo separa a água líquida em vapor?",["Condensação","Vaporização","Solidificação","Fusão"],1,"Vaporização é a passagem do estado líquido para o gasoso."],
+["O ciclo da água inclui:",["Evaporação e condensação","Só congelamento","Só queima","Só fusão do ferro"],0,"A água evapora, condensa e precipita."],
+["Qual a função das raízes?",["Absorver água e sais","Fazer fotossíntese","Produzir frutos","Liberar pólen"],0,"As raízes absorvem água e sais minerais."],
+["Qual unidade mede energia no SI?",["Joule","Newton","Pascal","Hertz"],0,"Energia se mede em joules (J)."],
+["Para levantar peso sem machucar a coluna:",["Dobrar os joelhos e manter a coluna reta","Curvar as costas","Girar o tronco","Esticar os braços"],0,"A força deve vir das pernas."]
+]];
+function build(k){var s=S[k];
+ var q=sh(s.p.slice()).map(sq);
+ var m=s.m.map(sq).concat(sh(M.slice()).slice(0,15).map(function(f){return f()}));
+ var c=s.c.map(sq).concat(PH.map(function(f){return f()}));
+ s.q=q.concat(sh(m),sh(c))}
+var XP=[
+[TX("O SENAI oferece cursos gratuitos para jovens que querem entrar no mercado de trabalho. As inscrições ficam abertas por tempo limitado.","Qual é a ideia principal do texto?"),["O SENAI oferece cursos gratuitos, com inscrições por tempo limitado","Todos os jovens são aprovados","O SENAI só aceita adultos","Os cursos são pagos"],0,"O texto trata dos cursos gratuitos e do prazo."],
+[TX("Pedro acordou tarde, perdeu o ônibus e chegou atrasado à prova.","O que causou o atraso de Pedro?"),["Chuva forte","Greve","Acordar tarde e perder o ônibus","Doença"],2,"Está explícito no texto."],
+[TX("Nem todo plástico é reciclado no Brasil. Por isso, separar o lixo em casa é uma atitude importante.","Pelo texto, é possível concluir que:"),["Todo plástico é reciclado","Separar o lixo ajuda a reciclagem","Ninguém recicla","Lixo não importa"],1,"Inferência apoiada na ideia do texto."],
+[TX("A fábrica reduziu acidentes em 30% depois de exigir capacete e luvas.","O que reduziu os acidentes?"),["Menos funcionários","Mais horas de trabalho","Uso obrigatório de capacete e luvas","Máquinas novas"],2,"O texto liga os dois fatos."],
+[TX("Ele estava de cabeça quente, disse o chefe sobre o colega.","Nesse contexto, “cabeça quente” significa:"),["Com febre","Irritado","Com calor","Distraído"],1,"Expressão figurada: irritado."],
+["Qual frase está correta?",["Houve muitos problemas.","Houveram muitos problemas.","Haviam problemas.","Fazem dois anos."],0,"“Haver” no sentido de existir não vai ao plural."],
+["Qual palavra está escrita corretamente?",["Excessão","Exceção","Eceção","Exeção"],1,"A forma correta é “exceção”."],
+["Em “Ele não veio porque estava doente”, “porque” indica:",["Causa","Oposição","Tempo","Conclusão"],0,"Explica o motivo de não ter vindo."]];
+var XC=[
+["Qual sistema do corpo faz a troca de gases?",["Respiratório","Digestório","Excretor","Locomotor"],0,"Os pulmões trocam oxigênio e gás carbônico."],
+["O gelo derretendo é uma mudança de estado chamada:",["Fusão","Evaporação","Condensação","Solidificação"],0,"Sólido para líquido é fusão."],
+["Qual EPI protege os olhos?",["Luva","Bota","Óculos de proteção","Capacete"],2,"Óculos protegem contra respingos e fagulhas."],
+["Um carro faz 150 km em 2 h. Qual a velocidade média?",["75 km/h","300 km/h","150 km/h","50 km/h"],0,"150 ÷ 2 = 75 km/h."],
+["Qual é uma função das raízes das plantas?",["Absorver água e sais minerais","Produzir sons","Formar nuvens","Transportar oxigênio no sangue"],0,"As raízes absorvem água e sais minerais do solo."],
+["Qual material conduz bem o calor?",["Madeira","Isopor","Metal","Borracha"],2,"Metais são bons condutores."],
+["Qual gás é essencial para a respiração humana?",["Oxigênio","Nitrogênio","Hélio","Argônio"],0,"Respiramos oxigênio."]];
+M.push(
+function(){var p=R(2,6)*50,a=[10,20,25][R(0,2)],b=[10,20][R(0,1)],c=p*(100-a)*(100-b)/10000;return mk("Matemática","Um produto de R$ "+p+" tem desconto de "+a+"% e, sobre o novo preço, mais "+b+"%. Qual o preço final?",c,[p*(100-a-b)/100,p-p*a/100],"Primeiro "+p+" × "+(100-a)/100+" = "+p*(100-a)/100+"; depois × "+(100-b)/100+" = "+c+".",BRL)},
+function(){var t=[[3,4,5],[6,8,10],[5,12,13],[9,12,15]][R(0,3)];return mk("Matemática","Um triângulo retângulo tem catetos de "+t[0]+" cm e "+t[1]+" cm. Qual a hipotenusa?",t[2],[t[0]+t[1],t[2]*t[2]],"h² = "+t[0]+"² + "+t[1]+"² = "+(t[0]*t[0]+t[1]*t[1])+", logo h = "+t[2]+".",U("cm"))},
+function(){var n=R(2,6),k=R(2,4);return mk("Matemática","Uma receita serve "+n+" pessoas e usa "+n*2+" ovos. Quantos ovos para "+(n+k)+" pessoas?",(n+k)*2,[n*2+k,n+k],"Cada pessoa usa 2 ovos: "+(n+k)+" × 2 = "+(n+k)*2+".")});
+var XM=[
+[TB([["Dia","Seg","Ter","Qua","Qui","Sex"],["Peças",20,35,25,40,30]])+"<br>Qual foi o total de peças produzidas na semana?",["140","150","160","130"],1,"20 + 35 + 25 + 40 + 30 = 150."],
+[TB([["Item","Qtd","Preço un."],["Parafuso",4,"R$ 2,50"],["Porca",6,"R$ 1,50"]])+"<br>Qual o valor total da compra?",["R$ 17","R$ 19","R$ 21","R$ 24"],1,"4 × 2,50 = 10 e 6 × 1,50 = 9; 10 + 9 = 19."],
+["Um tanque de 800 L está 25% cheio. Quantos litros faltam para encher?",["200","400","600","700"],2,"25% de 800 = 200 cheios; 800 − 200 = 600."],
+["Ana ganhou R$ 1.200, gastou 1/4 com aluguel e metade do que sobrou com comida. Quanto sobrou?",["R$ 300","R$ 450","R$ 600","R$ 900"],1,"Aluguel 300, sobram 900; comida 450, sobram 450."],
+["Uma moto faz 35 km por litro e a gasolina custa R$ 6 o litro. Quanto custa rodar 210 km?",["R$ 24","R$ 36","R$ 42","R$ 72"],1,"210 ÷ 35 = 6 L; 6 × 6 = R$ 36."]];
+var X2={perc:["Passo a passo: desconto direto","Em vez de calcular o desconto e subtrair, multiplique direto por 0,85 para 15% de desconto.<div class='ex'>R$ 200 com 15% off → 200 × 0,85 = <b>170</b></div><b>Erro comum:</b> dois descontos seguidos (20% e depois 10%) NÃO somam 30%. Multiplique: × 0,80 × 0,90."],
+r3:["Direta ou inversa?","Pergunte: se uma grandeza dobra, a outra dobra (direta) ou cai pela metade (inversa)? Mais operários → menos dias = inversa. Mais canetas → mais dinheiro = direta."],
+eq:["Com sinal negativo","<div class='ex'>5x − 10 = 25<br>5x = 25 + 10 (o − vira +)<br>5x = 35<br>x = <b>7</b></div><b>Erro comum:</b> esquecer de trocar o sinal ao passar para o outro lado."],
+frac:["Denominadores diferentes","Ache o MMC dos de baixo.<div class='ex'>1/3 + 1/4 → MMC = 12 → 4/12 + 3/12 = <b>7/12</b></div>"],
+geo:["Unidades de área e volume","Área usa unidade ao quadrado e volume ao cubo. 1 m² = 10.000 cm². 1 m³ = 1.000 L.<br><b>Erro comum:</b> usar 100 em vez de 10.000 ao converter m² para cm²."],
+it:["Armadilhas","A alternativa certa quase sempre <b>reformula</b> o texto. Desconfie de opções com “sempre”, “nunca”, “todos” ou com informação que não está no texto."]};
+T.forEach(function(t){if(X2[t.id])t.e.push(X2[t.id])});
+var X3={
+perc:["Porcentagem é “por cada 100”: 25% = 25/100 = 0,25.","<b>Problema:</b> camiseta de R$ 80 com 25% de desconto.<br>1) 25% = 0,25<br>2) Desconto = 80 × 0,25 = 20<br>3) Preço = 80 − 20 = <b>60</b><div class='ex'>Atalho: 80 × 0,75 = 60</div><b>Como cai:</b> desconto, aumento e “quantos % é”."],
+r3:["Regra de três compara grandezas e acha o valor que falta mantendo a proporção.","<b>Direta:</b> 240 km em 3 h; em 5 h?<br>3 → 240 | 5 → x → x = 5 × 240 ÷ 3 = <b>400</b><br><b>Inversa:</b> 5 operários levam 8 dias; com 10?<br>Dobrou os operários → metade dos dias → <b>4</b>.<br>Antes de multiplicar, decida: direta ou inversa?"],
+frac:["Fração é parte de um todo: 3/4 = 3 partes de 4 iguais.","1) 3/4 + 1/8: denominadores 4 e 8 → MMC = 8<br>2) 3/4 = 6/8<br>3) 6/8 + 1/8 = <b>7/8</b><br><b>Fração de número:</b> 2/5 de 60 → 60 ÷ 5 = 12 → 12 × 2 = <b>24</b>."],
+eq:["Equação é uma balança: o que você faz de um lado, faz do outro.","<b>3x − 4 = 11</b><br>1) Some 4 dos dois lados: 3x = 15<br>2) Divida os dois lados por 3: x = <b>5</b><br>3) Teste: 3 × 5 − 4 = 11 ✔<br>Sempre teste a resposta."],
+geo:["Área mede a superfície, perímetro o contorno e volume o espaço dentro.","Triângulo base 14 e altura 5 → (14 × 5) ÷ 2 = <b>35</b><br>Cubo de aresta 4 → 4 × 4 × 4 = <b>64</b><br>Círculo de raio 3 → 3,14 × 3² = 3,14 × 9 = <b>28,26</b><br>Cuidado: o triângulo sempre tem ÷ 2."],
+uni:["As unidades mudam por potências de 10: para a menor, multiplique; para a maior, divida.","km → m: × 1000 (2,5 km = 2500 m)<br>g → kg: ÷ 1000 (4500 g = 4,5 kg)<br>h → min: × 60 (2 h 30 min = 150 min)<br>Se a unidade ficou menor, o número tem de ficar maior."],
+int:["Interpretar é achar no texto o que ele diz, sem inventar.","Texto: “A fábrica reduziu acidentes em 30% após exigir capacete.”<br>Pergunta: o que reduziu os acidentes?<br>1) Palavra-chave: <i>reduziu</i><br>2) Ache a causa: <i>exigir capacete</i><br>Resposta = <b>uso obrigatório de capacete</b>, não a opção com algo que o texto não diz."],
+orto:["O acento depende de qual sílaba é a mais forte.","ca-FÉ → última forte = oxítona (termina em é → acento)<br>ME-sa → penúltima = paroxítona (termina em a → sem acento)<br>LÂM-pa-da → antepenúltima = proparoxítona (sempre acento)"],
+conc:["O verbo e os termos concordam com o sujeito.","“O resultado das provas chegou.” Quem chegou? O resultado → singular.<br>“Os alunos da turma estudam.” Quem estuda? Os alunos → plural.<br>Ignore o que vem entre o sujeito e o verbo."],
+cl:["Cada palavra tem uma função: nomear, caracterizar, indicar ação ou ligar.","“Ana comprou rapidamente um carro novo.”<br>Ana = substantivo | comprou = verbo | rapidamente = advérbio | carro = substantivo | novo = adjetivo<br>O advérbio responde: como, quando, onde?"],
+cr:["Crase é a + a; a vírgula separa listas e termos fora da ordem.","“Fui ___ escola”: troque por colégio → fui <b>ao</b> colégio → fui <b>à</b> escola.<br>“Vou ___ pé”: pé é masculino → sem crase.<br>“Comecei ___ estudar”: antes de verbo → sem crase."],
+it:["Leitura ativa: texto, pergunta e volta ao texto.","1) Risque as opções com sempre, nunca ou todos.<br>2) Risque as que trazem fato que o texto não cita.<br>3) Das que sobram, escolha a que reformula o texto.<br>Se duas parecem certas, releia: uma tem um detalhe a mais ou a menos."],
+med:["Média iguala, MMC acha o encontro e MDC divide sem sobra.","12 = 2² × 3 e 18 = 2 × 3²<br>MMC = maiores potências = 2² × 3² = <b>36</b><br>MDC = menores potências = 2 × 3 = <b>6</b><br>MMC: “quando se encontram”. MDC: “dividir em grupos iguais”."],
+pot:["Potência multiplica, raiz desfaz e Pitágoras relaciona os lados.","Catetos 5 e 12:<br>h² = 5² + 12² = 25 + 144 = 169<br>h = √169 = <b>13</b><br>A hipotenusa é o lado maior, oposto ao ângulo de 90°."],
+bio:["A célula é a unidade da vida e os sistemas do corpo trabalham juntos.","Coração → bombeia sangue (circulatório)<br>Pulmão → troca gases (respiratório)<br>Rim → filtra o sangue e faz urina (excretor)<br>Intestino → absorve nutrientes (digestório)<br>Associe o nome do órgão à função."],
+qui:["A matéria muda de estado sem mudar de substância; reação cria substâncias novas.","Gelo derretendo: mesma água → <b>físico</b><br>Ferro enferrujando: surge óxido → <b>químico</b><br>Água + óleo: duas fases → mistura <b>heterogênea</b><br>Pergunta-chave: surgiu uma substância nova?"],
+fis:["Física aqui é: quanto anda, quanta energia e como o calor passa.","Moto faz 90 km em 1,5 h → v = 90 ÷ 1,5 = <b>60 km/h</b><br>300 g em 100 cm³ → densidade = 300 ÷ 100 = <b>3 g/cm³</b><br>Confira a unidade pedida (m/s ou km/h)."],
+seg:["Segurança do trabalho é prevenir o acidente antes que aconteça.","Olhos → óculos | Ouvidos → protetor auricular | Cabeça → capacete | Mãos → luvas<br>Capacete no seu corpo → <b>EPI</b>. Grade na máquina → <b>EPC</b> (protege todos)."]};
+T.forEach(function(t){var x=X3[t.id];if(x){t.e.unshift(["Em 1 frase",x[0]]);t.e.push(["Passo a passo resolvido",x[1]])}});
+
+function build(k){var s=S[k],f=function(x){return x()},
+ pa=s.p.concat(XP.map(function(x){return["Português"].concat(x)})),
+ ca=s.c.concat(XC.map(function(x){return["Ciências"].concat(x)})).map(sq).concat(PH.map(f)),
+ m=s.m.map(sq).concat(XM.map(function(x){return sq(["Matemática"].concat(x))}),sh(M.slice()).slice(0,16).map(f));
+ s.q=sh(pa).slice(0,20).map(sq).concat(sh(m).slice(0,20),sh(ca).slice(0,20))}
+S.forEach(function(s,k){var a=s.q,f=function(n){return a.filter(function(x){return x[0]==n})};
+ s.p=f("Português").concat(PN[k].map(function(x){return ["Português"].concat(x)}));
+ s.m=f("Matemática");
+ s.c=f("Ciências").concat(CN[k].map(function(x){return ["Ciências"].concat(x)}));build(k)});
+function pick(k){build(k);cur={ex:1,k:k};E=null;render()}
+
+var AR=["Português","Matemática","Ciências"];
+function HS(){try{return JSON.parse(ld("sn_hist")||"[]")}catch(e){return[]}}
+function dl(d){return d>0?"▲ +"+d:d<0?"▼ "+d:"="}
+function pc(x,n){var a=x.a[n];return a?Math.round(a[0]/a[1]*100):0}
+function bar(p){return "<div style='background:#222;height:10px;border-radius:5px;margin:4px 0'><i style='display:block;height:100%;width:"+p+"%;background:#fff;border-radius:5px'></i></div>"}
+function TB(r){return "<table style='width:100%;border-collapse:collapse;font-size:15px'>"+r.map(function(x,i){return "<tr>"+x.map(function(c){return "<td style='padding:7px 4px;border-bottom:1px solid var(--line);"+(i?"":"color:var(--mute);font-size:12px;text-transform:uppercase;")+"'>"+c+"</td>"}).join("")+"</tr>"}).join("")+"</table>"}
+function ST(n){for(var i=0;i<T.length;i++)if(T[i].g==n)return openT(i)}
+function HM_OLD(){var gs=[],h=HS(),l=h[h.length-1];T.forEach(function(t){if(gs.indexOf(t.g)<0)gs.push(t.g)});
+ main.innerHTML="<section class='hero'><div class='eb'>Preparação para a prova</div><h1>ESTUDE PARA<br>O SENAI</h1><p>Siga os 3 passos. Suas notas ficam salvas e você compara uma prova com a outra.</p><div class='stats'><div class='stat'><b>"+T.length+"</b>tópicos</div><div class='stat'><b>"+S.length+"</b>simulados</div><div class='stat'><b>60</b>questões por prova</div><div class='stat'><b>"+(l?l.p+"%":"—")+"</b>última nota</div></div></section>"+
+ "<h3 class='sec'>Como usar</h3><div class='grid'><div class='card'><h3>1 · Estude</h3><p>Leia a explicação curta de cada tópico.</p></div><div class='card'><h3>2 · Pratique</h3><p>Faça a atividade e veja os erros.</p></div><div class='card'><h3>3 · Simulado</h3><p>Faça um simulado ou a prova e compare em Meu progresso.</p></div></div>"+
+ "<h3 class='sec'>Simulados</h3><div class='grid'>"+S.map(function(x,k){return "<button class='tile' onclick='pick("+k+")'><span class='n'>0"+(k+1)+"</span><b>"+x.n+"</b><small>"+x.s+" · "+x.q.length+" questões</small></button>"}).join("")+"<button class='tile' onclick='cur={prog:1};render()'><span class='n'>↗</span><b>Meu progresso</b><small>Compare suas provas</small></button></div>"+
+ gs.map(function(g){return "<h3 class='sec'>"+g+"</h3><div class='grid'>"+T.map(function(t,i){return t.g==g?"<button class='tile' onclick='openT("+i+")'><b>"+t.n+"</b><small>Explicação + atividade</small></button>":""}).join("")+"</div>"}).join("");
+ window.scrollTo(0,0)}
+function CMP(){var h=HS(),A=h[+document.getElementById("ca").value],B=h[+document.getElementById("cb").value];
+ document.getElementById("cmp").innerHTML=TB([["","Prova A","Prova B","Evolução"]].concat([["Geral",A.p,B.p]].concat(AR.map(function(n){return[n,pc(A,n),pc(B,n)]})).map(function(r){return[r[0],r[1]+"%",r[2]+"%",dl(r[2]-r[1])]})))}
+function PG(){var h=HS(),o="<h2>Meu progresso</h2><div style='color:var(--mute)'>Compare suas provas e veja onde melhorar.</div><br>";
+ if(!h.length){main.innerHTML=o+"<div class='card'><h3>Ainda sem provas</h3><p>Faça um simulado até o fim. A nota fica salva neste aparelho e será comparada com as próximas.</p><button class='btn' onclick='pick(0)'>Fazer Simulado 1</button></div>";return window.scrollTo(0,0)}
+ var ps=h.map(function(x){return x.p}),mt=+ld("sn_meta")||60,last=ps[ps.length-1],best=Math.max.apply(0,ps),avg=Math.round(ps.reduce(function(a,b){return a+b},0)/ps.length);
+ o+="<div class='stats' style='margin:0 0 16px'>"+[["Provas feitas",h.length],["Última nota",last+"%"],["Melhor nota",best+"%"],["Média",avg+"%"]].map(function(x){return "<div class='stat'><b>"+x[1]+"</b>"+x[0]+"</div>"}).join("")+"</div>";
+ o+="<div class='card'><h3>Minha meta</h3><p>Nota mínima que quero tirar: <input type='text' id='mt' value='"+mt+"' style='width:70px;display:inline-block' onchange=\"sv('sn_meta',this.value);PG()\"> %</p><p>"+(last>=mt?"✔ Sua última nota está <b>acima da meta</b>.":"Faltam <b>"+(mt-last)+" pontos</b> para a meta.")+"</p><small style='color:var(--mute)'>Muitos editais pedem 60%. Confira o do seu processo e ajuste.</small></div>";
+ o+="<div class='card'><h3>Comparar as provas</h3>"+TB([["Simulado","Feitas","1ª nota","Última","Melhor","Evolução"]].concat([0,1,2].map(function(k){var q=h.filter(function(x){return x.k==k});if(!q.length)return["Simulado "+(k+1),0,"—","—","—","—"];var f=q[0].p,l=q[q.length-1].p;return["Simulado "+(k+1),q.length,f+"%",l+"%",Math.max.apply(0,q.map(function(x){return x.p}))+"%",q.length>1?dl(l-f):"="]})))+"</div>";
+ o+="<div class='card'><h3>Evolução (últimas 10)</h3>"+h.slice(-10).map(function(x){return "<div style='font-size:13px;color:var(--mute)'>Simulado "+(x.k+1)+" · "+new Date(x.t).toLocaleDateString("pt-BR")+" · <b style='color:#fff'>"+x.p+"%</b></div>"+bar(x.p)}).join("")+"</div>";
+ if(h.length>1){var opt=h.map(function(x,i){return "<option value='"+i+"'>"+(i+1)+"ª · Simulado "+(x.k+1)+" · "+x.p+"%</option>"}).join("");
+  o+="<div class='card'><h3>Comparar duas provas</h3><p>A: <select id='ca' onchange='CMP()'>"+opt+"</select> B: <select id='cb' onchange='CMP()'>"+opt+"</select></p><div id='cmp'></div></div>"}
+ var w=AR.map(function(n){var t=0,c=0;h.forEach(function(x){if(x.a[n]){c+=x.a[n][0];t+=x.a[n][1]}});return[n,t?Math.round(c/t*100):0]}).sort(function(a,b){return a[1]-b[1]});
+ o+="<div class='card'><h3>Onde estudar primeiro</h3>"+w.map(function(x){return "<div style='display:flex;justify-content:space-between'><span>"+x[0]+"</span><b>"+x[1]+"%</b></div>"+bar(x[1])}).join("")+"<button class='btn' onclick=\"ST('"+w[0][0]+"')\">Estudar "+w[0][0]+"</button></div>";
+ o+="<button class='btn g' onclick=\"if(confirm('Apagar todo o histórico?')){sv('sn_hist','[]');PG()}\">Limpar histórico</button>";
+ main.innerHTML=o;
+ if(h.length>1){document.getElementById("ca").value=h.length-2;document.getElementById("cb").value=h.length-1;CMP()}
+ window.scrollTo(0,0)}
+
+function TD(){var d=new Date();return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2)}
+function DF(a,b){return Math.round((new Date(b+"T12:00")-new Date(a+"T12:00"))/864e5)}
+function FT(s){var h=Math.floor(s/3600),m=Math.floor(s%3600/60);return (h?h+":":"")+("0"+m).slice(-2)+":"+("0"+Math.floor(s%60)).slice(-2)}
+function TL(){var v=ld("sn_time");return v===""?120:(+v||0)}
+function ER(){try{return JSON.parse(ld("sn_err")||"[]")}catch(e){return[]}}
+function svE(a){sv("sn_err",JSON.stringify(a.slice(-300)))}
+var BX=[1,3,7,14,30];
+function adv(L,y,ok,soon){if(ok){y.b++;y.d=Date.now()+BX[Math.min(y.b-1,4)]*864e5;if(y.b>=5)L.splice(L.indexOf(y),1)}else{y.b=0;y.d=Date.now()+(soon?6e5:0)}}
+function addE(a,t,o,c,e,ok){var L=ER(),y=L.filter(function(z){return z.t==t})[0];
+ if(y)adv(L,y,ok,0);else if(!ok)L.push({a:a,t:t,o:o,c:c,e:e,b:0,d:Date.now()});svE(L)}
+var _fix=fix;fix=function(){_fix();if(cur.prova)return;cur.q.forEach(function(q,i){var ok=document.getElementById("q"+i).className.indexOf("no")<0,n=typeof q[1]=="number";addE(cur.n,q[0],n?null:q[1],n?q[1]:q[2],n?"":q[3],ok)})};
+var MI={perc:[0,1,2,17],r3:[4,5,19],frac:[15],eq:[3],geo:[6,7,8,9],uni:[10,11,12],med:[14],pot:[18],fis:[16]};
+function MQ(){var id=cur.id,L=[],c=function(a){return a.slice(1)};
+ if(MI[id]){for(var n=0;n<6;n++)L.push(c(M[MI[id][n%MI[id].length]]()))}
+ else{var pl=cur.g=="Português"?[].concat.apply([],PN).concat(XP):[].concat.apply([],CN).concat(XC);L=sh(pl.slice()).slice(0,6).map(function(x){return c(sq(["x"].concat(x)))})}
+ cur.q=L;render()}
+var _act=act;act=function(){return _act()+((cur.prova||!(MI[cur.id]||cur.g=="Português"||cur.g=="Ciências"))?"":"<p><button class='btn g' onclick='MQ()'>➕ Praticar mais (6 questões novas)</button></p>")};
+function TU(){var e=document.getElementById("tq");if(!e||!E||E.st!=1)return;var lim=TL()*60,el=Math.floor((Date.now()-E.t0)/1000);e.textContent="⏱ "+(lim?FT(Math.max(0,lim-el))+" restantes":FT(el));if(lim&&el>=lim){E.st=2;alert("Tempo esgotado! A prova foi encerrada.");render()}}
+setInterval(TU,1000);
+var _q=ques;ques=function(s){_q(s);if(!E.t0)E.t0=Date.now();main.insertAdjacentHTML("afterbegin","<div id='tq' style='position:sticky;top:0;text-align:right;font-weight:700;font-size:18px;color:#fff;background:var(--bg);padding:6px 0;z-index:3'></div>");TU()};
+function OT(){var h=HS(),sc={};AR.forEach(function(n){var t=0,c=0;h.forEach(function(x){if(x.a[n]){c+=x.a[n][0];t+=x.a[n][1]}});if(t)sc[n]=c/t});
+ return T.map(function(t,i){return i}).sort(function(a,b){var x=sc[T[a].g],y=sc[T[b].g];return (x==null?.6:x)-(y==null?.6:y)||a-b})}
+function HR(){var v=parseFloat((ld("sn_hours")||"2").replace(",","."));return v>0?Math.min(v,12):2}
+function MM(m){return m>=60?Math.floor(m/60)+"h"+(m%60?" "+m%60+"min":""):m+" min"}
+function TK(j){var dt=ld("sn_date"),k=Math.max(0,DF(ld("sn_start")||TD(),TD()))+j,L=DF(TD(),dt)-j,D=HR()*60,rv=Math.max(5,Math.min(15,Math.round(D/30)*5)),B=[],r5=function(x){return Math.round(x/5)*5};
+ if(L<0)return{x:"Prova já passou",b:[]};
+ var ER_="cur={rev:1};render()";if(j==0&&!ER().length)rv=0;
+ if(L==0)B=[{t:"Revisar o caderno de erros (de leve)",m:rv,f:ER_},{t:"Descansar e dormir bem",m:0}];
+ else if(L<=2||k%4==3){var m=L<=2?k%3:Math.floor(k/4)%3,sm=Math.min(TL()||120,D-rv),rest=D-rv-sm;
+  B=[{t:"Revisar o caderno de erros",m:rv,f:ER_},{t:"Fazer o Simulado "+(m+1)+(L<=2?" (revisão final)":""),m:sm,f:"pick("+m+")",d:TL()&&D-rv<TL()?"Seu tempo é menor que a prova: faça em 2 sessões ou treine só uma parte.":""}];
+  if(rest>=15)B.push({t:"Refazer as questões que errou no simulado",m:r5(rest),f:ER_})}
+ else{var R=D-rv,nT=Math.max(1,Math.floor(R/60)),per=r5(R/nT),a=r5(per*.4),b=r5(per*.4),o=OT(),t0=k-Math.floor(k/4);
+  B=[{t:"Revisar o caderno de erros",m:rv,f:ER_}];
+  for(var n=0;n<nT;n++){var i=o[(t0*nT+n)%o.length];B.push({t:"Estudar: "+T[i].n+" ("+T[i].g+")",m:per,d:"explicação "+a+" min · atividade "+b+" min · praticar mais "+(per-a-b)+" min",f:"openT("+i+")"})}}
+ B=B.filter(function(x){return x.f!==ER_||rv>0}); var f0=B.filter(function(x){return x.f})[0];return{x:B.map(function(x){return x.t}).join(" + "),f:f0&&f0.f,b:B}}
+function PL(){var dt=ld("sn_date"),H=HR(),o="<h2>Plano de estudo</h2><div style='color:var(--mute)'>Diga a data da prova e quantas horas você tem por dia. O plano é dividido em blocos de tempo.</div><br><div class='card'><h3>Data da prova</h3><input type='date' id='dd' value='"+dt+"' style='background:#000;color:#eee;border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit' onchange=\"sv('sn_date',this.value);sv('sn_start',TD());PL()\"></div><div class='card'><h3>Horas disponíveis por dia</h3><p><input type='text' inputmode='decimal' value='"+H+"' style='width:80px;display:inline-block' onchange=\"sv('sn_hours',this.value);PL()\"> horas &nbsp;"+[1,2,3,4].map(function(h){return "<button class='btn g' style='padding:4px 10px' onclick=\"sv('sn_hours','"+h+"');PL()\">"+h+"h</button>"}).join(" ")+"</p></div>";
+ if(dt){var left=DF(TD(),dt);if(left<0)o+="<div class='card'><p>Essa data já passou. Escolha uma nova.</p></div>";
+  else{o+="<div class='card'><h3>Faltam "+left+" dias · ≈ "+Math.round(left*H*10)/10+" h de estudo</h3>"+[0,1,2,3,4,5,6].filter(function(j){return j<=left}).map(function(j){var t=TK(j),dd=new Date(Date.now()+j*864e5).toLocaleDateString("pt-BR",{weekday:"short",day:"2-digit",month:"2-digit"});return "<div class='dy"+(j?"":" hj")+"'><div class='dh'><b>"+(j?(j==1?"Amanhã":"Em "+j+" dias"):"Hoje")+"</b><span>"+dd+"</span></div>"+t.b.map(function(b){return "<div class='bk'><span class='tm'>"+(b.m?MM(b.m):"—")+"</span><div class='bt'><b>"+b.t+"</b>"+(b.d?"<small>"+b.d+"</small>":"")+"</div>"+(j==0&&b.f?"<button class='btn g' onclick=\""+b.f+"\">ir</button>":"")+"</div>"}).join("")+"</div>"}).join("")+"<small style='color:var(--mute)'>A cada 4 dias há um simulado e os 2 últimos dias são de revisão. Hoje, a revisão do caderno de erros só entra se já houver erros nele.</small></div>";
+   o+="<div class='card'><h3>Comparar planos por horas</h3>"+TB([["Horas/dia","Tópicos/dia","Total até a prova","Voltas no conteúdo"]].concat([1,2,3,4].map(function(h){var nT=Math.max(1,Math.floor((h*60-15)/60)),td=Math.max(0,left*.75-2);return[h+"h"+(h==Math.round(H)?" ◀":""),nT,Math.round(left*h)+" h",Math.round(td*nT/T.length*10)/10]})))+"<small style='color:var(--mute)'>Volta = quantas vezes você passa por todos os tópicos antes da prova.</small></div>"}}
+ o+="<div class='card'><h3>Assuntos do meu edital</h3><textarea id='ed' placeholder='Cole aqui os assuntos do edital para consultar'></textarea></div>";
+ main.innerHTML=o;var ed=document.getElementById("ed");ed.value=ld("sn_edital");ed.oninput=function(){sv("sn_edital",ed.value)};window.scrollTo(0,0)}
+var RS=null;
+function RV(){if(RS&&RS.i<RS.l.length)return RQ();var L=ER(),du=L.filter(function(x){return x.d<=Date.now()});
+ main.innerHTML="<h2>Caderno de erros</h2><div style='color:var(--mute)'>Questões que você errou voltam em 1, 3, 7, 14 e 30 dias, até você dominar.</div><br><div class='stats' style='margin:0 0 16px'><div class='stat'><b>"+L.length+"</b>no caderno</div><div class='stat'><b>"+du.length+"</b>para revisar hoje</div></div>"+(du.length?"<button class='btn' onclick='RG()'>Revisar agora ("+Math.min(du.length,15)+")</button>":"<div class='card'><p>"+(L.length?"Nada para revisar agora. Volte amanhã!":"Vazio por enquanto. Os erros dos simulados e das atividades entram aqui sozinhos.")+"</p></div>");window.scrollTo(0,0)}
+function RG(){RS={l:ER().filter(function(x){return x.d<=Date.now()}).slice(0,15),i:0,r:0};render()}
+function RQ(){var x=RS.l[RS.i];main.innerHTML="<h2>Revisão "+(RS.i+1)+"/"+RS.l.length+"</h2><div class='card q'><p class='t'><small style='color:var(--mute)'>"+x.a+"</small><br>"+x.t+"</p>"+(x.o?x.o.map(function(o,j){return "<label><input type='radio' name='rv' value='"+j+"'> "+o+"</label>"}).join(""):"<input type='text' inputmode='decimal' id='rvt' placeholder='Sua resposta'>")+"<div class='fb' id='rvf'></div></div><button class='btn' id='rvb' onclick='RA()'>Responder</button>";window.scrollTo(0,0)}
+function RA(){var x=RS.l[RS.i],ok,f=document.getElementById("rvf"),b=document.getElementById("rvb");
+ if(x.o){var q=document.querySelector("input[name=rv]:checked");if(!q)return;ok=+q.value==x.c}else{var v=document.getElementById("rvt").value.replace(",",".").trim();ok=v!==""&&Math.abs(parseFloat(v)-x.c)<.01}
+ f.className="fb "+(ok?"ok":"no");f.textContent=(ok?"✔ Acertou! ":"✘ Errou. Certa: "+(x.o?x.o[x.c]:String(x.c).replace(".",","))+". ")+(x.e||"");
+ var L=ER(),y=L.filter(function(z){return z.t==x.t})[0];if(y){adv(L,y,ok,1);svE(L)}if(ok)RS.r++;
+ b.textContent=RS.i<RS.l.length-1?"Próxima":"Finalizar";b.onclick=function(){RS.i++;if(RS.i>=RS.l.length){var r=RS.r,n=RS.l.length;RS=null;main.innerHTML="<h2>Revisão concluída</h2><div class='card'><p>Você acertou <b>"+r+" de "+n+"</b>. O que errou volta amanhã.</p><button class='btn' onclick='render()'>Voltar ao caderno</button></div>";return}render()}}
+var _HM=HM;HM=function(){_HM();var dt=ld("sn_date"),du=ER().filter(function(x){return x.d<=Date.now()}).length,left=dt?DF(TD(),dt):-1,t=left>=0?TK(0):null;
+ main.querySelector(".hero").insertAdjacentHTML("afterend","<div class='card'><h3>Hoje</h3>"+(t?"<p>Faltam <b>"+left+" dias</b> para a prova.</p><p>"+t.x+"</p>"+(t.f?"<button class='btn' onclick=\""+t.f+"\">Começar</button> ":""):"<p>Defina a data da prova para receber um plano diário.</p><button class='btn' onclick='cur={plan:1};render()'>Montar meu plano</button> ")+(du?"<button class='btn g' onclick='cur={rev:1};render()'>Revisar "+du+" erro(s)</button>":"")+"</div>")};
+var _v=view,_r=resu;
+view=function(){if(cur.home)return HM();if(cur.cad)return CAD();if(cur.mat)return MAT();if(cur.prog)return PG();if(cur.plan)return PL();if(cur.rev)return RV();var r=_v(),nv=main.querySelector(".navx");if(cur.ex&&E&&!E.st&&nv)nv.insertAdjacentHTML("beforebegin","<div class='card'><h3>Tempo da prova</h3><p>Minutos: <input type='text' id='tt' value='"+TL()+"' style='width:80px;display:inline-block' onchange=\"sv('sn_time',this.value||'0')\"> (0 = sem limite)</p><small style='color:var(--mute)'>Confira no edital o tempo real da sua prova.</small></div>");return r};
+resu=function(s){
+ if(!E.saved){E.saved=1;E.sec=E.t0?Math.round((Date.now()-E.t0)/1000):0;s.q.forEach(function(q,i){addE(q[0],q[1],q[2],q[3],q[4],E.a[i]===q[3])});var by={},ok=0,n=s.q.length;s.q.forEach(function(q,i){var a=by[q[0]]=by[q[0]]||[0,0];a[1]++;if(E.a[i]===q[3]){ok++;a[0]++}});
+  var h=HS();E.prev=h.filter(function(x){return x.k==cur.k}).pop();E.best=h.reduce(function(m,x){return Math.max(m,x.p)},-1);E.p=Math.round(ok/n*100);h.push({k:cur.k,t:Date.now(),p:E.p,a:by,s:E.sec});sv("sn_hist",JSON.stringify(h.slice(-60)))}
+ _r(s);
+ var pv=E.prev,d=pv?E.p-pv.p:0,box="<div class='card'><h3>Comparação com suas provas</h3><p>"+(pv?"Vs. sua última tentativa neste simulado: <b>"+dl(d)+" pontos</b> ("+pv.p+"% → "+E.p+"%).":"Primeira tentativa neste simulado. Faça de novo para ver sua evolução.")+"</p>"+(E.best>=0?"<p>"+(E.p>E.best?"Esta é a <b>sua melhor nota</b> entre todas as provas! 🏆":"Sua melhor nota até agora: <b>"+E.best+"%</b>.")+"</p>":"")+(E.sec?"<p>⏱ Tempo: <b>"+FT(E.sec)+"</b>"+(TL()&&E.sec>TL()*60?" (passou do limite)":"")+"</p>":"")+"<button class='btn g' onclick='cur={prog:1};render()'>Ver meu progresso completo</button> <button class='btn' onclick='cur={rev:1};render()'>Revisar meus erros</button></div>";
+ var ag=main.querySelector(".ag");if(ag)ag.insertAdjacentHTML("beforebegin",box)};
+
+(function(){var inp=document.createElement("input");inp.type="text";inp.id="bq";inp.placeholder="Buscar tópico…";inp.setAttribute("aria-label","Buscar tópico");
+ 
+ var G=[],cg=null;[].slice.call(nav.children).forEach(function(e){if(e.classList.contains("grp")){cg={h:e,b:[]};G.push(cg)}else if(cg&&e.tagName=="BUTTON")cg.b.push(e)});
+ G.forEach(function(g){return;var t=g.h.textContent;g.h.classList.add("fold");g.h.innerHTML="<span>"+t+"</span><em>"+g.b.length+"</em>";
+  g.h.onclick=function(){g.h.classList.toggle("shut");var sh=g.h.classList.contains("shut");g.b.forEach(function(b){b.style.display=sh?"none":""})}});
+ inp.oninput=function(){var q=inp.value.toLowerCase().trim();G.forEach(function(g){var n=0;if(q)g.h.classList.remove("shut");g.b.forEach(function(b){var m=!q||b.textContent.toLowerCase().indexOf(q)>-1;b.style.display=m?"":"none";if(m)n++});g.h.style.display=(n||!g.b.length)?"":"none"})}})();
+
+(function(){var sp=document.getElementById("spl"),tp=["Errou? O caderno de erros traz a questão de volta no dia certo.","Estudar um pouco todo dia vale mais do que muito num dia só.","Faça um simulado a cada 4 dias para medir sua evolução."];
+ document.getElementById("tip").textContent="Dica: "+tp[Math.floor(Math.random()*tp.length)];
+ function go(){if(!sp)return;sp.classList.add("out");var e=sp;sp=null;setTimeout(function(){e.remove()},700)}
+ sp.onclick=go;setTimeout(go,2400)})();
+function STX(h){var b=-1,t=0,ar={};h.forEach(function(x){var p=+x.p||0;if(p>b)b=p;t+=p;AR.forEach(function(n){if(x.a&&x.a[n]){var r=ar[n]=ar[n]||[0,0];r[0]+=+x.a[n][0]||0;r[1]+=+x.a[n][1]||0}})});return{n:h.length,b:b,m:h.length?Math.round(t/h.length):-1,ar:ar}}
+function FP(a,n){var r=a.ar[n];return r&&r[1]?Math.round(r[0]/r[1]*100)+"%":"—"}
+function MC(){var nm=(document.getElementById("fn").value||"").trim()||"Eu";sv("sn_name",nm);var c=btoa(unescape(encodeURIComponent(JSON.stringify({n:nm,h:HS().slice(-40).map(function(x){return{k:x.k,t:x.t,p:x.p,a:x.a}})}))));var o=document.getElementById("fc");o.value=c;o.select();try{navigator.clipboard.writeText(c)}catch(e){}}
+function CF(){var el=document.getElementById("fr"),v=(document.getElementById("ff").value||"").trim();
+ try{var d=JSON.parse(decodeURIComponent(escape(atob(v)))),a=STX(HS()),b=STX(d.h||[]),cl=function(x){return String(x).replace(/[<>&"']/g,"").slice(0,20)},f=function(x){return x<0?"—":x+"%"};
+  el.innerHTML=TB([["",cl(ld("sn_name")||"Eu"),cl(d.n||"Amigo")],["Simulados feitos",a.n,b.n],["Melhor nota",f(a.b),f(b.b)],["Média",f(a.m),f(b.m)]].concat(AR.map(function(n){return[n,FP(a,n),FP(b,n)]})))}
+ catch(e){el.textContent="Código inválido. Cole o código inteiro que o amigo gerou."}}
+var _PG=PG;PG=function(){_PG();main.insertAdjacentHTML("beforeend","<details class='card'><summary style='cursor:pointer;color:var(--mute)'>Comparar com amigos (opcional)</summary><p style='color:var(--mute)'>Gere seu código, mande para um amigo e cole o código dele para comparar o desempenho.</p><input type='text' id='fn' placeholder='Seu nome' value='"+(ld("sn_name")||"").replace(/[<>&"']/g,"")+"'><p><button class='btn' onclick='MC()'>Gerar e copiar meu código</button></p><textarea id='fc' readonly placeholder='Seu código aparece aqui' style='min-height:60px'></textarea><textarea id='ff' placeholder='Cole aqui o código do seu amigo' style='min-height:60px'></textarea><p><button class='btn g' onclick='CF()'>Comparar</button></p><div id='fr'></div></details>")};
+function RM(){RS={l:sh(ER().slice()).slice(0,10),i:0,r:0};render()}
+var _RV=RV;RV=function(){_RV();if(!RS&&ER().length)main.insertAdjacentHTML("beforeend","<p><button class='btn g' onclick='RM()'>Mini-simulado com meus erros (até 10)</button></p>")};
+
+(function(){var g=document.createElement("div");g.className="grp";g.textContent="Links úteis";nav.appendChild(g);
+ [["SP","SENAI São Paulo","https://www.sp.senai.br"],["BR","Site nacional do SENAI","https://www.senai.br"]].forEach(function(l){var a=document.createElement("a");a.href=l[2];a.target="_blank";a.rel="noopener noreferrer";a.innerHTML="<i>"+l[0]+"</i>"+l[1]+" ↗";nav.appendChild(a)})})();
+var _HM2=HM;HM=function(){_HM2();if(0)main.insertAdjacentHTML("beforeend","<div class='card'><h3>Links do SENAI</h3><p style='color:var(--mute)'>Confira o edital, as datas e as inscrições no site oficial.</p><p><a class='btn' href="+"https://www.sp.senai.br"+" target='_blank' rel='noopener noreferrer'>SENAI São Paulo ↗</a><a class='btn g' href="+"https://www.senai.br"+" target='_blank' rel='noopener noreferrer'>Site nacional ↗</a></p></div>")};
+
+function ICO(g,z){var P={"Matemática":'<rect width="16" height="20" x="4" y="2" rx="2"/><path d="M8 6h8M16 14v4M16 10h.01M12 10h.01M8 10h.01M12 14h.01M8 14h.01M12 18h.01M8 18h.01"/>',"Português":'<path d="M2 4h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H2zM22 4h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z"/>',"Ciências":'<path d="M10 2v7.31M14 9.3V1.99M8.5 2h7M14 9.3a6.5 6.5 0 1 1-4 0M5.52 16h12.96"/>'};return '<svg viewBox="0 0 24 24" width="'+z+'" height="'+z+'" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+(P[g]||P["Português"])+'</svg>'}
+function HM(){var gs=[],h=HS(),l=h[h.length-1],e=ER().length;T.forEach(function(t){if(gs.indexOf(t.g)<0)gs.push(t.g)});
+ var qa=[["◷","Plano de estudo","O que fazer hoje","cur={plan:1};render()"],["↺","Caderno de erros",e?e+" para revisar":"Nenhum erro ainda","cur={rev:1};render()"],["▤","Meu caderno",NBL().length+" de "+T.length+" tópicos","cur={cad:1};render()"],["↗","Meu progresso","Compare suas provas","cur={prog:1};render()"]];
+ main.innerHTML="<section class='hero sm'><div class='eb'>Preparação para a prova</div><h1>ESTUDE PARA<br>O SENAI</h1><div class='stats'><div class='stat'><b>"+T.length+"</b>tópicos</div><div class='stat'><b>"+e+"</b>erros no caderno</div><div class='stat'><b>"+(l?l.p+"%":"—")+"</b>última nota</div></div></section>"+BH(" home")+
+ "<h3 class='sec'>Funções</h3><div class='grid'>"+qa.map(function(x){return "<button class='tile' onclick=\""+x[3]+"\"><span class='n'>"+x[0]+"</span><b>"+x[1]+"</b><small>"+x[2]+"</small></button>"}).join("")+"</div>"+
+ "<h3 class='sec'>Simulados</h3><div class='grid'>"+S.map(function(x,k){return "<button class='tile' onclick='pick("+k+")'><span class='n'>0"+(k+1)+"</span><b>"+x.n+"</b><small>"+x.s+" · "+x.q.length+" questões</small></button>"}).join("")+"</div>"+
+ "<div class='subs'><h3 class='sec'>Matérias</h3><div class='grid'>"+gs.map(function(g){return "<button class='tile' onclick=\"cur={mat:'"+g+"'};render()\"><span class='n'>"+ICO(g,26)+"</span><b>"+g+"</b><small>"+T.filter(function(t){return t.g==g}).length+" tópicos</small></button>"}).join("")+"</div></div>";
+ window.scrollTo(0,0)}
+function TICO(t){
+ var icons={
+  inteiros:'<path d="M4 7h16M4 12h10M4 17h16"/><path d="M16 9l3 3-3 3"/>',
+  div:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="7" r="1"/><circle cx="12" cy="17" r="1"/><path d="M8 12h8"/>',
+  exp:'<path d="M5 6h6M8 3v6M14 5l5 5M19 5l-5 5M5 16h7M8.5 13v6"/>',
+  ang:'<path d="M4 20h16M4 20V4M4 20l12-12"/><path d="M4 15a5 5 0 0 0 5 5"/>',
+  graf:'<path d="M4 20V4M4 20h17"/><rect x="7" y="12" width="3" height="5" rx=".5"/><rect x="13" y="8" width="3" height="9" rx=".5"/><rect x="19" y="5" width="2" height="12" rx=".5"/>',
+  porques:'<path d="M9 9a3 3 0 1 1 5 2c-1.3 1-2 1.5-2 3"/><path d="M12 18h.01"/><circle cx="12" cy="12" r="9"/>',
+  sem:'<path d="M4 7h10M4 12h16M4 17h8"/><path d="M16 5l4 2-4 2M8 15l-4 2 4 2"/>',
+  verbos:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l4 2M12 3v2M21 12h-2"/>',
+  eco:'<path d="M20 4C10 4 5 8 5 14a6 6 0 0 0 6 6c6 0 9-7 9-16Z"/><path d="M4 21c3-6 7-9 12-12"/>',
+  bio:'<path d="M12 21s-8-4.5-8-11a4.5 4.5 0 0 1 8-2 4.5 4.5 0 0 1 8 2c0 6.5-8 11-8 11Z"/>',
+  qui:'<path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3"/><path d="M7 16h10"/>',
+  fis:'<circle cx="12" cy="12" r="2"/><ellipse cx="12" cy="12" rx="9" ry="4" transform="rotate(45 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="4" transform="rotate(-45 12 12)"/>',
+  int:'<path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/>',
+  orto:'<path d="M5 5h14M5 12h10M5 19h14"/><path d="M17 9l3 3-3 3"/>',
+  conc:'<path d="M5 5h14v14H5zM8 9h8M8 13h5M8 16h8"/>',
+  cl:'<path d="M4 6h16M4 12h10M4 18h13"/><path d="M17 10l3 2-3 2"/>',
+  cr:'<path d="M5 20 12 4l7 16M8 14h8"/>',
+  seg:'<path d="M12 3 21 8v8l-9 5-9-5V8z"/><path d="m8 12 3 3 5-6"/>',
+  por:'<path d="M4 5h16v14H4zM8 9h8M8 13h6"/>'
+ };
+ var d=icons[t.id]|| (t.g==="Matemática"?'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 19h.01M12 19h.01"/>':t.g==="Português"?'<path d="M4 4h16v16H4zM8 8h8M8 12h8M8 16h5"/>':t.g==="Ciências"?'<path d="M9 3h6M10 3v7l-5 8a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-8V3M7 16h10"/>':'<circle cx="12" cy="12" r="8"/><path d="M8 12h8M12 8v8"/>');
+ return '<svg class="topic-doodle" viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+d+'</svg>'
+}
+function MAT(){var g=cur.mat,L=T.filter(function(t){return t.g==g}),nb=NBL(),dn=function(t){return nb.some(function(x){return x.id==t.id})};
+ main.innerHTML="<div class='mh'><span class='mi'>"+ICO(g,34)+"</span><div><div class='eb'>Matéria</div><h2>"+g+"</h2><div style='color:var(--mute)'>"+L.length+" tópicos · "+L.filter(dn).length+" no caderno</div></div></div><div class='grid'>"+L.map(function(t,i){return "<button class='tile' onclick='openT("+T.indexOf(t)+")'><span class='n'>"+TICO(t)+"</span><b>"+t.n+"</b><small>"+(dn(t)?"✔ no caderno · ":"")+t.q.length+" questões</small></button>"}).join("")+"</div>";
+ window.scrollTo(0,0)}
+function NXT(){var i=T.indexOf(cur);if(i<0||cur.prova||cur.home||cur.ex||cur.prog||cur.plan||cur.rev)return;main.insertAdjacentHTML("afterbegin","<button class='btn g bk0' onclick=\"cur={mat:'"+cur.g+"'};render()\">← "+cur.g+"</button>");
+ main.insertAdjacentHTML("beforeend","<div class='nx'>"+(i>0?"<button class='btn g' onclick='openT("+(i-1)+")'>← Anterior</button>":"")+(tab=="e"?"<button class='btn' onclick=\"go('a')\">Fazer a atividade →</button>":"<button class='btn g' onclick=\"go('e')\">← Ver explicação</button>")+(i<T.length-1?"<button class='btn g' onclick='openT("+(i+1)+")'>Próximo →</button>":"")+"</div>")}
+function UPD(){BAR();[].forEach.call(document.querySelectorAll("nav button[data-g]"),function(b){b.classList.toggle("on",b.getAttribute("data-g")==(cur.mat||cur.g))});[].forEach.call(document.querySelectorAll("#tb button"),function(b){b.classList.toggle("on",!!cur[b.dataset.k])})}
+[].forEach.call(document.querySelectorAll("#tb button"),function(b){b.onclick=function(){var n=document.getElementById(b.dataset.b);if(n)n.click()}});
+var _R=render;render=function(){_R();NXT();UPD()};
+
+function NBL(){try{var a=JSON.parse(ld("sn_nb")||"[]");return Array.isArray(a)?a:[]}catch(e){return[]}}
+function NB(t){var L=NBL();if(L.some(function(x){return x.id==t.id}))return 0;L.push({id:t.id,d:Date.now()});sv("sn_nb",JSON.stringify(L));return 1}
+function EH(x){return String(x).replace(/[&<>]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;"}[c]})}
+function SMR(h){var q=function(x){return x.replace(/<br\s*\/?>|<\/div>|<\/p>|<\/li>/gi,"\n").replace(/<(?!\/?b>)[^>]*>/g,"").split("\n").map(function(l){return l.trim()}).filter(Boolean)},m0=h.match(/<div class=['"]ex['"]>([\s\S]*?)<\/div>/),ex=m0?q(m0[1]):[],bl=q(h.replace(/<div class=['"]ex['"]>[\s\S]*?<\/div>/g,"")),b=bl[0]||"",m=b.match(/^[\s\S]*?[.!?](?=\s|$)/);if(m)b=m[0];if(b.length>170)b=b.slice(0,167)+"…";if(!ex.length)ex=bl.slice(1,5);return{b:b,e:ex.join("<br>")}}
+function CAD(){var L=NBL().filter(function(x){return T.some(function(t){return t.id==x.id})}),gs=[],o="<h2>Meu caderno</h2><div style='color:var(--mute)'>Os pontos mais importantes dos tópicos que você terminou acertando tudo.</div><br>";
+ if(!L.length){main.innerHTML=o+"<div class='card'><h3>Caderno vazio</h3><p>Faça a atividade de um tópico e acerte todas as questões. Ele entra aqui sozinho, com um resumo do que importa.</p><button class='btn' onclick='cur={home:1};render()'>Escolher um tópico</button></div>";window.scrollTo(0,0);return}
+ T.forEach(function(t){if(gs.indexOf(t.g)<0)gs.push(t.g)});
+ o+="<div class='st'><span><b>"+L.length+"</b> de "+T.length+" tópicos no caderno</span></div>";
+ gs.forEach(function(g){var it=T.filter(function(t){return t.g==g&&L.some(function(x){return x.id==t.id})});if(!it.length)return;
+  o+="<h3 class='sec'>"+g+"</h3>"+it.map(function(t){var x=L.filter(function(z){return z.id==t.id})[0],my=ld("sn_"+t.id)||"";
+   return "<div class='card cdn'><div class='cdh'><h3>"+t.n+"</h3><span>"+new Date(x.d).toLocaleDateString("pt-BR")+"</span></div><ul>"+t.e.map(function(c){var r=SMR(c[1]);return "<li><b>"+c[0]+"</b>"+(r.b?" — "+r.b:"")+(r.e?"<div class='ex'>"+r.e+"</div>":"")+"</li>"}).join("")+"</ul>"+(my.trim()?"<div class='my'><b>Minha anotação</b><br>"+EH(my).replace(/\n/g,"<br>")+"</div>":"")+"<button class='btn g' onclick='openT("+T.indexOf(t)+")'>Reler tópico</button></div>"}).join("")});
+ main.innerHTML=o;window.scrollTo(0,0)}
+var _fixN=fix;fix=function(){_fixN();if(cur.prova)return;var dn=DN();if(!dn[cur.id]){dn[cur.id]=1;sv("sn_done",JSON.stringify(dn))}BAR();var all=cur.q.every(function(q,i){var b=document.getElementById("q"+i);return b&&b.className.indexOf("no")<0});
+ if(all&&NB(cur)){var sc=document.getElementById("sc");if(sc)sc.textContent+=" · 📓 Anotado no seu caderno!"}};
+var _actN=act;act=function(){var r=_actN();return cur.prova?r:"<p style='color:var(--mute);font-size:14px'>📓 Acertou tudo? Este tópico entra no seu caderno.</p>"+r};
+(function(){var b=document.createElement("button");b.id="bcad";b.innerHTML="<i>▤</i>Caderno";b.onclick=function(){cur={cad:1};render();nav.classList.remove("open")};
+ var r=document.getElementById("brev");if(r)r.insertAdjacentElement("afterend",b);else nav.appendChild(b);
+ var tb=document.getElementById("tb"),t=document.createElement("button");t.setAttribute("data-k","cad");t.setAttribute("data-b","bcad");t.innerHTML="<b>▤</b>Caderno";t.onclick=function(){b.click()};tb.insertBefore(t,tb.lastElementChild)})();
+
+function BH(c){return "<div class='sbw"+c+"'><div class='sbt'><span>Barra de estudo</span><b class='sbp'>0%</b></div><div class='sbb'><i class='sbf'></i></div><small class='sbs'></small></div>"}
+function DN(){try{return JSON.parse(ld("sn_done")||"{}")||{}}catch(e){return{}}}
+function BAR(){var d=DN(),tp=T.filter(function(t){return d[t.id]}).length,ks={};HS().forEach(function(x){if(x.k!=null&&x.k<S.length)ks[x.k]=1});var sm=Object.keys(ks).length,p=Math.round((tp+sm)/(T.length+S.length)*100),up=BAR.p!=null&&p>BAR.p;BAR.p=p;
+ [].forEach.call(document.querySelectorAll(".sbw"),function(w){w.querySelector(".sbp").textContent=p+"%";w.querySelector(".sbs").textContent="Tópicos "+tp+"/"+T.length+" · Simulados "+sm+"/"+S.length;var f=w.querySelector(".sbf");setTimeout(function(){f.style.width=p+"%"},30);if(up){w.classList.add("up");setTimeout(function(){w.classList.remove("up")},1300)}})}
+var _resuB=resu;resu=function(s){var r=_resuB(s);BAR();return r};
+nav.querySelector(".brand").insertAdjacentHTML("afterend",BH(""));
+(function(){var K="sn_tm",mode=null,run=0,sec=0,ss=0,cd,day=function(){var d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()},p2=function(n){return(n<10?"0":"")+n},
+ fm=function(x){return p2(Math.floor(x/3600))+":"+p2(Math.floor(x%3600/60))+":"+p2(x%60)},
+ H=function(v){var t=Math.round(v/60),h=Math.floor(t/60),m=t%60;return h?h+(h>1?" horas":" hora")+(m?" e "+m+" min":""):m+" min"},
+ MS=function(v){return v<3600?Math.floor(v/60)+" min"+(v%60?" "+v%60+" s":""):H(v)},
+ g=function(){var v=+HR();return v>0?Math.round(v*3600):0},$=function(i){return document.getElementById(i)};
+ cd=day();try{var o=JSON.parse(ld(K)||"{}");if(o.d==cd)sec=+o.s||0}catch(e){}
+ document.body.insertAdjacentHTML("beforeend","<div id='tm'><div id='tmp'><div id='tmoff'><h4>Ligar cronômetro</h4><div class='tmo2'><button class='btn g' id='tme_'><span>📖</span>Estudo</button><button class='btn g' id='tms_'><span>📝</span>Simulado</button></div><small style='color:var(--mute);display:block;margin-top:10px'>Estudo: soma o tempo do dia e compara com a meta. Simulado: mede quanto você leva e compara com o tempo da prova.</small><small id='tmx' style='color:var(--mute);display:block;margin-top:8px'></small></div><div id='tmon' style='display:none'><h4 id='tmm'></h4><div class='big' id='tmb'>00:00:00</div><small id='tml' style='color:var(--mute)'></small><label id='tmgl'>Meta (horas por dia)<input type='number' id='tmg' min='0' max='12' step='0.5'></label><div class='row'><button class='btn g' id='tmr'>Pausar</button><button class='btn' id='tmf'>Desligar</button></div></div></div><button id='tmc' aria-label='Cronômetro'><i></i><span id='tmt'>Cronômetro</span></button></div><div id='tmo'><div class='bx'><div class='em' id='tme'></div><h3 id='tmh'></h3><p id='tmd'></p><button class='btn' id='tmk'>Ok</button></div></div>");
+ function save(){sv(K,JSON.stringify({d:cd,s:sec}))}
+ function draw(){var G=g(),m=mode,v=m=="s"?ss:sec,L=(+TL()||0)*60;$("tm").classList.toggle("run",!!(m&&run));
+  $("tmoff").style.display=m?"none":"block";$("tmon").style.display=m?"block":"none";
+  $("tmt").textContent=m?(m=="s"?(L?"Restam "+fm(Math.max(0,L-v)):"Simulado "+fm(v)):(G?(sec>=G?"Meta batida":"Faltam "+fm(G-sec)):"Estudo "+fm(v))):"Cronômetro";
+  $("tmx").textContent="Hoje você estudou "+fm(sec)+(G?" · meta "+H(G):"");
+  if(m){$("tmm").textContent=m=="s"?"Cronômetro de simulado":"Cronômetro de estudo";$("tmb").textContent=fm(v);$("tmgl").style.display=m=="s"?"none":"flex";
+   $("tml").textContent=m=="s"?(L?"Tempo da prova: "+H(L):"Tempo da prova não definido"):(G?(sec>=G?"Meta de "+H(G)+" batida ✔":"Faltam "+H(G-sec)+" para a meta"):"Sem meta definida");$("tmr").textContent=run?"Pausar":"Continuar"}}
+ function fim(m){var G=g(),L=(+TL()||0)*60,h,d;
+  if(m=="s"){h="Simulado encerrado";d="Tempo: "+MS(ss)+(L?" de "+H(L)+".":".")}
+  else{h="Estudo de hoje";d=H(sec)+(G?" de "+H(G)+" de meta.":".")}
+  $("tme").textContent="";$("tmh").textContent=h;$("tmd").textContent=d;$("tmo").classList.add("on")}
+ function ini(m){mode=m;run=1;if(m=="s")ss=0;$("tmg").value=+HR()||"";draw()}
+ $("tmc").onclick=function(){$("tm").classList.toggle("open");$("tmg").value=+HR()||"";draw()};
+ $("tme_").onclick=function(){ini("e")};$("tms_").onclick=function(){ini("s")};
+ $("tmr").onclick=function(){run=run?0:1;save();draw()};
+ $("tmf").onclick=function(){var m=mode;run=0;mode=null;save();draw();$("tm").classList.remove("open");fim(m)};
+ $("tmg").onchange=function(){sv("sn_hours",String(Math.max(0,+this.value||0)));draw()};
+ $("tmk").onclick=function(){$("tmo").classList.remove("on")};
+ setInterval(function(){if(day()!=cd){cd=day();sec=0}if(mode&&run&&!document.hidden){if(mode=="s")ss++;else{sec++;if(sec%15==0)save()}draw()}},1000);
+ document.addEventListener("visibilitychange",save);window.addEventListener("pagehide",save);draw()})();
+BAR();
+
+/* v7: simplificação, níveis, progresso, home focada em estudo */
+(function(){
+var TSK="sn_ts",PR=["Matemática","Português","Ciências"];
+function TSg(){try{return JSON.parse(ld(TSK)||"{}")||{}}catch(e){return{}}}
+T.forEach(function(t){t.q0=t.q.slice()});
+[].forEach.call(nav.querySelectorAll(".grp"),function(g){if(g.textContent=="Simulados")g.textContent="Simulados de treino"});
+/* anotação sempre visível: "O que aprendi" */
+var _ex=expl;expl=function(){return _ex().replace(/<button class='btn g' onclick='tg\(\)'>[\s\S]*?<\/div>(?=<p>)/,"<div class='card'><h3>O que aprendi</h3><textarea id='ta' placeholder='Escreva com suas palavras o que entendeu deste tópico...'></textarea><small id='tas' style='color:var(--mute)'>Salvo automaticamente neste aparelho.</small></div>")};
+var _r7=render;render=function(){_r7();var ta=document.getElementById("ta"),st=document.getElementById("tas");if(ta&&cur.id&&!cur.prova){ta.value=ld("sn_"+cur.id);ta.oninput=function(){sv("sn_"+cur.id,ta.value);if(st)st.textContent="Salvo ✓"}}};
+/* níveis: Fácil = questões do tópico; Médio/Difícil = bancos Intermediário/Desafio da matéria */
+var KEY={"Português":"p","Matemática":"m","Ciências":"c"};
+function lvQ(l){var t=cur,a=t.q0||t.q;if(!l)return a;var L=sh((S[l][KEY[t.g]]||[]).slice()).slice(0,6).map(function(x){return sq(x).slice(1)});
+ if(MI[t.id]){var g=[];for(var n=0;n<3;n++)g.push(M[MI[t.id][n%MI[t.id].length]]().slice(1));L=g.concat(L.slice(0,3))}
+ return L.length?L:a}
+window.SL=function(l){cur.lv=l;cur.q=lvQ(l);render()};
+var _a7=act;act=function(){var r=_a7();if(cur.prova||!cur.q0)return r;var l=cur.lv||0;return "<div class='tabs' style='margin:0 0 14px'>"+["Fácil","Médio","Difícil"].map(function(n,i){return "<button class='"+(i==l?"on":"")+"' onclick='SL("+i+")'>"+n+"</button>"}).join("")+"</div>"+r};
+redo=function(){if(cur.lv)cur.q=lvQ(cur.lv);if(cur.prova)newProva();render()};
+var _o7=openT;openT=function(i){var t=T[i];t.lv=0;if(t.q0)t.q=t.q0;_o7(i)};
+/* correção: explica acertos e erros; guarda desempenho por tópico */
+var _f7=fix;fix=function(){_f7();if(cur.prova)return;var ts=TSg(),r=ts[cur.id]||[0,0],pp=(cur.e.filter(function(c){return c[0]=="Passo a passo resolvido"})[0]||[])[1];
+ cur.q.forEach(function(q,i){var b=document.getElementById("q"+i),f=document.getElementById("f"+i),ok=b.className.indexOf("no")<0;r[1]++;if(ok)r[0]++;
+  if(typeof q[1]=="number")f.innerHTML=(ok?"✔ Certo. ":"✘ Errado. Resposta certa: "+String(q[1]).replace(".",",")+". ")+(pp?"<details><summary style='cursor:pointer'>Ver o passo a passo</summary><div class='ex'>"+pp+"</div></details>":"");
+  else f.innerHTML=(ok?"✔ Certo. ":"✘ Errado. ")+"Resposta certa: "+q[1][q[2]]+". <b>Por quê:</b> "+q[3]});
+ if(r[1]>30){r[0]=Math.round(r[0]/2);r[1]=15}ts[cur.id]=r;sv(TSK,JSON.stringify(ts))};
+/* progresso: dominados x dificuldades; amigos fica recolhido no fim */
+var _P7=PG;PG=function(){_P7();var ts=TSg(),er=ER(),ok=[],hd=[];
+ T.forEach(function(t){var r=ts[t.id]||[0,0],p=r[1]?r[0]/r[1]:null,pe=er.filter(function(x){return x.a==t.n}).length;
+  if(r[1]>=3&&p>=.8&&pe<2)ok.push([t,Math.round(p*100)]);else if((r[1]>=3&&p<.6)||pe>=2)hd.push([t,r[1]?Math.round(p*100):null,pe])});
+ var li=function(a,f){return a.length?a.map(f).join(""):"<p style='color:var(--mute)'>Ainda sem dados. Faça as atividades dos tópicos.</p>"},
+ h="<div class='card'><h3>Assuntos dominados</h3>"+li(ok,function(x){return "<div class='rv'><b>"+x[0].n+"</b> · "+x[0].g+" · "+x[1]+"% de acerto</div>"})+"</div><div class='card'><h3>Dificuldades (reforçar)</h3>"+li(hd,function(x){return "<div class='rv'><b>"+x[0].n+"</b> · "+(x[1]==null?"":x[1]+"% de acerto · ")+x[2]+" erro(s) no caderno <button class='btn g' style='padding:4px 10px;float:right' onclick='openT("+T.indexOf(x[0])+")'>Estudar</button></div>"})+"</div>",
+ fr=main.querySelector("details.card");if(fr)fr.insertAdjacentHTML("beforebegin",h);else main.insertAdjacentHTML("beforeend",h)};
+/* início: o que estudar e o que revisar */
+HM=function(){var ts=TSg(),dn=DN(),du=ER().filter(function(x){return x.d<=Date.now()}).length,dt=ld("sn_date"),left=dt?DF(TD(),dt):-1,
+ pr=function(t){return PR.indexOf(t.g)>-1},
+ wk=T.filter(function(t){var r=ts[t.id];return pr(t)&&r&&r[1]>=3&&r[0]/r[1]<.6})[0],
+ nx=wk||T.filter(function(t){return pr(t)&&!dn[t.id]})[0]||T.filter(function(t){return !dn[t.id]})[0]||T[0],
+ sub=function(g){var L=T.filter(function(t){return t.g==g}),d=L.filter(function(t){return dn[t.id]}).length;return "<button class='tile' onclick=\"cur={mat:'"+g+"'};render()\"><span class='n'>"+ICO(g,26)+"</span><b>"+g+"</b><small>"+d+" de "+L.length+" tópicos feitos</small><div class='mn'><i style='width:"+Math.round(d/L.length*100)+"%'></i></div></button>"};
+ main.innerHTML="<div class='eb'>Estudo SENAI</div><h2 style='margin:4px 0 14px'>O que fazer hoje</h2>"+(left>=0?"<div class='st'><span>Faltam <b>"+left+" dias</b> para a prova</span></div>":"")+
+ "<div class='card'><h3>Estudar agora</h3><p><b>"+nx.n+"</b> · "+nx.g+(wk?" · precisa de reforço":"")+"</p><button class='btn' onclick='openT("+T.indexOf(nx)+")'>Começar</button></div>"+
+ "<div class='card'><h3>Revisar</h3><p>"+(du?du+" questão(ões) do caderno de erros para refazer hoje.":"Nada para revisar hoje.")+"</p>"+(du?"<button class='btn' onclick='cur={rev:1};render()'>Revisar agora</button>":"")+"</div>"+
+ BH(" home")+"<h3 class='sec'>Matérias do edital</h3><div class='grid'>"+PR.map(sub).join("")+"</div>"+
+ "<h3 class='sec'>Simulados de treino</h3><div class='grid'>"+S.map(function(x,k){return "<button class='tile' onclick='pick("+k+")'><span class='n'>Treino 0"+(k+1)+"</span><b>"+x.n+"</b><small>"+x.s+" · "+x.q.length+" questões</small></button>"}).join("")+"</div>"+
+ "<h3 class='sec'>Provas anteriores</h3><div class='notice'>Nenhuma prova anterior adicionada ainda. Quando você tiver, elas ficam aqui, separadas dos simulados de treino.</div>";
+ BAR();window.scrollTo(0,0)};
+})();
+
+render();
+</script>
+<style>
+.qd{background:#0b0b0b;border:2px solid #3a3a3a;border-radius:16px;padding:20px 22px;margin:0 0 18px;box-shadow:inset 0 0 40px #000,0 0 0 5px #151515;font-family:"Segoe Print","Bradley Hand","Comic Sans MS",cursive;line-height:1.7}
+.qd p{margin:8px 0;color:#ddd}.qt{margin:18px 0 6px;font-size:20px;color:#fff;border-bottom:2px dashed #444;padding-bottom:4px}.qt:first-child{margin-top:0}
+.qf{margin:12px 0;padding:10px 14px;text-align:center;font-size:20px;font-weight:700;color:#fff;border:2px solid #fff;border-radius:10px;background:#111}
+.qx{margin:12px 0;padding:10px 14px;border-left:4px solid #fff;background:#121212;border-radius:6px}.qx>b{display:block;margin-bottom:4px;color:#fff}
+.qx>div{color:#ddd;opacity:0;animation:qin .5s forwards}@keyframes qin{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
+.qw{margin:12px 0;padding:10px 14px;border:2px dashed #aaa;border-radius:10px;color:#fff}
+.qq{margin:12px 0;border:1px solid #444;border-radius:10px;padding:8px 14px;color:#ddd}.qq summary{cursor:pointer;color:#fff}.qq[open] summary{margin-bottom:6px}
+</style>
+<script>
+var AULA={
+perc:[["t","Porcentagem: vamos por partes"],["p","Pessoal, olha o quadro. A palavra já diz: <b>por cento</b> = “por cada 100”. Então 25% é 25 pedacinhos de um total de 100."],["f","25% = 25/100 = 0,25"],["p","Para virar decimal, ande com a vírgula 2 casas para a esquerda: 25% → 0,25; 7% → 0,07; 150% → 1,5."],["t","1) Quanto é X% de um número?"],["p","Transforme em decimal e multiplique."],["x","Exemplo: 20% de 350",["20% = 0,20","350 × 0,20","= <b>70</b>"]],["t","2) Desconto e aumento: o atalho do professor"],["p","Em vez de calcular o desconto e depois subtrair, faça tudo numa conta só."],["f","Desconto: × (1 − taxa) | Aumento: × (1 + taxa)"],["x","Camiseta de R$ 80 com 25% de desconto",["1 − 0,25 = 0,75","80 × 0,75","= <b>R$ 60</b>"]],["x","Salário de R$ 2.000 com aumento de 10%",["1 + 0,10 = 1,10","2000 × 1,10 = <b>R$ 2.200</b>"]],["t","3) Quantos % um valor é do outro?"],["f","% = parte ÷ total × 100"],["x","10 é quantos % de 40?",["10 ÷ 40 = 0,25","0,25 × 100 = <b>25%</b>"]],["!","Dois descontos seguidos (20% e depois 10%) NÃO somam 30%. O segundo incide sobre o preço já reduzido: × 0,80 × 0,90 = × 0,72, ou seja, 28% de desconto."],["q","Um produto de R$ 150 tem 20% de desconto. Quanto custa?","150 × 0,80 = <b>R$ 120</b>"]],
+r3:[["t","Regra de três: o passo a passo"],["p","Usamos quando temos 3 valores e queremos o 4º. Primeiro monte a tabela, com as grandezas sempre na mesma ordem."],["x","3 canetas custam R$ 6. Quanto custam 5?",["canetas → preço","3 → 6","5 → x"]],["p","Pergunta de ouro: <b>se uma aumenta, a outra aumenta?</b> Mais canetas, mais dinheiro. Sim → é <b>direta</b>."],["f","Direta: multiplica em cruz"],["x","Cruzando",["x × 3 = 5 × 6","3x = 30","x = 30 ÷ 3 = <b>10</b>"]],["t","E quando é inversa?"],["p","Quando uma aumenta e a outra diminui. Mais operários → menos dias."],["x","4 operários fazem a obra em 12 dias. E 8 operários?",["Multiplica em linha: 4 × 12 = 8 × x","48 = 8x","x = <b>6 dias</b>"]],["!","Antes de multiplicar, decida: direta ou inversa? É o erro nº 1 da prova. Teste: o dobro de operários deve dar metade dos dias (6 = 12 ÷ 2 ✔)."],["q","Um carro anda 240 km em 3 h. Quantos km anda em 5 h?","Direta: 5 × 240 ÷ 3 = <b>400 km</b>"]],
+frac:[["t","Frações: entendendo de verdade"],["p","Fração é parte de um todo. Em 3/4, o <b>de baixo</b> (denominador) diz em quantas partes iguais dividi; o <b>de cima</b> (numerador) diz quantas peguei. Pizza de 4 fatias, comi 3."],["t","Somar frações"],["p","Mesmo denominador: some só o de cima e mantenha o de baixo. 2/7 + 3/7 = 5/7."],["p","Denominadores diferentes: iguale antes, usando o MMC."],["x","1/3 + 1/4",["MMC de 3 e 4 = 12","1/3 = 4/12 (× 4 em cima e embaixo)","1/4 = 3/12 (× 3 em cima e embaixo)","4/12 + 3/12 = <b>7/12</b>"]],["t","Fração de um número"],["f","Divide pelo de baixo, multiplica pelo de cima"],["x","3/4 de 40",["40 ÷ 4 = 10 (cada parte)","10 × 3 = <b>30</b>"]],["t","Fração → decimal"],["x","2/5",["Fração é divisão: 2 ÷ 5 = <b>0,4</b>"]],["!","Nunca some em cima e embaixo! 1/2 + 1/3 NÃO é 2/5. Iguale os denominadores primeiro."],["q","Quanto é 1/5 de 250?","250 ÷ 5 = <b>50</b>"]],
+eq:[["t","Equação do 1º grau: a balança"],["p","Imagine uma balança equilibrada. O que eu faço de um lado, preciso fazer do outro, senão ela desequilibra. O objetivo: deixar o <b>x sozinho</b>."],["x","3x − 4 = 11",["Passo 1: tirar o −4 → some 4 dos dois lados","3x = 11 + 4 → 3x = 15","Passo 2: tirar o 3 → divida os dois lados por 3","x = 15 ÷ 3 = <b>5</b>","Teste: 3 × 5 − 4 = 11 ✔"]],["p","O “passa para o outro lado” é só isso: quem soma passa subtraindo; quem multiplica passa dividindo."],["x","5x − 10 = 25",["5x = 25 + 10 (o − virou +)","5x = 35","x = <b>7</b>"]],["!","Esquecer de trocar o sinal ao mudar de lado. E sempre teste a resposta: são 10 segundos que salvam a questão."],["q","Resolva: 2x + 6 = 20","2x = 14 → x = <b>7</b>"]],
+int:[["t","Interpretação de texto: método de 4 passos"],["p","Interpretar é achar no texto o que ele diz, não o que você acha. Siga sempre a mesma ordem."],["x","Texto: “A fábrica reduziu os acidentes em 30% após tornar o capacete obrigatório.”",["1) Leia a pergunta ANTES: o que reduziu os acidentes?","2) Volte ao texto e sublinhe a palavra-chave: <i>reduziu</i>","3) Ache a causa: <i>após tornar o capacete obrigatório</i>","4) Marque a alternativa que reformula isso: <b>uso obrigatório do capacete</b>"]],["p","Eliminação: risque alternativas com “sempre”, “nunca”, “todos” e as que trazem fato que o texto não menciona."],["!","Não responda com o que você sabe do assunto. A resposta tem que estar no texto, mesmo que você discorde."],["q","No exemplo, “o capacete é sempre suficiente” seria boa resposta?","Não: “sempre” é exagero e o texto não afirma isso."]]};
+function quadro(a){return "<div class='qd'>"+a.map(function(b){var k=b[0];
+if(k=="t")return "<h3 class='qt'>"+b[1]+"</h3>";if(k=="p")return "<p>"+b[1]+"</p>";if(k=="f")return "<div class='qf'>"+b[1]+"</div>";
+if(k=="x")return "<div class='qx'><b>"+b[1]+"</b>"+b[2].map(function(l,i){return "<div style='animation-delay:"+(i*.3)+"s'>"+l+"</div>"}).join("")+"</div>";
+if(k=="!")return "<div class='qw'>⚠ <b>Cuidado:</b> "+b[1]+"</div>";
+return "<details class='qq'><summary>✍ Sua vez: "+b[1]+"</summary>"+b[2]+"</details>"}).join("")+"</div>"}
+var _ex9=expl;expl=function(){var a=AULA[cur.id],r=_ex9();return a?"<div class='eb' style='margin-bottom:8px'>🧑‍🏫 Aula no quadro</div>"+quadro(a)+"<div class='sec'>Resumo rápido</div>"+r:r};
+</script>
+
+<script>
+/* Sistema de entrada personalizada: diagnóstico inicial e plano individual, sem IA externa. */
+(function(){
+ const oldRender=render;
+ const subjects=['Matemática','Português','Ciências'];
+ let dq=[],di=0,answers=[];
+ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+ function buildDiagnostic(){
+  dq=[];
+  subjects.forEach(g=>{
+   let pool=[];
+   T.filter(t=>t.g===g).forEach(t=>(t.q||[]).forEach(q=>pool.push({g,topic:t.n,id:t.id,q:q.slice()})));
+   pool=shuffle(pool);
+   if(!pool.length)return;
+   for(let i=0;i<10;i++)dq.push({...pool[i%pool.length],q:pool[i%pool.length].q.slice()});
+  });
+  // randomize the 30 questions while preserving 10 per subject
+  dq=subjects.flatMap(g=>shuffle(dq.filter(x=>x.g===g)));
+  di=0;answers=Array(dq.length).fill(null);
+ }
+ function hideShell(hide){
+  ['nav','tb'].forEach(id=>{let el=document.getElementById(id);if(el)el.style.display=hide?'none':''});
+  let top=document.querySelector('.top');if(top)top.style.display=hide?'none':'';
+  document.body.classList.toggle('onboarding',hide);
+ }
+ function frame(content){hideShell(true);main.innerHTML='<div class="onb"><div class="onb-brand">ESTUDO <span>SENAI</span></div>'+content+'</div>';window.scrollTo(0,0)}
+ function optionMarkup(item,i){let q=item.q; if(typeof q[1]==='number')return '<input class="onb-input" id="diag-answer" type="text" inputmode="decimal" placeholder="Digite sua resposta" value="'+(answers[i]&&answers[i].value!=null?String(answers[i].value).replace(/"/g,'&quot;'):'')+'">';
+  return '<div class="onb-options">'+q[1].map((o,j)=>'<label class="onb-option"><input type="radio" name="diag-answer" value="'+j+'" '+(answers[i]&&answers[i].value===j?'checked':'')+'><span>'+o+'</span></label>').join('')+'</div>';
+ }
+ function showDiagnostic(){
+  let item=dq[di],subCount=dq.slice(0,di).filter(x=>x.g===item.g).length+1,subjectTotal=dq.filter(x=>x.g===item.g).length;
+  frame('<div class="onb-kicker">AVALIAÇÃO INICIAL · '+(di+1)+' DE '+dq.length+'</div><div class="onb-progress"><i style="width:'+((di+1)/dq.length*100)+'%"></i></div><div class="onb-meta">'+item.g+' <span>Questão '+subCount+' de '+subjectTotal+'</span></div><h1>Vamos descobrir seu ponto de partida.</h1><p class="onb-muted">Responda sem consultar material. Isso ajuda a montar um plano que faça sentido para você.</p><div class="onb-question"><div class="onb-qnum">QUESTÃO '+(di+1)+'</div><h2>'+item.q[0]+'</h2>'+optionMarkup(item,di)+'<div class="onb-error" id="diag-error"></div></div><div class="onb-actions">'+(di?'<button class="btn g" id="diag-back">← Voltar</button>':'<span></span>')+'<button class="btn" id="diag-next">'+(di===dq.length-1?'Ver resultado':'Próxima questão →')+'</button></div><p class="onb-foot">A avaliação tem 30 questões curtas: 10 por matéria.</p>');
+  let next=document.getElementById('diag-next');next.onclick=()=>{
+   let value;
+   if(typeof item.q[1]==='number'){let el=document.getElementById('diag-answer');value=el.value.trim();if(!value){document.getElementById('diag-error').textContent='Preencha sua resposta para continuar.';return}}
+   else {let el=document.querySelector('input[name="diag-answer"]:checked');if(!el){document.getElementById('diag-error').textContent='Escolha uma alternativa para continuar.';return}value=Number(el.value)}
+   answers[di]={value};
+   if(di<dq.length-1){di++;showDiagnostic()}else finishDiagnostic();
+  };
+  let back=document.getElementById('diag-back');if(back)back.onclick=()=>{di--;showDiagnostic()};
+ }
+ function correct(item,a){if(!a)return false;let q=item.q;if(typeof q[1]==='number'){let n=parseFloat(String(a.value).replace(',','.'));return Number.isFinite(n)&&Math.abs(n-q[1])<.01}return a.value===q[2]}
+ function finishDiagnostic(){
+  let result={date:new Date().toISOString(),subjects:{},topics:{},misses:[]};
+  subjects.forEach(g=>{let list=dq.map((x,i)=>({...x,answer:answers[i]})).filter(x=>x.g===g);let ok=list.filter(x=>correct(x,x.answer)).length;result.subjects[g]={ok,total:list.length,pct:Math.round(ok/list.length*100)}});
+  dq.forEach((x,i)=>{let ok=correct(x,answers[i]);if(!result.topics[x.id])result.topics[x.id]={name:x.topic,g:x.g,ok:0,total:0};result.topics[x.id].total++;if(ok)result.topics[x.id].ok++;else result.misses.push({g:x.g,topic:x.topic,q:x.q[0]})});
+  Object.keys(result.topics).forEach(k=>{let t=result.topics[k];t.pct=Math.round(t.ok/t.total*100)});
+  sv('sn_diagnostic',JSON.stringify(result));sv('sn_diag_answers',JSON.stringify(dq.map((x,i)=>({g:x.g,topic:x.topic,q:x.q[0],correct:correct(x,answers[i])}))));
+  showResults(result);
+ }
+ function showResults(r){
+  let cards=subjects.map(g=>{let x=r.subjects[g],level=x.pct>=80?'Você foi melhor':x.pct>=50?'Vale revisar':'Prioridade de estudo';return '<div class="onb-result"><div class="onb-result-top"><b>'+g+'</b><strong>'+x.pct+'%</strong></div><div class="onb-progress"><i style="width:'+x.pct+'%"></i></div><p>'+x.ok+' de '+x.total+' acertos · '+level+'</p></div>'}).join('');
+  let topics=Object.keys(r.topics).map(k=>r.topics[k]).sort((a,b)=>a.pct-b.pct);
+  let weakest=topics.filter(x=>x.pct<50).slice(0,5),middle=topics.filter(x=>x.pct>=50&&x.pct<80).slice(0,5),best=topics.filter(x=>x.pct>=80).slice(0,5);
+  function topicList(title,list,empty){return '<div class="onb-topic-group"><b>'+title+'</b>'+(list.length?list.map(x=>'<div class="onb-topic"><span>'+x.name+' <small>· '+x.g+'</small></span><strong>'+x.pct+'%</strong></div>').join(''):'<p class="onb-muted">'+empty+'</p>')+'</div>'}
+  frame('<div class="onb-kicker">AVALIAÇÃO CONCLUÍDA</div><h1>Seu ponto de partida.</h1><p class="onb-muted">Isso não é uma nota definitiva. É um mapa para decidir onde seu tempo de estudo pode render mais.</p><div class="onb-results">'+cards+'</div><div class="onb-topic-box">'+topicList('Precisa de mais atenção',weakest,'Nenhum tópico ficou abaixo de 50%.')+topicList('Para revisar',middle,'Nenhum tópico ficou nesta faixa.')+topicList('Você já demonstra domínio',best,'Vamos descobrir seus pontos fortes ao longo dos estudos.')+'</div><button class="btn onb-full" id="to-schedule">Montar meu plano de estudo →</button><p class="onb-foot">O plano será calculado com seus resultados, a data da prova e sua disponibilidade.</p>');
+  document.getElementById('to-schedule').onclick=showSchedule;
+ }
+ function showSchedule(){
+  let today=new Date(),min=today.toISOString().slice(0,10),savedDays=ld('sn_days')?JSON.parse(ld('sn_days')):['1','2','3','4','5'],date=ld('sn_date')||'',hours=ld('sn_hours')||'2',start=ld('sn_time_start')||'18:00',end=ld('sn_time_end')||'20:00';
+  let days=[['1','Segunda'],['2','Terça'],['3','Quarta'],['4','Quinta'],['5','Sexta'],['6','Sábado'],['0','Domingo']];
+  frame('<div class="onb-kicker">ETAPA FINAL · SUA ROTINA</div><h1>Quando você consegue estudar?</h1><p class="onb-muted">Use sua rotina real. O plano vai priorizar suas maiores dificuldades sem ultrapassar o tempo que você tem.</p><div class="onb-form"><label class="onb-label" for="exam-date">Data da prova</label><input id="exam-date" class="onb-input" type="date" min="'+min+'" value="'+date+'"><label class="onb-label">Dias disponíveis</label><div class="onb-days">'+days.map(d=>'<label class="onb-day"><input type="checkbox" value="'+d[0]+'" '+(savedDays.includes(d[0])?'checked':'')+'><span>'+d[1]+'</span></label>').join('')+'</div><label class="onb-label" for="daily-hours">Tempo que pode estudar por dia</label><select id="daily-hours" class="onb-input">'+[['0.5','30 minutos'],['1','1 hora'],['1.5','1 hora e meia'],['2','2 horas'],['2.5','2 horas e meia'],['3','3 horas'],['4','4 horas'],['5','5 horas ou mais']].map(x=>'<option value="'+x[0]+'" '+(hours===x[0]?'selected':'')+'>'+x[1]+'</option>').join('')+'</select><div class="onb-time-grid"><div><label class="onb-label" for="time-start">Começo</label><input id="time-start" class="onb-input" type="time" value="'+start+'"></div><div><label class="onb-label" for="time-end">Fim</label><input id="time-end" class="onb-input" type="time" value="'+end+'"></div></div><div class="onb-error" id="schedule-error"></div><button class="btn onb-full" id="make-plan">Criar meu plano personalizado →</button></div><p class="onb-foot">Você poderá ajustar essas informações depois na área Plano de estudo.</p>');
+  document.getElementById('make-plan').onclick=()=>{
+   let d=document.getElementById('exam-date').value,days=[...document.querySelectorAll('.onb-day input:checked')].map(x=>x.value),h=document.getElementById('daily-hours').value,ts=document.getElementById('time-start').value,te=document.getElementById('time-end').value;
+   let err=document.getElementById('schedule-error');if(!d){err.textContent='Informe a data da prova.';return}if(d<min){err.textContent='A data da prova precisa ser hoje ou uma data futura.';return}if(!days.length){err.textContent='Escolha pelo menos um dia disponível.';return}if(!ts||!te||te<=ts){err.textContent='Confira o horário de começo e fim.';return}
+   sv('sn_date',d);sv('sn_start',TD());sv('sn_hours',h);sv('sn_days',JSON.stringify(days));sv('sn_time_start',ts);sv('sn_time_end',te);sv('sn_schedule_done','1');sv('sn_diag_done','1');
+   showPlanCreated();
+  };
+ }
+ function showPlanCreated(){
+  let r;try{r=JSON.parse(ld('sn_diagnostic')||'{}')}catch(e){r={subjects:{}}}
+  let ordered=subjects.map(g=>({g,pct:r.subjects&&r.subjects[g]?r.subjects[g].pct:50})).sort((a,b)=>a.pct-b.pct);
+  let focus=ordered[0],next=ordered[1],days=[];try{days=JSON.parse(ld('sn_days')||'[]')}catch(e){}
+  let labels={'1':'Seg','2':'Ter','3':'Qua','4':'Qui','5':'Sex','6':'Sáb','0':'Dom'};
+  frame('<div class="onb-kicker">PLANO CRIADO</div><h1>Agora você tem um caminho.</h1><p class="onb-muted">O plano combina sua avaliação inicial, a data da prova e sua disponibilidade.</p><div class="onb-plan-focus"><span>PRIORIDADE PRINCIPAL</span><h2>'+focus.g+'</h2><p>'+focus.pct+'% na avaliação inicial. Esta matéria receberá mais tempo de revisão.</p></div><div class="onb-plan-focus"><span>SEGUNDA PRIORIDADE</span><h2>'+next.g+'</h2><p>Será reforçada junto com a matéria de maior dificuldade.</p></div><div class="onb-schedule-summary"><b>Sua rotina</b><p>'+days.map(x=>labels[x]||x).join(' · ')+' | '+ld('sn_hours')+' h por dia</p><p>'+ld('sn_time_start')+'–'+ld('sn_time_end')+' | Prova: '+new Date(ld('sn_date')+'T12:00:00').toLocaleDateString('pt-BR')+'</p></div><button class="btn onb-full" id="enter-site">Entrar no meu programa de estudo →</button><p class="onb-foot">Seu resultado fica salvo neste navegador. Você pode voltar ao conteúdo e às atividades a qualquer momento.</p>');
+  document.getElementById('enter-site').onclick=()=>{hideShell(false);oldRender();};
+ }
+ window.showSchedule=showSchedule;
+ render=function(){
+  if(ld('sn_diag_done')!=='1'){
+   let raw=ld('sn_diagnostic');if(raw&&ld('sn_schedule_done')!=='1'){try{showResults(JSON.parse(raw));return}catch(e){}}
+   if(ld('sn_schedule_done')!=='1'&&raw){showSchedule();return}
+   if(!ld('sn_diag_started')){sv('sn_diag_started','1');buildDiagnostic();showDiagnostic();return}
+   if(!dq.length)buildDiagnostic();showDiagnostic();return;
+  }
+  hideShell(false);oldRender();
+ };
+ // Reset/continue behavior: first-time visitors see the assessment; returning users enter the existing study app.
+ render();
+})();
+</script>
+<style>
+body.onboarding{background:#050505;color:#f5f5f5}body.onboarding main{max-width:820px;padding-top:28px}.onb{max-width:760px;margin:0 auto;padding:12px 0 42px}.onb-brand{font-size:12px;font-weight:900;letter-spacing:3px;color:#aaa;margin-bottom:34px}.onb-brand span{color:#fff}.onb-kicker{font-size:11px;font-weight:800;letter-spacing:2px;color:#aaa;margin:12px 0 14px}.onb h1{font-size:clamp(27px,5vw,42px);line-height:1.08;letter-spacing:-1.3px;margin:12px 0}.onb h2{font-size:21px;line-height:1.4;margin:8px 0 18px}.onb-muted{color:#aaa;line-height:1.65}.onb-progress{height:5px;background:#262626;border-radius:9px;overflow:hidden;margin:12px 0 24px}.onb-progress i{display:block;height:100%;background:#fff;border-radius:9px}.onb-meta{display:flex;justify-content:space-between;gap:12px;color:#ddd;font-size:13px}.onb-meta span{color:#888}.onb-question{margin:24px 0;background:#0b0b0b;border:1px solid #303030;border-radius:16px;padding:24px}.onb-qnum{font-size:10px;letter-spacing:1.8px;color:#888;font-weight:800}.onb-options{display:grid;gap:10px}.onb-option{display:flex;gap:12px;align-items:center;padding:14px;border:1px solid #383838;border-radius:10px;cursor:pointer;color:#eee}.onb-option:has(input:checked){border-color:#fff;background:#191919}.onb-option input,.onb-day input{accent-color:#fff}.onb-actions{display:flex;justify-content:space-between;gap:12px}.onb-foot{color:#777;font-size:12px;line-height:1.6;margin-top:22px}.onb-input{display:block;width:100%;box-sizing:border-box;background:#090909;color:#fff;border:1px solid #444;border-radius:10px;padding:13px;font:inherit;margin:8px 0 20px}.onb-label{display:block;font-size:13px;font-weight:700;color:#ddd;margin-top:14px}.onb-error{color:#ff9a9a;font-size:13px;margin:8px 0}.onb-results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:24px 0}.onb-result{padding:16px;background:#0c0c0c;border:1px solid #303030;border-radius:12px}.onb-result-top{display:flex;justify-content:space-between;gap:8px;align-items:center}.onb-result-top strong{font-size:25px}.onb-result p{font-size:12px;color:#aaa;line-height:1.5}.onb-topic-box{border:1px solid #303030;border-radius:14px;padding:16px;margin-bottom:20px}.onb-topic-group{margin:8px 0 20px}.onb-topic-group:last-child{margin-bottom:0}.onb-topic-group>b{font-size:13px}.onb-topic{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid #242424;font-size:13px}.onb-topic:last-child{border-bottom:0}.onb-topic small{color:#888}.onb-topic strong{white-space:nowrap}.onb-full{width:100%;margin-top:8px}.onb-form{margin-top:24px;background:#0b0b0b;border:1px solid #303030;border-radius:16px;padding:22px}.onb-days{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:10px 0 18px}.onb-day{cursor:pointer}.onb-day input{position:absolute;opacity:0}.onb-day span{display:block;text-align:center;padding:11px 5px;border:1px solid #383838;border-radius:9px;font-size:13px}.onb-day input:checked+span{background:#fff;color:#000;border-color:#fff}.onb-time-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.onb-plan-focus{border:1px solid #333;background:#0b0b0b;border-radius:14px;padding:20px;margin:14px 0}.onb-plan-focus span{font-size:10px;color:#aaa;letter-spacing:1.5px;font-weight:800}.onb-plan-focus h2{font-size:25px;margin:10px 0}.onb-plan-focus p,.onb-schedule-summary p{color:#aaa;line-height:1.6;font-size:14px}.onb-schedule-summary{padding:16px 0;margin-bottom:12px}.onb-schedule-summary b{font-size:14px}@media(max-width:600px){body.onboarding main{padding:18px 16px}.onb-results{grid-template-columns:1fr}.onb-result{padding:14px}.onb-days{grid-template-columns:repeat(2,minmax(0,1fr))}.onb-question{padding:18px}.onb h1{letter-spacing:-.5px}}
+</style>
+
+<script>
+/* Faz o plano já existente usar os resultados do diagnóstico e respeitar os dias/horários escolhidos. */
+var _OT_BASE=OT;
+OT=function(){
+ var order=_OT_BASE(),raw=ld('sn_diagnostic'),r=null;
+ try{r=raw?JSON.parse(raw):null}catch(e){}
+ if(!r||!r.subjects)return order;
+ return T.map(function(t,i){var sub=r.subjects[t.g],topic=r.topics&&r.topics[t.id],base=sub?sub.pct:50,detail=topic?topic.pct:base;return{i:i,score:detail*.7+base*.3}}).sort(function(a,b){return a.score-b.score||a.i-b.i}).map(function(x){return x.i});
+};
+var _PL_BASE=PL;
+PL=function(){
+ var dt=ld('sn_date'),H=HR(),days=[];try{days=JSON.parse(ld('sn_days')||'[]')}catch(e){}
+ var labels={'1':'Segunda','2':'Terça','3':'Quarta','4':'Quinta','5':'Sexta','6':'Sábado','0':'Domingo'};
+ var ts=ld('sn_time_start')||'18:00',te=ld('sn_time_end')||'20:00';
+ var o='<h2>Plano de estudo</h2><div style="color:var(--mute)">Seu roteiro usa a avaliação inicial para priorizar matérias e tópicos com mais dificuldade.</div><br>';
+ o+='<div class="card"><h3>Data da prova</h3><input type="date" id="dd" value="'+dt+'" style="background:#000;color:#eee;border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit"></div>';
+ o+='<div class="card"><h3>Disponibilidade</h3><p>Dias em que você pode estudar:</p><div class="onb-days">'+[['1','Seg'],['2','Ter'],['3','Qua'],['4','Qui'],['5','Sex'],['6','Sáb'],['0','Dom']].map(function(d){return '<label class="onb-day"><input type="checkbox" class="plan-day" value="'+d[0]+'" '+(days.includes(d[0])?'checked':'')+'><span>'+d[1]+'</span></label>'}).join('')+'</div><p>Tempo por dia: <select id="plan-hours" style="background:#000;color:#fff;border:1px solid #444;padding:8px;border-radius:8px">'+[['0.5','30 min'],['1','1 h'],['1.5','1 h 30'],['2','2 h'],['2.5','2 h 30'],['3','3 h'],['4','4 h'],['5','5 h']].map(function(x){return '<option value="'+x[0]+'" '+(String(H)===x[0]?'selected':'')+'>'+x[1]+'</option>'}).join('')+'</select></p><div class="onb-time-grid"><div><label class="onb-label">Começo</label><input class="onb-input" id="plan-start" type="time" value="'+ts+'"></div><div><label class="onb-label">Fim</label><input class="onb-input" id="plan-end" type="time" value="'+te+'"></div></div><button class="btn" id="save-plan-settings">Salvar rotina e atualizar plano</button><div id="plan-msg" style="color:#aaa;font-size:13px;margin-top:8px"></div></div>';
+ if(dt){var left=DF(TD(),dt);if(left<0)o+='<div class="card"><p>Essa data já passou. Escolha uma nova data.</p></div>';else{
+  var dates=[];for(var j=0;j<=Math.min(left,13);j++){var date=new Date(Date.now()+j*864e5),dow=String(date.getDay());if(!days.length||days.includes(dow))dates.push({j:j,date:date,dow:dow})}
+  o+='<div class="card"><h3>Seu roteiro</h3><p style="color:var(--mute)">Faltam '+left+' dias para a prova · '+Math.round(left*H*10)/10+' horas disponíveis estimadas.</p>';
+  if(!days.length)o+='<p>Marque pelo menos um dia disponível para ver os blocos de estudo.</p>';
+  else if(!dates.length)o+='<p>Não há dias selecionados no período mostrado.</p>';
+  else o+=dates.map(function(x){var t=TK(x.j),d=x.date.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'2-digit'});return '<div class="dy'+(x.j===0?' hj':'')+'"><div class="dh"><b>'+(x.j===0?'Hoje':x.j===1?'Amanhã':labels[x.dow])+'</b><span>'+d+'</span></div><div style="color:var(--mute);font-size:12px;margin-bottom:8px">Horário disponível: '+ts+'–'+te+'</div>'+t.b.map(function(b){return '<div class="bk"><span class="tm">'+(b.m?MM(b.m):'—')+'</span><div class="bt"><b>'+b.t+'</b>'+(b.d?'<small>'+b.d+'</small>':'')+'</div>'+(x.j===0&&b.f?'<button class="btn g" onclick="'+b.f+'">ir</button>':'')+'</div>'}).join('')+'</div>'}).join('');
+  o+='<small style="color:var(--mute)">O plano reserva mais prática para os assuntos de menor desempenho e inclui simulados/revisões perto da prova.</small></div>';
+ }}
+ o+='<div class="card"><h3>Assuntos do meu edital</h3><textarea id="ed" placeholder="Cole aqui os assuntos do edital para consultar"></textarea></div>';
+ main.innerHTML=o;var ed=document.getElementById('ed');ed.value=ld('sn_edital');ed.oninput=function(){sv('sn_edital',ed.value)};
+ document.getElementById('save-plan-settings').onclick=function(){var d=document.getElementById('dd').value,ds=[...document.querySelectorAll('.plan-day:checked')].map(function(x){return x.value}),h=document.getElementById('plan-hours').value,a=document.getElementById('plan-start').value,b=document.getElementById('plan-end').value,msg=document.getElementById('plan-msg');if(!d){msg.textContent='Informe a data da prova.';return}if(!ds.length){msg.textContent='Selecione pelo menos um dia.';return}if(!a||!b||b<=a){msg.textContent='Confira os horários.';return}sv('sn_date',d);sv('sn_start',TD());sv('sn_days',JSON.stringify(ds));sv('sn_hours',h);sv('sn_time_start',a);sv('sn_time_end',b);msg.textContent='Rotina salva. Atualizando…';PL()};
+ window.scrollTo(0,0);
+};
+</script>
+
+</body>
+</html>
