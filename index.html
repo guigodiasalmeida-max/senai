@@ -1005,16 +1005,59 @@ var _ex9=expl;expl=function(){var a=AULA[cur.id],r=_ex9();return a?"<div class='
 </script>
 
 <script>
+/* Persistência: lembra onde o aluno estava e o simulado em andamento, mesmo fechando o site. */
+(function(){
+ try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
+ var ok=true;try{localStorage.setItem('sn_test','1');localStorage.removeItem('sn_test')}catch(e){ok=false}
+ if(!ok){document.addEventListener('DOMContentLoaded',function(){var d=document.createElement('div');d.style.cssText='position:fixed;left:0;right:0;bottom:0;z-index:99;background:#fff;color:#000;padding:10px 14px;font:600 13px sans-serif;text-align:center';d.textContent='Seu navegador está bloqueando o salvamento. Abra o arquivo em um navegador normal (não em modo anônimo) para o progresso ficar salvo.';document.body.appendChild(d)})}
+ function snap(){
+  try{
+   if(!cur||cur.prova)return null;
+   var o={tab:tab};
+   if(cur.home)o.v='home';else if(cur.prog)o.v='prog';else if(cur.plan)o.v='plan';else if(cur.rev)o.v='rev';else if(cur.cad)o.v='cad';
+   else if(cur.mat){o.v='mat';o.g=cur.mat}
+   else if(cur.ex){o.v='ex';o.k=cur.k;
+    if(E&&E.st===1){o.E={i:E.i,st:1,a:E.a,el:E.t0?Date.now()-E.t0:0};o.q=S[cur.k].q}}
+   else if(cur.id){var i=T.indexOf(cur);if(i<0)return null;o.v='t';o.i=i;o.lv=cur.lv||0}
+   else return null;
+   return o}catch(e){return null}
+ }
+ function save(){var o=snap();if(o)sv('sn_session',JSON.stringify(o))}
+ window.snSave=save;
+ var _rs=render;render=function(){_rs();save()};
+ setInterval(save,1500);
+ document.addEventListener('visibilitychange',save);window.addEventListener('pagehide',save);window.addEventListener('beforeunload',save);
+ /* restaura antes do primeiro render */
+ try{
+  var o=JSON.parse(ld('sn_session')||'null');
+  if(o&&o.v){
+   tab=o.tab||'e';
+   if(o.v==='home')cur={home:1};
+   else if(o.v==='prog')cur={prog:1};
+   else if(o.v==='plan')cur={plan:1};
+   else if(o.v==='rev')cur={rev:1};
+   else if(o.v==='cad')cur={cad:1};
+   else if(o.v==='mat')cur={mat:o.g};
+   else if(o.v==='t'&&T[o.i]){cur=T[o.i];if(o.lv)cur.lv=o.lv}
+   else if(o.v==='ex'&&S[o.k]){
+    cur={ex:1,k:o.k};E=null;
+    if(o.E&&o.q&&o.q.length===S[o.k].q.length&&o.E.a&&o.E.a.length===o.q.length){S[o.k].q=o.q;E={i:o.E.i,st:1,a:o.E.a,t0:Date.now()-(o.E.el||0)}}
+   }
+  }
+ }catch(e){cur={home:1}}
+})();
+</script>
+
+<script>
 /* Sistema de entrada personalizada: diagnóstico inicial e plano individual, sem IA externa. */
 (function(){
  const oldRender=render;
  const subjects=['Matemática','Português','Ciências'];
  // Versão do diagnóstico: garante que usuários com a avaliação antiga recebam as 60 questões.
- if(ld('sn_diag_version')!=='2'){
-  ['sn_diag_done','sn_diag_started','sn_schedule_done','sn_diagnostic','sn_diag_answers'].forEach(k=>sv(k,''));
-  sv('sn_diag_version','2');
- }
+ if(ld('sn_diag_version')!=='2')sv('sn_diag_version','2');
  let dq=[],di=0,answers=[];
+ function saveDiag(){sv('sn_diag_state',JSON.stringify({dq:dq,di:di,answers:answers}))}
+ function restoreDiag(){try{let st=JSON.parse(ld('sn_diag_state')||'null');if(st&&Array.isArray(st.dq)&&st.dq.length&&Array.isArray(st.answers)&&st.di>=0&&st.di<st.dq.length){dq=st.dq;di=st.di;answers=st.answers;return true}}catch(e){}return false}
  function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
  function buildDiagnostic(){
   dq=[];
@@ -1069,9 +1112,10 @@ var _ex9=expl;expl=function(){var a=AULA[cur.id],r=_ex9();return a?"<div class='
    let value;
    {let el=document.querySelector('input[name="diag-answer"]:checked');if(!el){document.getElementById('diag-error').textContent='Escolha uma alternativa ou marque “Não sei” para continuar.';return}value=Number(el.value)}
    answers[di]={value};
-   if(di<dq.length-1){di++;showDiagnostic()}else finishDiagnostic();
+   if(di<dq.length-1){di++;saveDiag();showDiagnostic()}else finishDiagnostic();
   };
-  let back=document.getElementById('diag-back');if(back)back.onclick=()=>{di--;showDiagnostic()};
+  let back=document.getElementById('diag-back');if(back)back.onclick=()=>{di--;saveDiag();showDiagnostic()};
+  document.querySelectorAll('input[name="diag-answer"]').forEach(el=>el.onchange=()=>{answers[di]={value:Number(el.value)};saveDiag()});
  }
  function correct(item,a){if(!a)return false;return a.value===item.q[2]}
  function finishDiagnostic(){
@@ -1079,7 +1123,7 @@ var _ex9=expl;expl=function(){var a=AULA[cur.id],r=_ex9();return a?"<div class='
   subjects.forEach(g=>{let list=dq.map((x,i)=>({...x,answer:answers[i]})).filter(x=>x.g===g);let ok=list.filter(x=>correct(x,x.answer)).length;result.subjects[g]={ok,total:list.length,pct:Math.round(ok/list.length*100)}});
   dq.forEach((x,i)=>{let ok=correct(x,answers[i]);if(!result.topics[x.id])result.topics[x.id]={name:x.topic,g:x.g,ok:0,total:0};result.topics[x.id].total++;if(ok)result.topics[x.id].ok++;else{let d=!!(answers[i]&&answers[i].value===-1);if(d){result.dk++;result.topics[x.id].dk=(result.topics[x.id].dk||0)+1}result.misses.push({g:x.g,topic:x.topic,q:x.q[0],explanation:x.q[3],dk:d})}});
   Object.keys(result.topics).forEach(k=>{let t=result.topics[k];t.pct=Math.round(t.ok/t.total*100)});
-  sv('sn_diagnostic',JSON.stringify(result));sv('sn_diag_answers',JSON.stringify(dq.map((x,i)=>({g:x.g,topic:x.topic,q:x.q[0],correct:correct(x,answers[i])}))));
+  sv('sn_diagnostic',JSON.stringify(result));sv('sn_diag_state','');sv('sn_diag_finished','1');sv('sn_diag_answers',JSON.stringify(dq.map((x,i)=>({g:x.g,topic:x.topic,q:x.q[0],correct:correct(x,answers[i])}))));
   showResults(result);
  }
  function showResults(r){
@@ -1115,8 +1159,9 @@ var _ex9=expl;expl=function(){var a=AULA[cur.id],r=_ex9();return a?"<div class='
   if(ld('sn_diag_done')!=='1'){
    let raw=ld('sn_diagnostic');if(raw&&ld('sn_schedule_done')!=='1'){try{showResults(JSON.parse(raw));return}catch(e){}}
    if(ld('sn_schedule_done')!=='1'&&raw){showSchedule();return}
-   if(!ld('sn_diag_started')){sv('sn_diag_started','1');buildDiagnostic();showDiagnostic();return}
-   if(!dq.length)buildDiagnostic();showDiagnostic();return;
+   if(!ld('sn_diag_started'))sv('sn_diag_started','1');
+   if(!dq.length&&!restoreDiag())buildDiagnostic();
+   saveDiag();showDiagnostic();return;
   }
   hideShell(false);oldRender();
  };
