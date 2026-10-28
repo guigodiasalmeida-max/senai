@@ -488,7 +488,7 @@ function pick(k){cur={ex:1,k:k};E=null;render()}
 function openT(i){cur=T[i];tab="e";render()}
 function view(){
  if(cur.home){var tot=S.reduce(function(a,x){return a+x.q.length},0);
-  main.innerHTML="<section class='hero'><div class='eb'>Preparação para a prova</div><h1>ESTUDE PARA<br>O SENAI</h1><p>Explicações simples, atividades com correção e simulados completos, em preto e branco, no PC e no celular.</p><div class='stats'><div class='stat'><b>"+T.length+"</b>tópicos</div><div class='stat'><b>"+S.length+"</b>simulados</div><div class='stat'><b>"+tot+"</b>questões de prova</div><div class='stat'><b>4</b>áreas</div></div></section><h3 class='sec'>Simulados</h3><div class='grid'>"+S.map(function(x,k){return "<button class='tile' onclick='pick("+k+")'><span class='n'>0"+(k+1)+"</span><b>"+x.n+"</b><small>"+x.s+" · "+x.q.length+" questões</small></button>"}).join("")+"</div><h3 class='sec'>Conteúdos</h3><div class='grid'>"+T.map(function(t,i){return "<button class='tile' onclick='openT("+i+")'><span class='n'>"+t.g+"</span><b>"+t.n+"</b><small>Explicação + atividade</small></button>"}).join("")+"</div>";
+  main.innerHTML="<section class='hero'><div class='eb'>Preparação para a prova</div><h1>ESTUDE PARA<br>O SENAI</h1><p>Explicações simples, atividades com correção e simulados completos, em preto e branco, no PC e no celular.</p><div class='stats'><div class='stat'><b>"+T.length+"</b>tópicos</div><div class='stat'><b>"+S.length+"</b>simulados</div><div class='stat'><b>"+tot+"</b>questões de prova</div><div class='stat'><b>4</b>áreas</div></div></section><h3 class='sec'>Simulados</h3><div class='grid'>"+S.map(function(x,k){return "<button class='tile' onclick='pick("+k+")'><span class='n'>0"+(k+1)+"</span><b>"+x.n+"</b><small>"+x.s+" · "+x.q.length+" questões</small></button>"}).join("")+"</div><h3 class='sec'>Conteúdos</h3><div class='grid'>"+T.map(function(t,i){return "<button class='tile' onclick='openT("+i+")'><span class='n'>"+t.g+"</span><b>"+t.n+"</b><small>Explicação + atividade</small></button>"}).join("")+"</div><h3 class='sec'>Seu acompanhamento</h3><div class='grid'><button class='tile' onclick='showHistory()'><span class='n'>↗</span><b>Histórico de simulados</b><small>Veja notas anteriores e evolução</small></button><button class='tile' onclick='showErrorBook()'><span class='n'>✎</span><b>Caderno de erros</b><small>Questões que você precisa revisar</small></button></div>";
   return window.scrollTo(0,0)}
  var s=S[cur.k];
  if(!E)E={i:0,st:0,a:s.q.map(function(){return null})};
@@ -519,6 +519,14 @@ function resu(s){
  c.fillStyle="#fff";c.font="700 32px system-ui";c.textAlign="center";c.fillText(p+"%",90,101);
  window.scrollTo(0,0)}
 
+function showHistory(){
+ var h=[];try{h=JSON.parse(ld("sn_history")||"[]")}catch(e){}
+ main.innerHTML="<h2>Histórico de simulados</h2><p style='color:var(--mute)'>Resultados salvos neste navegador.</p>"+(h.length?h.map(function(x){return "<div class='card'><div class='cdh'><b>"+x.name+"</b><span>"+new Date(x.date).toLocaleString('pt-BR')+"</span></div><div class='score' style='font-size:36px;text-align:left'>"+x.score+"%</div><p>"+x.correct+" de "+x.total+" acertos</p><div class='pg'><div class='bar' style='width:"+x.score+"%'></div></div></div>"}).join(""):"<div class='card'>Você ainda não concluiu nenhum simulado.</div>")+"<button class='btn g' onclick='goHome()'>← Voltar ao início</button>";
+}
+function showErrorBook(){
+ var b=[];try{b=JSON.parse(ld("sn_errorbook")||"[]")}catch(e){}
+ main.innerHTML="<h2>Caderno de erros</h2><p style='color:var(--mute)'>Questões erradas ou em branco ficam aqui para revisão.</p>"+(b.length?b.map(function(x){return "<div class='card'><div class='eb'>"+x.area+" · "+x.name+"</div><h3>"+x.question+"</h3><p><b>Sua resposta:</b> "+x.chosen+"</p><p><b>Resposta correta:</b> "+x.correct+"</p><div class='ex'>"+x.explanation+"</div></div>"}).join(""):"<div class='card'>Seu caderno está vazio. Faça um simulado para começar.</div>")+"<button class='btn g' onclick='goHome()'>← Voltar ao início</button>";
+}
 function R(a,b){return a+Math.floor(Math.random()*(b-a+1))}
 function sh(a){return a.sort(function(){return Math.random()-.5})}
 function U(u){return function(x){return String(x).replace(".",",")+(u?" "+u:"")}}
